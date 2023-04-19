@@ -70,19 +70,39 @@ const direccion = ref([
 </script>
 
 <style scoped>
-.contenedor{
+/* .contenedor{
     width: 450px;
     height: auto;
+    margin-top: -350px;
+    margin-left: 200px;
     padding: 20px;
-    margin: -30px auto 0 auto;
     border-radius: 20px;
     background: rgb(240, 240, 240);
     
     
-}
+} */
+
+.contenedor{
+    
+    width: 450px;
+    height: auto;
+    padding: 20px;
+    border-radius: 20px;
+    background: rgb(240, 240, 240);
+    margin-left: 180px;
+    margin-top: -20px;
+    
+    
+    
+} 
+
+
+
 
 .formulario{
     margin-top: 20px;
+    
+    
 }
 
 

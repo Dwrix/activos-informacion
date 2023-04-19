@@ -22,6 +22,11 @@ const router = createRouter({
       path: '/OrdenSalida',
       name: 'FormOrdenSalida',
       component: () => import('../views/FormOrdenSalida.vue')
+    },
+    {
+      path: '/VerActas',
+      name: 'VerActas',
+      component: () => import('../views/VerActas.vue')
     }
   ]
 })

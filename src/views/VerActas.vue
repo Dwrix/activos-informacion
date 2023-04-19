@@ -1,14 +1,18 @@
 <template>
     <div class="contenedor">    
-        <h1>Home</h1>
+
+        <h1>Data table</h1>
+
+
     </div>
 </template>
 
-<script setup lang="ts">
 
+<script setup lang="ts">
 </script>
 
 <style scoped>
+
 .contenedor{
     width: 450px;
     height: auto;

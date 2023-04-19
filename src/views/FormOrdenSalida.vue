@@ -88,10 +88,10 @@ const direccion = ref([
     width: 450px;
     height: auto;
     padding: 20px;
-    margin-top: 50px;
     border-radius: 20px;
     background: rgb(240, 240, 240);
-    margin: 0 auto;
+    margin-left: 180px;
+    margin-top: -20px;
     
 }
 

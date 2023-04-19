@@ -41,6 +41,10 @@
                 <InputText id="cargo" v-model="cargo" />
                 <label for="cargo">Cargo</label>
             </span><br>
+            <span class="p-float-label">
+                <InputText id="encargado" v-model="encargado" />
+                <label for="encargado">Persona quien recibe</label>
+            </span><br>
             <Calendar v-model="date" showIcon disabled/><br><br>
 
             <Button label="Enviar" icon="pi pi-check" iconPos="right" />
@@ -54,10 +58,13 @@ import { ref } from 'vue';
 const nombre = ref(null);
 const rut = ref(null);
 const cargo = ref(null);
+
 const date = ref(new Date());
 setInterval(() => {
   date.value = new Date(); // Actualizar la fecha cada 1000 milisegundos (1 segundo) 1 hora
 }, 3600000 );
+
+const encargado = ref(null);
 
 const selectedDir = ref();
 const direccion = ref([
@@ -73,10 +80,10 @@ const direccion = ref([
     width: 450px;
     height: auto;
     padding: 20px;
-    margin-top: 50px;
     border-radius: 20px;
     background: rgb(240, 240, 240);
-    margin: 0 auto;
+    margin-left: 180px;
+    margin-top: -20px;
     
 }
 
