@@ -43,7 +43,7 @@
             </span><br>
             <span class="p-float-label">
                 <InputText id="encargado" v-model="encargado" />
-                <label for="encargado">Persona quien recibe</label>
+                <label for="encargado">Persona que recibe</label>
             </span><br>
             <Calendar v-model="date" showIcon disabled/><br><br>
 
@@ -60,10 +60,13 @@ const rut = ref(null);
 const cargo = ref(null);
 
 const date = ref(new Date());
-setInterval(() => {
-  date.value = new Date(); // Actualizar la fecha cada 1000 milisegundos (1 segundo) 1 hora
+window.addEventListener('load', () => {
+  date.value = new Date();
+});
+/* setInterval(() => {
+  date.value = new Date(); 
 }, 3600000 );
-
+// Actualizar la fecha cada 1000 milisegundos 1 segundo  */
 const encargado = ref(null);
 
 const selectedDir = ref();

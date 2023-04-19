@@ -3,25 +3,26 @@
   <!-- <header>
   
     </header> -->
+    
   <div class="contenedorNav">
     <nav>
-      <RouterLink to="/" exact activeClass="active" class="pi pi-home"> Home</RouterLink>
+      <RouterLink to="/Home" exact activeClass="active" class="pi pi-home"> Home</RouterLink>
       <RouterLink to="/Entrega" exact activeClass="active" class="pi pi-file"> Entrega</RouterLink>
       <RouterLink to="/Devolucion" exact activeClass="active" class="pi pi-file"> Devolución</RouterLink>
       <RouterLink to="/OrdenSalida" exact activeClass="active" class="pi pi-file"> Orden de Salida</RouterLink>
       <RouterLink to="/VerActas" exact activeClass="active" class="pi pi-file"> Ver Actas</RouterLink>
     </nav>
   </div>  
+  
   <RouterView />
+
 </template>
 
 <script setup lang="ts">
-import { RouterLink, RouterView } from 'vue-router'
-/* import HelloWorld from './components/HelloWorld.vue' */
 
+import { RouterLink, RouterView, } from 'vue-router'
 
 </script>
-
 
 
 <style scoped>
