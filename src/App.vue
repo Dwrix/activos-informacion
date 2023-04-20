@@ -7,6 +7,7 @@
   <div class="contenedorNav">
     <nav>
       <RouterLink to="/Home" exact activeClass="active" class="pi pi-home"> Home</RouterLink>
+      <RouterLink to="/SolicitudActivos" exact activeClass="active" class="pi pi-file"> Solicitar Activos</RouterLink>
       <RouterLink to="/Entrega" exact activeClass="active" class="pi pi-file"> Entrega</RouterLink>
       <RouterLink to="/Devolucion" exact activeClass="active" class="pi pi-file"> Devolución</RouterLink>
       <RouterLink to="/OrdenSalida" exact activeClass="active" class="pi pi-file"> Orden de Salida</RouterLink>
@@ -34,10 +35,9 @@ import { RouterLink, RouterView, } from 'vue-router'
   width: 200px;
   margin-top: 20px;
   border-radius: 20px;
-  flex-direction: column;
-  justify-content: flex-start;
   z-index: 999;
   background-color: #f2f2f2;
+  
   
 }
 
@@ -53,8 +53,9 @@ nav a {
   display: block;
   margin: 0.5rem 0;
   padding: 0.5rem;
-  text-align: center;
-  border-radius: 0.25rem
+  text-align: left;
+  border-radius: 0.25rem;
+  margin-left: 15px;
 }
 
 nav a.active {

@@ -5,6 +5,7 @@
             de la Republica, hace entrega del equipamiento computacional a:
         </p>
         <div class="formulario">
+            
             <span class="p-float-label">
                 <InputText id="nombre" v-model="nombre" />
                 <label for="nombre">Nombre</label>
@@ -46,6 +47,8 @@
             <Button label="Enviar" icon="pi pi-check" iconPos="right" />
         </div>
     </div>
+
+    <div class="contDetalleEquip"></div>
 </template>
 
 <script setup lang="ts">
@@ -58,10 +61,6 @@ const date = ref(new Date());
 window.addEventListener('load', () => {
   date.value = new Date();
 });
-/* setInterval(() => {
-  date.value = new Date(); 
-}, 3600000 );
-// Actualizar la fecha cada 1000 milisegundos 1 segundo  */
 
 const selectedDir = ref();
 const direccion = ref([
@@ -70,21 +69,11 @@ const direccion = ref([
     { name: 'Dirección de Gestion Ciudadana', code: 'DGC' },
    
 ]);
+/* ----------------------------------- */
 
 </script>
 
 <style scoped>
-/* .contenedor{
-    width: 450px;
-    height: auto;
-    margin-top: -350px;
-    margin-left: 200px;
-    padding: 20px;
-    border-radius: 20px;
-    background: rgb(240, 240, 240);
-    
-    
-} */
 
 .contenedor{
     
