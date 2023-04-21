@@ -9,6 +9,21 @@ import Dropdown from 'primevue/dropdown';
 import Button from 'primevue/button';
 import  Textarea  from 'primevue/textarea';
 
+/* -- */
+import FileUpload from 'primevue/fileupload';
+import Toast from 'primevue/toast';
+import ToastService from 'primevue/toastservice';
+import Toolbar from 'primevue/toolbar';
+import Column from 'primevue/column';
+import Rating from 'primevue/rating';
+import Tag from 'primevue/tag';
+import DataTable from 'primevue/datatable';
+import RadioButton from 'primevue/radiobutton';
+import Dialog from 'primevue/dialog';
+import InputNumber from 'primevue/inputnumber';
+/* -- */
+
+
 //theme
 import "primevue/resources/themes/lara-light-indigo/theme.css";     
     
@@ -28,6 +43,25 @@ const app = createApp(App)
 app.use(createPinia())
 app.use(router)
 app.use(PrimeVue);
+
+/* -- */
+app.use(ToastService);
+/* -- */
+
+/* -- */
+app.component('Dialog', Dialog);
+app.component('Toast', Toast);
+app.component('FileUpload', FileUpload);
+app.component('Toolbar', Toolbar);
+app.component('Column', Column);
+app.component('Rating', Rating);
+app.component('Tag', Tag);
+app.component('DataTable', DataTable);
+app.component('RadioButton', RadioButton);
+app.component('InputNumber', InputNumber);
+/* -- */
+
+
 app.component('InputText', InputText);
 app.component('Calendar', Calendar);
 app.component('Dropdown', Dropdown);
