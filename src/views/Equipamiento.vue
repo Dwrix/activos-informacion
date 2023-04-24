@@ -36,6 +36,8 @@
                 <Column field="modelo" header="Modelo" sortable style="min-width:5rem"></Column>
                 <Column field="serie" header="Serie" sortable style="min-width:5rem"></Column>
                 <Column field="numInv" header="Num Inventario" sortable style="min-width:10rem"></Column>
+                <Column field="dvd" header="dvd" sortable style="min-width:10rem"></Column>
+                <Column field="tecladoMouse" header="tecladoMouse" sortable style="min-width:10rem"></Column>
                 <!-- <Column header="Image">
                     <template #body="slotProps">
                         <img :src="`https://primefaces.org/cdn/primevue/images/product/${slotProps.data.image}`" :alt="slotProps.data.image" class="shadow-2 border-round" style="width: 64px" />
@@ -68,7 +70,7 @@
             </DataTable>
         </div>
 
-        <Dialog v-model:visible="productDialog" :style="{ width: '450px' }" header="Agregar Equipamiento" :modal="true"
+        <Dialog v-model:visible="productDialog" :width="dialogWidth"  header="Agregar Equipamiento" :modal="true"
             class="p-fluid">
             <!-- <img v-if="product.image" :src="`https://primefaces.org/cdn/primevue/images/product/${product.image}`" :alt="product.image" class="block m-auto pb-3" /> -->
 
@@ -110,21 +112,66 @@
                 </div>
 
                 <div class="field">
-                <label for="modelo">Serie</label>
+                <label for="serie">Serie</label>
                 <InputText id="serie" v-model.trim="product.serie" required="true" 
                     :class="{ 'p-invalid': submitted && !product.serie }" />
                 <small class="p-error" v-if="submitted && !product.modelo">serie is required.</small>
                 </div>
 
                 <div class="field">
-                <label for="modelo">Número Inventario</label>
+                <label for="numInv">Número Inventario</label>
                 <InputText id="numInv" v-model.trim="product.numInv" 
                     :class="{ 'p-invalid': submitted && !product.numInv }" />
-                </div>
+                </div><br>
 
             </div>
-            <div class="ContenedorPcs" v-if="product.tipo === 'Computador Escritorio' ||  product.tipo ==='Computador Portatil'">
-                <label>pcs</label>
+            <div class="ContenedorPcs"  v-if="product.tipo === 'Computador Escritorio' ||  product.tipo ==='Computador Portatil'" >
+                <label>Catacteristicas del Equipamiento Computacional</label>
+
+                <div class="field" >
+                <label for="procesador">Procesador</label>
+                <InputText id="procesador" v-model.trim="product.procesador" 
+                    :class="{ 'p-invalid': submitted && !product.procesador }" />
+                </div>
+
+                <div class="field">
+                <label for="ram">Memoria RAM</label>
+                <InputText id="ram" v-model.trim="product.ram" 
+                    :class="{ 'p-invalid': submitted && !product.ram }" />
+                </div> 
+
+                <div class="field">
+                <label for="discoDuro">Disco Duro</label>
+                <InputText id="discoDuro" v-model.trim="product.discoDuro" 
+                    :class="{ 'p-invalid': submitted && !product.discoDuro }" />
+                </div>
+
+                <div class="field">
+                <label for="tarjetavideo">Tarjeta de Video</label>
+                <InputText id="tarjetavideo" v-model.trim="product.tarjetavideo" 
+                    :class="{ 'p-invalid': submitted && !product.tarjetavideo }" />
+                </div>
+
+                <div class="formgrid grid">
+                    <div class="field-radiobutton col-6">
+                        <label> Lector/Grabador de DVD </label>
+                        <RadioButton id="dvdSi" name="dvd" value="Si" v-model="product.dvd" />
+                        <label for="dvdSi">Si</label>
+                        <RadioButton id="dvdNo" name="dvd" value="No" v-model="product.dvd" />
+                        <label for="dvdNo">No</label>
+                        
+                    </div>
+                    <div class="field-radiobutton col-6">
+                        <label> Teclado y Mouse</label>
+                        <RadioButton id="tecladoMousesi" name="tecladoMouse" value="Si" v-model="product.tecladoMouse" />
+                        <label for="tecladoMousesi">Si</label>
+                        <RadioButton id="tecladoMouseNo" name="tecladoMouse" value="No" v-model="product.tecladoMouse" />
+                        <label for="tecladoMouseNo">No</label>
+                        
+                    </div>
+                    
+                </div>
+
             </div>
             
             <!-- <div class="field">
@@ -203,15 +250,12 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
-
+import { ref, onMounted, watch } from 'vue';
 import { useToast } from 'primevue/usetoast';
 import { ProductService } from '@/service/ProductService';
 
 
-onMounted(() => {
-    ProductService.getProducts().then((data) => (products.value = data));
-});
+
 
 const toast = useToast();
 const dt = ref();
@@ -219,23 +263,44 @@ const products = ref();
 const productDialog = ref(false);
 const deleteProductDialog = ref(false);
 const deleteProductsDialog = ref(false);
-const product = ref({});
+const product = ref({tipo: 'default'});
 const selectedProducts = ref();
+const selectedProduct = ref(null);
+
 /* const filters = ref({
     'global': {value: null, matchMode: FilterMatchMode.CONTAINS},
 }); */
 const submitted = ref(false);
-const statuses = ref([
+/* const statuses = ref([
     { label: 'INSTOCK', value: 'instock' },
     { label: 'LOWSTOCK', value: 'lowstock' },
     { label: 'OUTOFSTOCK', value: 'outofstock' }
-]);
+]); */
+const updateDialogWidth = (tipo) => {
+    if (tipo === 'Computador Portatil' || tipo === 'Computador Escritorio') {
+      dialogWidth.value = '1200px';
+    } else {
+      dialogWidth.value = '450px';
+    }
+};
+
+
+
+onMounted(() => {
+    ProductService.getProducts().then((data) => (products.value = data));
+});
+watch(() => product.tipo, (tipo) => {
+  if (tipo) {
+    updateDialogWidth(tipo);
+  }
+});
 
 /* const formatCurrency = (value) => {
     if(value)
         return value.toLocaleString('en-US', {style: 'currency', currency: 'USD'});
     return;
 }; */
+
 const openNew = () => {
     product.value = {};
     submitted.value = false;
@@ -269,8 +334,11 @@ const saveProduct = () => {
 };
 const editProduct = (prod) => {
     product.value = { ...prod };
+    selectedProduct.value = prod;
     productDialog.value = true;
+    
 };
+
 const confirmDeleteProduct = (prod) => {
     product.value = prod;
     deleteProductDialog.value = true;
@@ -329,7 +397,17 @@ const deleteSelectedProducts = () => {
     }
 }; */
 
-</script>
+/* const dialogWidth = ref('450px');
+
+if (selectedProduct.value && (selectedProduct.value.tipo === 'Computador Portatil' || selectedProduct.value.tipo === 'Computador Escritorio')) {
+ dialogWidth.value = '1200px';
+} else {
+ dialogWidth.value = '450px';
+}*/
+
+
+</script>  
+
 
 <style scoped>
 .contenedorEquipamiento {
@@ -340,4 +418,9 @@ const deleteSelectedProducts = () => {
     background: rgb(240, 240, 240);
     margin-left: 180px;
     margin-top: -20px;
-}</style>
+}
+
+.p-grid-responsive {
+  justify-content: flex-end;
+}
+</style>
