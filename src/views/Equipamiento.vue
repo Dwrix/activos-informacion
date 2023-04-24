@@ -36,8 +36,8 @@
                 <Column field="modelo" header="Modelo" sortable style="min-width:5rem"></Column>
                 <Column field="serie" header="Serie" sortable style="min-width:5rem"></Column>
                 <Column field="numInv" header="Num Inventario" sortable style="min-width:10rem"></Column>
-                <Column field="dvd" header="dvd" sortable style="min-width:10rem"></Column>
-                <Column field="tecladoMouse" header="tecladoMouse" sortable style="min-width:10rem"></Column>
+                <!--  <Column field="dvd" header="dvd" sortable style="min-width:10rem"></Column>
+                <Column field="tecladoMouse" header="tecladoMouse" sortable style="min-width:10rem"></Column> -->
                 <!-- <Column header="Image">
                     <template #body="slotProps">
                         <img :src="`https://primefaces.org/cdn/primevue/images/product/${slotProps.data.image}`" :alt="slotProps.data.image" class="shadow-2 border-round" style="width: 64px" />
@@ -70,110 +70,128 @@
             </DataTable>
         </div>
 
-        <Dialog v-model:visible="productDialog" :width="dialogWidth"  header="Agregar Equipamiento" :modal="true"
+        <Dialog v-model:visible="productDialog" :style="{ width: '600px' }" header="Agregar Equipamiento" :modal="true"
             class="p-fluid">
             <!-- <img v-if="product.image" :src="`https://primefaces.org/cdn/primevue/images/product/${product.image}`" :alt="product.image" class="block m-auto pb-3" /> -->
-
-            <div class="field">
-                <label class="mb-3" >Tipo Equipamiento</label>
-                <div class="formgrid grid">
-                    <div class="field-radiobutton col-6">
+            <h4>Tipo Equipamiento </h4>
+            <div class="formgrid grid">
+                <div class="grid-column">
+                    <label>Equipamiento Computacional</label>
+                    <div class="field-radiobutton">
                         <RadioButton id="tipo1" name="tipo" value="Computador Escritorio" v-model="product.tipo" />
                         <label for="tipo1"> Computador Escritorio</label>
                     </div>
-                    <div class="field-radiobutton col-6">
+                    <div class="field-radiobutton">
                         <RadioButton id="tipo2" name="tipo" value="Computador Portatil" v-model="product.tipo" />
                         <label for="tipo2"> Computador Portatil</label>
                     </div>
-                    <div class="field-radiobutton col-6">
+                    <div class="field-radiobutton">
                         <RadioButton id="tipo3" name="tipo" value="Impresora" v-model="product.tipo" />
                         <label for="tipo3"> Impresora</label>
                     </div>
-                    <div class="field-radiobutton col-6">
+                </div>
+                <div class="grid-column">
+                    <label>Periféricos</label>
+                    <div class="field-radiobutton">
                         <RadioButton id="tipo4" name="tipo" value="Escaner" v-model="product.tipo" />
                         <label for="tipo4"> Escaner</label>
                     </div>
-                </div>
-            </div>
-
-            <div class="contenedorGeneral" >
-                <div class="field">
-                <label for="marca">Marca</label>
-                <InputText id="marca" v-model.trim="product.marca" required="true"  
-                    :class="{ 'p-invalid': submitted && !product.marca }" />
-                <small class="p-error" v-if="submitted && !product.marca">marca is required.</small>
-                </div>
-
-                <div class="field">
-                <label for="modelo">Modelo</label>
-                <InputText id="modelo" v-model.trim="product.modelo" required="true" 
-                    :class="{ 'p-invalid': submitted && !product.modelo }" />
-                <small class="p-error" v-if="submitted && !product.modelo">modelo is required.</small>
-                </div>
-
-                <div class="field">
-                <label for="serie">Serie</label>
-                <InputText id="serie" v-model.trim="product.serie" required="true" 
-                    :class="{ 'p-invalid': submitted && !product.serie }" />
-                <small class="p-error" v-if="submitted && !product.modelo">serie is required.</small>
-                </div>
-
-                <div class="field">
-                <label for="numInv">Número Inventario</label>
-                <InputText id="numInv" v-model.trim="product.numInv" 
-                    :class="{ 'p-invalid': submitted && !product.numInv }" />
-                </div><br>
-
-            </div>
-            <div class="ContenedorPcs"  v-if="product.tipo === 'Computador Escritorio' ||  product.tipo ==='Computador Portatil'" >
-                <label>Catacteristicas del Equipamiento Computacional</label>
-
-                <div class="field" >
-                <label for="procesador">Procesador</label>
-                <InputText id="procesador" v-model.trim="product.procesador" 
-                    :class="{ 'p-invalid': submitted && !product.procesador }" />
-                </div>
-
-                <div class="field">
-                <label for="ram">Memoria RAM</label>
-                <InputText id="ram" v-model.trim="product.ram" 
-                    :class="{ 'p-invalid': submitted && !product.ram }" />
-                </div> 
-
-                <div class="field">
-                <label for="discoDuro">Disco Duro</label>
-                <InputText id="discoDuro" v-model.trim="product.discoDuro" 
-                    :class="{ 'p-invalid': submitted && !product.discoDuro }" />
-                </div>
-
-                <div class="field">
-                <label for="tarjetavideo">Tarjeta de Video</label>
-                <InputText id="tarjetavideo" v-model.trim="product.tarjetavideo" 
-                    :class="{ 'p-invalid': submitted && !product.tarjetavideo }" />
-                </div>
-
-                <div class="formgrid grid">
-                    <div class="field-radiobutton col-6">
-                        <label> Lector/Grabador de DVD </label>
-                        <RadioButton id="dvdSi" name="dvd" value="Si" v-model="product.dvd" />
-                        <label for="dvdSi">Si</label>
-                        <RadioButton id="dvdNo" name="dvd" value="No" v-model="product.dvd" />
-                        <label for="dvdNo">No</label>
-                        
+                    <div class="field-radiobutton">
+                        <RadioButton id="tipo5" name="tipo" value="Monitor" v-model="product.tipo" />
+                        <label for="tipo5"> Monitor</label>
                     </div>
-                    <div class="field-radiobutton col-6">
-                        <label> Teclado y Mouse</label>
-                        <RadioButton id="tecladoMousesi" name="tecladoMouse" value="Si" v-model="product.tecladoMouse" />
-                        <label for="tecladoMousesi">Si</label>
-                        <RadioButton id="tecladoMouseNo" name="tecladoMouse" value="No" v-model="product.tecladoMouse" />
-                        <label for="tecladoMouseNo">No</label>
-                        
+                    <div class="field-radiobutton">
+                        <RadioButton id="tipo6" name="tipo" value="Proyector" v-model="product.tipo" />
+                        <label for="tipo6"> Proyector</label>
                     </div>
-                    
+                    <div class="field-radiobutton">
+                        <RadioButton id="tipo7" name="tipo" value="Otro" v-model="product.tipo" />
+                        <label for="tipo7"> Otro</label>
+                    </div>
                 </div>
+            </div><br>
 
+            <div class="contenedorPadre">
+                <div class="contenedorGeneral">
+                    <div class="field">
+                        <label for="marca">Marca</label>
+                        <InputText id="marca" v-model.trim="product.marca" required="true"
+                            :class="{ 'p-invalid': submitted && !product.marca }" style="display: block;" />
+                        <small class="p-error" v-if="submitted && !product.marca">marca is required.</small>
+                    </div>
+
+                    <div class="field">
+                        <label for="modelo">Modelo</label>
+                        <InputText id="modelo" v-model.trim="product.modelo" required="true"
+                            :class="{ 'p-invalid': submitted && !product.modelo }" style="display: block;" />
+                        <small class="p-error" v-if="submitted && !product.modelo">modelo is required.</small>
+                    </div>
+
+                    <div class="field">
+                        <label for="serie">Serie</label>
+                        <InputText id="serie" v-model.trim="product.serie" required="true"
+                            :class="{ 'p-invalid': submitted && !product.serie }" style="display: block;" />
+                        <small class="p-error" v-if="submitted && !product.modelo">serie is required.</small>
+                    </div>
+
+                    <div class="field">
+                        <label for="numInv">Número Inventario</label>
+                        <InputText id="numInv" v-model.trim="product.numInv"
+                            :class="{ 'p-invalid': submitted && !product.numInv }" style="display: block;" />
+                    </div><br>
+
+                </div>
+                <div class="ContenedorPcs"
+                    v-if="product.tipo === 'Computador Escritorio' || product.tipo === 'Computador Portatil'">
+
+                    <div class="field">
+                        <label for="procesador">Procesador</label>
+                        <InputText id="procesador" v-model.trim="product.procesador"
+                            :class="{ 'p-invalid': submitted && !product.procesador }" />
+                    </div>
+
+                    <div class="field">
+                        <label for="ram">Memoria RAM</label>
+                        <InputText id="ram" v-model.trim="product.ram"
+                            :class="{ 'p-invalid': submitted && !product.ram }" />
+                    </div>
+
+                    <div class="field">
+                        <label for="discoDuro">Disco Duro</label>
+                        <InputText id="discoDuro" v-model.trim="product.discoDuro"
+                            :class="{ 'p-invalid': submitted && !product.discoDuro }" />
+                    </div>
+
+                    <div class="field">
+                        <label for="tarjetavideo">Tarjeta de Video</label>
+                        <InputText id="tarjetavideo" v-model.trim="product.tarjetavideo"
+                            :class="{ 'p-invalid': submitted && !product.tarjetavideo }" />
+                    </div>
+
+                    <div class="formgrid grid">
+                        <div class="field-radiobutton col-6">
+                            <label> Lector/Grabador de DVD </label><br>
+                            <RadioButton id="dvdSi" name="dvd" value="Si" v-model="product.dvd" />
+                            <label for="dvdSi"> Si </label>
+                            <RadioButton id="dvdNo" name="dvd" value="No" v-model="product.dvd" />
+                            <label for="dvdNo"> No </label>
+
+                        </div><br>
+                        <div class="field-radiobutton col-6">
+                            <label> Teclado y Mouse</label>
+                            <RadioButton id="tecladoMousesi" name="tecladoMouse" value="Si"
+                                v-model="product.tecladoMouse" />
+                            <label for="tecladoMousesi"> Si </label>
+                            <RadioButton id="tecladoMouseNo" name="tecladoMouse" value="No"
+                                v-model="product.tecladoMouse" />
+                            <label for="tecladoMouseNo"> No </label>
+
+                        </div>
+
+                    </div>
+
+                </div>
             </div>
-            
             <!-- <div class="field">
                 <label for="name">Name</label>
                 <InputText id="name" v-model.trim="product.name" required="true" autofocus
@@ -250,7 +268,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, watch } from 'vue';
+import { ref, onMounted } from 'vue';
 import { useToast } from 'primevue/usetoast';
 import { ProductService } from '@/service/ProductService';
 
@@ -263,7 +281,7 @@ const products = ref();
 const productDialog = ref(false);
 const deleteProductDialog = ref(false);
 const deleteProductsDialog = ref(false);
-const product = ref({tipo: 'default'});
+const product = ref({ tipo: 'default' });
 const selectedProducts = ref();
 const selectedProduct = ref(null);
 
@@ -276,24 +294,24 @@ const submitted = ref(false);
     { label: 'LOWSTOCK', value: 'lowstock' },
     { label: 'OUTOFSTOCK', value: 'outofstock' }
 ]); */
-const updateDialogWidth = (tipo) => {
+/* const updateDialogWidth = (tipo) => {
     if (tipo === 'Computador Portatil' || tipo === 'Computador Escritorio') {
       dialogWidth.value = '1200px';
     } else {
       dialogWidth.value = '450px';
     }
-};
+}; */
 
 
 
 onMounted(() => {
     ProductService.getProducts().then((data) => (products.value = data));
 });
-watch(() => product.tipo, (tipo) => {
+/* watch(() => product.tipo, (tipo) => {
   if (tipo) {
     updateDialogWidth(tipo);
   }
-});
+}); */
 
 /* const formatCurrency = (value) => {
     if(value)
@@ -336,7 +354,7 @@ const editProduct = (prod) => {
     product.value = { ...prod };
     selectedProduct.value = prod;
     productDialog.value = true;
-    
+
 };
 
 const confirmDeleteProduct = (prod) => {
@@ -420,7 +438,45 @@ if (selectedProduct.value && (selectedProduct.value.tipo === 'Computador Portati
     margin-top: -20px;
 }
 
-.p-grid-responsive {
-  justify-content: flex-end;
+.formgrid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+
 }
+
+.contenedorGeneral input {
+    width: 200px;
+}
+
+.contenedorPadre {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    /* define dos columnas de igual tamaño */
+    grid-gap: 20px;
+    /* define un espacio entre las dos columnas */
+}
+
+.contenedorGeneral {
+    display: grid;
+    display: block;
+    grid-template-columns: repeat(2, 1fr);
+    /* define dos columnas de igual tamaño */
+    grid-gap: 10px;
+    /* define un espacio entre las dos columnas */
+}
+
+.ContenedorPcs {
+    display: grid;
+    display: block;
+    float: none;
+    grid-template-columns: repeat(2, 1fr);
+    /* define dos columnas de igual tamaño */
+    grid-gap: 10px;
+    /* define un espacio entre las dos columnas */
+}
+
+
 </style>
+
+
+
