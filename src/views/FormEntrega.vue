@@ -44,8 +44,6 @@
             </span><br>
             <Calendar v-model="date" showIcon disabled /><br><br>
 
-            
-
         </div>
     </div>
     <!-- ------------------------------------- -->
@@ -61,12 +59,12 @@
                         :disabled="!selectedProducts || !selectedProducts.length" />
                 </template>
             </Toolbar>
-            
+
             <DataTable ref="dt" :value="products" v-model:selection="selectedProducts" dataKey="id" :paginator="true"
                 :rows="10"
                 paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
                 :rowsPerPageOptions="[5, 10, 25]"
-                currentPageReportTemplate="Showing {first} to {last} of {totalRecords} products">
+                currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} activos">
 
                 <Column selectionMode="multiple" style="width: 3rem" :exportable="false"></Column>
                 <Column field="code" header="Code" sortable style="min-width:5rem"></Column>
@@ -75,7 +73,7 @@
                 <Column field="modelo" header="Modelo" sortable style="min-width:5rem"></Column>
                 <Column field="serie" header="Serie" sortable style="min-width:5rem"></Column>
                 <Column field="numInv" header="Num Inventario" sortable style="min-width:10rem"></Column>
-                
+
                 <Column :exportable="false" style="min-width:8rem">
                     <template #body="slotProps">
                         <Button icon="pi pi-pencil" outlined rounded class="mr-2" @click="editProduct(slotProps.data)" />
@@ -207,7 +205,7 @@
 
                 </div>
             </div>
-        
+
             <template #footer>
                 <Button label="Cancelar" icon="pi pi-times" text @click="hideDialog" />
                 <Button label="Agregar" icon="pi pi-check" text @click="saveProduct" />
@@ -265,14 +263,13 @@ const direccion = ref([
 ]);
 /* ----------------------------------- */
 
-
 const toast = useToast();
 const dt = ref();
 const products = ref();
 const productDialog = ref(false);
 const deleteProductDialog = ref(false);
 const deleteProductsDialog = ref(false);
-const product = ref({ tipo: 'default' });
+const product = ref({});
 const selectedProducts = ref();
 const selectedProduct = ref(null);
 
@@ -297,15 +294,12 @@ const saveProduct = () => {
 
     if (product.value.marca.trim()) {
         if (product.value.id) {
-            product.value.inventoryStatus = product.value.inventoryStatus.value ? product.value.inventoryStatus.value : product.value.inventoryStatus;
             products.value[findIndexById(product.value.id)] = product.value;
             toast.add({ severity: 'success', summary: 'Successful', detail: 'Product Updated', life: 3000 });
         }
         else {
             product.value.id = createId();
             product.value.code = createId();
-            product.value.image = 'product-placeholder.svg';
-            product.value.inventoryStatus = product.value.inventoryStatus ? product.value.inventoryStatus.value : 'INSTOCK';
             products.value.push(product.value);
             toast.add({ severity: 'success', summary: 'Successful', detail: 'Product Created', life: 3000 });
         }
@@ -350,9 +344,7 @@ const createId = () => {
     }
     return id;
 }
-/* const exportCSV = () => {
-    dt.value.exportCSV();
-}; */
+
 const confirmDeleteSelected = () => {
     deleteProductsDialog.value = true;
 };

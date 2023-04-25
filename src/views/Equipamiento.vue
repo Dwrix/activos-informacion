@@ -340,7 +340,7 @@ const saveProduct = () => {
         else {
             product.value.id = createId();
             product.value.code = createId();
-            product.value.image = 'product-placeholder.svg';
+            /* product.value.image = 'product-placeholder.svg'; */
             product.value.inventoryStatus = product.value.inventoryStatus ? product.value.inventoryStatus.value : 'INSTOCK';
             products.value.push(product.value);
             toast.add({ severity: 'success', summary: 'Successful', detail: 'Product Created', life: 3000 });
@@ -414,15 +414,6 @@ const deleteSelectedProducts = () => {
             return null;
     }
 }; */
-
-/* const dialogWidth = ref('450px');
-
-if (selectedProduct.value && (selectedProduct.value.tipo === 'Computador Portatil' || selectedProduct.value.tipo === 'Computador Escritorio')) {
- dialogWidth.value = '1200px';
-} else {
- dialogWidth.value = '450px';
-}*/
-
 
 </script>  
 
