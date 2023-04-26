@@ -7,7 +7,7 @@
   <div class="contenedorNav">
     <nav>
       <RouterLink to="/Home" exact activeClass="active" class="pi pi-home"> Home</RouterLink>
-      <RouterLink to="/SolicitudActivos" exact activeClass="active" class="pi pi-file"> Solicitar Activos</RouterLink>
+      <RouterLink to="/VerSolicitudes" exact activeClass="active" class="pi pi-file"> Ver Solicitudes</RouterLink>
       <RouterLink to="/Entrega" exact activeClass="active" class="pi pi-file"> Entrega</RouterLink>
       <RouterLink to="/Devolucion" exact activeClass="active" class="pi pi-file"> Devolución</RouterLink>
       <RouterLink to="/OrdenSalida" exact activeClass="active" class="pi pi-file"> Orden de Salida</RouterLink>

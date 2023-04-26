@@ -10,9 +10,9 @@ const router = createRouter({
       component: () => import('../components/Login.vue')
     }, */
     {
-      path: '/SolicitudActivos',
-      name: 'Solicitud-Activos',
-      component: () => import('../views/SolicitudActivos.vue')
+      path: '/VerSolicitudes',
+      name: 'VerSolicitudes',
+      component: () => import('../views/VerSolicitudes.vue')
     },
     {
       path: '/home',
