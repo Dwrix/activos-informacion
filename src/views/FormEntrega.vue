@@ -1,7 +1,7 @@
 <template>
     <div class="contenedor">
         <h1>Form Entrega de Activos</h1>
-        <p>El departamento de Tecnologías de la informaciòn y la Comunicación (TIC) de la Presidencia
+        <p>El departamento de Tecnologías de la Información y la Comunicación (TIC) de la Presidencia
             de la Republica, hace entrega del equipamiento computacional a:
         </p>
         <div class="formulario">
@@ -67,7 +67,7 @@
                 currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} activos">
 
                 <Column selectionMode="multiple" style="width: 3rem" :exportable="false"></Column>
-                <Column field="code" header="Code" sortable style="min-width:5rem"></Column>
+                <Column field="id" header="id" sortable style="min-width:5rem"></Column>
                 <Column field="tipo" header="Tipo" sortable style="min-width:5rem"></Column>
                 <Column field="marca" header="Marca" sortable style="min-width:5rem"></Column>
                 <Column field="modelo" header="Modelo" sortable style="min-width:5rem"></Column>
@@ -130,21 +130,21 @@
                         <label for="marca">Marca</label>
                         <InputText id="marca" v-model.trim="product.marca" required="true"
                             :class="{ 'p-invalid': submitted && !product.marca }" style="display: block;" />
-                        <small class="p-error" v-if="submitted && !product.marca">marca is required.</small>
+                        <small class="p-error" v-if="submitted && !product.marca">marca es obligatorio.</small>
                     </div>
 
                     <div class="field">
                         <label for="modelo">Modelo</label>
                         <InputText id="modelo" v-model.trim="product.modelo" required="true"
                             :class="{ 'p-invalid': submitted && !product.modelo }" style="display: block;" />
-                        <small class="p-error" v-if="submitted && !product.modelo">modelo is required.</small>
+                        <small class="p-error" v-if="submitted && !product.modelo">modelo es obligatorio.</small>
                     </div>
 
                     <div class="field">
                         <label for="serie">Serie</label>
                         <InputText id="serie" v-model.trim="product.serie" required="true"
                             :class="{ 'p-invalid': submitted && !product.serie }" style="display: block;" />
-                        <small class="p-error" v-if="submitted && !product.modelo">serie is required.</small>
+                        <small class="p-error" v-if="submitted && !product.modelo">serie es obligatorio.</small>
                     </div>
 
                     <div class="field">
@@ -208,7 +208,7 @@
 
             <template #footer>
                 <Button label="Cancelar" icon="pi pi-times" text @click="hideDialog" />
-                <Button label="Agregar" icon="pi pi-check" text @click="saveProduct" />
+                <Button label="Agregar" icon="pi pi-check" text @click="guardarActivo" />
             </template>
         </Dialog>
 
@@ -235,9 +235,11 @@
         </Dialog><br>
 
         <div class="card flex justify-content-center">
-            <Button label="Enviar" icon="pi pi-check" iconPos="right" />
+            <Button label="Enviar" icon="pi pi-check" iconPos="right"  @click="enviar"/>
         </div>
     </div>
+    <Toast />
+
 </template>
 
 <script setup >
@@ -263,7 +265,7 @@ const direccion = ref([
 ]);
 /* ----------------------------------- */
 
-const toast = useToast();
+
 const dt = ref();
 const products = ref();
 const productDialog = ref(false);
@@ -272,12 +274,13 @@ const deleteProductsDialog = ref(false);
 const product = ref({});
 const selectedProducts = ref();
 const selectedProduct = ref(null);
-
+const toast = useToast();
 const submitted = ref(false);
 
 onMounted(() => {
     ProductService.getProducts().then((data) => (products.value = data));
 });
+
 
 
 const openNew = () => {
@@ -289,23 +292,25 @@ const hideDialog = () => {
     productDialog.value = false;
     submitted.value = false;
 };
-const saveProduct = () => {
+const guardarActivo = () => {
     submitted.value = true;
 
-    if (product.value.marca.trim()) {
+    if (product.value.tipo.trim()) {
         if (product.value.id) {
             products.value[findIndexById(product.value.id)] = product.value;
-            toast.add({ severity: 'success', summary: 'Successful', detail: 'Product Updated', life: 3000 });
+            toast.add({ severity: 'success', summary: 'Exitoso', detail: 'Activo Modificado', life: 4000 });
+            console.log('entro al if')
         }
         else {
             product.value.id = createId();
-            product.value.code = createId();
+            /* product.value.code = createId(); */
             products.value.push(product.value);
-            toast.add({ severity: 'success', summary: 'Successful', detail: 'Product Created', life: 3000 });
+            toast.add({ severity: 'success', summary: 'Exitoso', detail: 'Activo Agregado', life: 4000 });
+            console.log('no entro al if')
         }
 
         productDialog.value = false;
-        product.value = {};
+        product.value = {}; 
     }
 };
 const editProduct = (prod) => {
@@ -323,7 +328,7 @@ const deleteProduct = () => {
     products.value = products.value.filter(val => val.id !== product.value.id);
     deleteProductDialog.value = false;
     product.value = {};
-    toast.add({ severity: 'success', summary: 'Successful', detail: 'Product Deleted', life: 3000 });
+    toast.add({ severity: 'success', summary: 'Exitoso', detail: 'Activo Eliminado', life: 4000 });
 };
 const findIndexById = (id) => {
     let index = -1;
@@ -352,9 +357,14 @@ const deleteSelectedProducts = () => {
     products.value = products.value.filter(val => !selectedProducts.value.includes(val));
     deleteProductsDialog.value = false;
     selectedProducts.value = null;
-    toast.add({ severity: 'success', summary: 'Successful', detail: 'Products Deleted', life: 3000 });
+    toast.add({ severity: 'success', summary: 'Exitoso', detail: 'Activos Eliminados', life: 4000 });
 };
 
+
+const enviar = () => {
+    /* console.log('enviar') */
+    console.log(products)
+};
 
 </script>
 

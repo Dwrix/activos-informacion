@@ -1,30 +1,31 @@
 export const ProductService = {
     getProductsData() {
         return [
-            /* {
-                id: '1000',
-                code: 'f230fh0g3',
-                name: 'Bamboo Watch', //marca
-                description: 'Product Description',
-                image: 'bamboo-watch.jpg',
-                price: 65,
-                category: 'Accessories',
-                quantity: 24,
-                inventoryStatus: 'INSTOCK',
-                rating: 5
+            {
+                id: '1',
+                code:'GBX2',
+                tipo:'Computador Escritorio',
+                marca:'HP',
+                modelo:'XB455B',
+                serie:'SDA12H',
+                numInv:'1',
+                procesador:'',
+                ram:'',
+                discoDuro:'',
+                procesador:'',
+                procesador:'',
+
             },
             {
-                id: '1001',
-                code: 'nvklal433',
-                name: 'Black Watch',
-                description: 'Product Description',
-                image: 'black-watch.jpg',
-                price: 72,
-                category: 'Accessories',
-                quantity: 61,
-                inventoryStatus: 'INSTOCK',
-                rating: 4
-            }, */
+                id: '2',
+                code:'DFX2',
+                tipo:'Impresora',
+                marca:'HP',
+                modelo:'XB56B',
+                serie:'Sh752H',
+                numInv:'2'
+
+            }
         ];
     },
 
