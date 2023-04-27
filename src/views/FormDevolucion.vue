@@ -49,12 +49,14 @@
             </span><br>
             <Calendar v-model="date" showIcon disabled/><br><br>
 
-            <Button label="Enviar" icon="pi pi-check" iconPos="right" />
+            
         </div>
     </div>
+    <Equipamiento></Equipamiento>
 </template>
 
 <script setup lang="ts">
+import Equipamiento from '@/components/Equipamiento.vue';
 import { ref } from 'vue';
 
 const nombre = ref(null);
@@ -82,7 +84,7 @@ const direccion = ref([
 
 <style scoped>
 .contenedor{
-    width: 450px;
+    width: 1000px;
     height: auto;
     padding: 20px;
     border-radius: 20px;

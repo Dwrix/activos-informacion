@@ -27,7 +27,7 @@ const router = createRouter({
     {
       path: '/Equipamiento',
       name: 'Equipamiento',
-      component: () => import('../views/Equipamiento.vue')
+      component: () => import('../components/Equipamiento.vue')
     },
     {
       path: '/Devolucion',

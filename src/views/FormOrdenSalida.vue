@@ -53,12 +53,15 @@
                 </span>
             </div>
 
-            <Button label="Generar Orden"/>
+            
         </div>
     </div>
+    
+    <Equipamiento></Equipamiento>
 </template>
 
 <script setup lang="ts">
+import Equipamiento from '@/components/Equipamiento.vue';
 import { ref } from 'vue';
 
 
@@ -82,7 +85,7 @@ const motivoSalida = ref('');
 const selectedDir = ref();
 const direccion = ref([
     { name: 'Departamento de Finanzas', code: 'DF' },
-    { name: 'Servicios Generales', code: 'SV' },
+    { name: 'Servicios Generales', code: 'SG' },
     { name: 'Dirección de Gestion Ciudadana', code: 'DGC' },
    
 ]);
@@ -91,7 +94,7 @@ const direccion = ref([
 
 <style scoped>
 .contenedor{
-    width: 450px;
+    width: 1000px;
     height: auto;
     padding: 20px;
     border-radius: 20px;
