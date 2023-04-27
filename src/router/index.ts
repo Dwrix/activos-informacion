@@ -24,11 +24,11 @@ const router = createRouter({
       name: 'FormEntrega',
       component: () => import('../views/FormEntrega.vue')
     },
-    {
+    /* {
       path: '/Equipamiento',
       name: 'Equipamiento',
       component: () => import('../components/Equipamiento.vue')
-    },
+    }, */
     {
       path: '/Devolucion',
       name: 'FormDevolucion',

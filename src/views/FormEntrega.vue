@@ -1,4 +1,5 @@
 <template>
+    
     <div class="contenedor">
         <h1>Form Entrega de Activos</h1>
         <p>El departamento de Tecnologías de la Información y la Comunicación (TIC) de la Presidencia
@@ -61,6 +62,7 @@ import { ref, onMounted } from 'vue';
 /* import { ProductService } from '@/service/ProductService'; */
 import Equipamiento from '@/components/Equipamiento.vue';
 
+
 const acta = ref({});
 
 /* const nombre = ref(null);
@@ -113,54 +115,5 @@ const enviar = () => {
 
 }
 
-/* equipamiento */
-.contenedorEquipamiento {
-    width: 1000px;
-    height: auto;
-    padding: 20px;
-    border-radius: 20px;
-    background: rgb(240, 240, 240);
-    margin-left: 180px;
-    margin-top: -20px;
-}
-
-.formgrid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-
-}
-
-.contenedorGeneral input {
-    width: 200px;
-}
-
-.contenedorPadre {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    /* define dos columnas de igual tamaño */
-    grid-gap: 20px;
-    /* define un espacio entre las dos columnas */
-}
-
-.contenedorGeneral {
-    display: grid;
-    display: block;
-    grid-template-columns: repeat(2, 1fr);
-    /* define dos columnas de igual tamaño */
-    grid-gap: 10px;
-    /* define un espacio entre las dos columnas */
-}
-
-.ContenedorPcs {
-    display: grid;
-    display: block;
-    float: none;
-    grid-template-columns: repeat(2, 1fr);
-    /* define dos columnas de igual tamaño */
-    grid-gap: 10px;
-    /* define un espacio entre las dos columnas */
-}
-
-/* equipamiento */
 </style>
 

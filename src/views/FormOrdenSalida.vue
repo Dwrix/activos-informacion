@@ -4,12 +4,12 @@
         <p>La Jefatura del Departamento de Tecnologías de la información y la Comunicación (TIC) de la Presidencia
             de la Republica, <b>autoriza</b> la salida del equipamiento computacional a:
         </p>
-        <div class="formulario">
-            <span class="p-float-label">
+        <div class="formulario p-grid">
+            <span class="p-float-label p-col-6">
                 <InputText id="nombre" v-model="nombre" />
                 <label for="nombre">Nombre</label>
             </span><br>
-            <span class="p-float-label">
+            <span class="p-float-label p-col-6">
                 <InputText id="rut" v-model="rut" />
                 <label for="rut">Rut</label>
             </span><br>
@@ -37,26 +37,31 @@
                 </template>
             </Dropdown>
             <br><br>
-            <span class="p-float-label">
+            <span class="p-float-label p-col-6">
                 <InputText id="cargo" v-model="cargo" />
                 <label for="cargo">Cargo</label>
             </span><br>
-            <Calendar v-model="date" showIcon disabled/><br><br>
-            <span class="p-float-label">
-                <InputText id="encargado" v-model="encargado" />
-                <label for="encargado">Encargado</label>
-            </span><br>
-            <div class="card flex justify-content-center">
+            <div class="p-col-6 md-offset-6">
+                <Calendar v-model="date" showIcon disabled /><br><br>
                 <span class="p-float-label">
-                    <Textarea v-model="motivoSalida" rows="5" cols="30" />
-                    <label>Motivo Salida</label>
-                </span>
+                    <InputText id="encargado" v-model="encargado" />
+                    <label for="encargado">Encargado</label>
+                </span><br>
+                <div class="card flex justify-content-center">
+                    <span class="p-float-label">
+                        <Textarea v-model="motivoSalida" rows="5" cols="30" />
+                        <label>Motivo Salida</label>
+                    </span>
+                </div>
+
+
             </div>
 
-            
+
+
         </div>
     </div>
-    
+
     <Equipamiento></Equipamiento>
 </template>
 
@@ -71,7 +76,7 @@ const cargo = ref(null);
 const date = ref(new Date());
 
 window.addEventListener('load', () => {
-  date.value = new Date();
+    date.value = new Date();
 });
 /* setInterval(() => {
   date.value = new Date(); 
@@ -87,13 +92,13 @@ const direccion = ref([
     { name: 'Departamento de Finanzas', code: 'DF' },
     { name: 'Servicios Generales', code: 'SG' },
     { name: 'Dirección de Gestion Ciudadana', code: 'DGC' },
-   
+
 ]);
 
 </script>
 
 <style scoped>
-.contenedor{
+.contenedor {
     width: 1000px;
     height: auto;
     padding: 20px;
@@ -101,13 +106,10 @@ const direccion = ref([
     background: rgb(240, 240, 240);
     margin-left: 180px;
     margin-top: -20px;
-    
+
 }
 
-.formulario{
+.formulario {
     margin-top: 20px;
 }
-
-
-
 </style>
