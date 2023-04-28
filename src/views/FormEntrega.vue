@@ -103,8 +103,7 @@ const enviar = () => {
 
 .formulario {
     margin-top: 20px;
-
-
+    
 }
 </style>
 

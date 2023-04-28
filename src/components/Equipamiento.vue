@@ -186,14 +186,12 @@
         </div>
     </div>
     <Toast />
-
-   
 </template>
 
 <script setup >
 import { ref, onMounted } from 'vue';
 import { useToast } from 'primevue/usetoast';
-import { ActivoService } from '@/service/ActivoService'; 
+import { ActivoService } from '@/service/ActivoService';
 
 /* import FormEntrega from '@/views/FormEntrega.vue';
 import FormDevolucion from '@/views/FormDevolucion.vue';
@@ -236,6 +234,16 @@ const cerrarDialog = () => {
 };
 const guardarActivo = () => {
     submitted.value = true;
+
+    if (!activo.value.tipo || !activo.value.tipo.trim()) {
+        toast.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: 'Por favor selecciona un tipo',
+            life: 4000,
+        });
+        return;
+    }
 
     if (activo.value.tipo.trim()) {
         if (activo.value.id) {
