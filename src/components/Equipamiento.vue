@@ -193,7 +193,7 @@
 <script setup >
 import { ref, onMounted } from 'vue';
 import { useToast } from 'primevue/usetoast';
-import { ProductService } from '@/service/ProductService';
+import { ActivoService } from '@/service/ActivoService'; 
 
 /* import FormEntrega from '@/views/FormEntrega.vue';
 import FormDevolucion from '@/views/FormDevolucion.vue';
@@ -220,7 +220,7 @@ const toast = useToast();
 const submitted = ref(false);
 
 onMounted(() => {
-    ProductService.getProducts().then((data) => (activos.value = data));
+    ActivoService.getActivos().then((data) => (activos.value = data));
 });
 
 

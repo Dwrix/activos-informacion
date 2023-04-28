@@ -1,11 +1,11 @@
 <template>
     <div class="contenedorSol">
-        <h1>Ver Solicitudes</h1>
+        <h1>Solicitudes</h1>
         <div class="contenedorDt">
             <div class="card">
-                <DataTable :value="activos" tableStyle="min-width: 50rem">
+                <DataTable :value="solicitudes" tableStyle="min-width: 50rem">
                     <Column field="id" header="id"></Column>
-                    <Column field="name" header="Nombre"></Column>
+                    <Column field="nombre" header="Nombre"></Column>
                     <Column field="tipo" header="Tipo"></Column>
                     <Column field="fecha" header="Fecha"></Column>
                     <Column field="acta" header="Acta">
@@ -22,13 +22,14 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
-/* import { ProductService } from '@/service/ProductService'; */
+/*  import { ListSolicitudes } from '@/service/ListSolicitudes' */ 
+
 
 /* onMounted(() => {
-    ProductService.getProductsMini().then((data) => (products.value = data));
-}); */
+    ListSolicitudes.getSolicitudesData().then((data) => (products.value = data));
+});  */
 
-const activos = ref();
+const solicitudes = ref();
 
 
 

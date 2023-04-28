@@ -1,5 +1,5 @@
-export const ProductService = {
-    getProductsData() {
+export const ActivoService = {
+    getActivosData() {
         return [
             /* {
                 id: '1',
@@ -29,28 +29,28 @@ export const ProductService = {
         ];
     },
 
-    getProductsWithOrdersData() {
+    getctivosWithOrdersData() {
         return [
         ];
     },
 
-    getProductsMini() {
-        return Promise.resolve(this.getProductsData().slice(0, 5));
+    getActivosMini() {
+        return Promise.resolve(this.getActivosData().slice(0, 5));
     },
 
-    getProductsSmall() {
-        return Promise.resolve(this.getProductsData().slice(0, 10));
+    getActivosSmall() {
+        return Promise.resolve(this.getActivosData().slice(0, 10));
     },
 
-    getProducts() {
-        return Promise.resolve(this.getProductsData());
+    getActivos() {
+        return Promise.resolve(this.getActivosData());
     },
 
-    getProductsWithOrdersSmall() {
-        return Promise.resolve(this.getProductsWithOrdersData().slice(0, 10));
+   /*  getActivosWithOrdersSmall() {
+        return Promise.resolve(this.getActivosWithOrdersData().slice(0, 10));
     },
 
-    getProductsWithOrders() {
-        return Promise.resolve(this.getProductsWithOrdersData());
-    }
+    getActivosWithOrders() {
+        return Promise.resolve(this.getActivosWithOrdersData());
+    } */
 };

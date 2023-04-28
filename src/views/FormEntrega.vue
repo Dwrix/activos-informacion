@@ -1,11 +1,10 @@
 <template>
-    
     <div class="contenedor">
         <h1>Form Entrega de Activos</h1>
         <p>El departamento de Tecnologías de la Información y la Comunicación (TIC) de la Presidencia
             de la Republica, hace entrega del equipamiento computacional a:
         </p>
-        <div class="formulario" >
+        <div class="formulario">
 
             <span class="p-float-label">
                 <InputText id="nombre" v-model="acta.nombre" />
@@ -50,24 +49,20 @@
     <!-- ------------------------------------- -->
     <!-- ------------------------------------- -->
     <!-- ------------------------------------- -->
-    
+
     <Toast />
     <Equipamiento></Equipamiento>
-    <!-- N -->
 </template>
 
-<script setup >
+<script setup>
 import { ref, onMounted } from 'vue';
-
-/* import { ProductService } from '@/service/ProductService'; */
+/* import { ActivoService } from '@/service/ActivoService'; */
 import Equipamiento from '@/components/Equipamiento.vue';
 
 
 const acta = ref({});
-
-
 /* const rut = ref(null);
-const cargo = ref(null); */ 
+const cargo = ref(null); */
 const date = ref(new Date());
 window.addEventListener('load', () => {
     date.value = new Date();
@@ -80,13 +75,10 @@ const direccion = ref([
     { name: 'Dirección de Gestion Ciudadana', code: 'DGC' },
 
 ]);
-/* ----------------------------------- */
-
-
 
 /* 
 onMounted(() => {
-    ProductService.getProducts().then((data) => (products.value = data));
+    ActivoService.getProducts().then((data) => (products.value = data));
 }); */
 
 const enviar = () => {
@@ -114,6 +106,5 @@ const enviar = () => {
 
 
 }
-
 </style>
 
