@@ -115,8 +115,7 @@
 
                     <div class="field">
                         <label for="ram">Memoria RAM</label>
-                        <InputText id="ram" v-model.trim="activo.ram"
-                            :class="{ 'p-invalid': submitted && !activo.ram }" />
+                        <InputText id="ram" v-model.trim="activo.ram" :class="{ 'p-invalid': submitted && !activo.ram }" />
                     </div>
 
                     <div class="field">
@@ -142,11 +141,9 @@
                         </div><br>
                         <div class="field-radiobutton col-6">
                             <label> Teclado y Mouse</label>
-                            <RadioButton id="tecladoMousesi" name="tecladoMouse" value="Si"
-                                v-model="activo.tecladoMouse" />
+                            <RadioButton id="tecladoMousesi" name="tecladoMouse" value="Si" v-model="activo.tecladoMouse" />
                             <label for="tecladoMousesi"> Si </label>
-                            <RadioButton id="tecladoMouseNo" name="tecladoMouse" value="No"
-                                v-model="activo.tecladoMouse" />
+                            <RadioButton id="tecladoMouseNo" name="tecladoMouse" value="No" v-model="activo.tecladoMouse" />
                             <label for="tecladoMouseNo"> No </label>
 
                         </div>
@@ -189,6 +186,8 @@
         </div>
     </div>
     <Toast />
+
+   
 </template>
 
 <script setup >
@@ -196,9 +195,18 @@ import { ref, onMounted } from 'vue';
 import { useToast } from 'primevue/usetoast';
 import { ProductService } from '@/service/ProductService';
 
+/* import FormEntrega from '@/views/FormEntrega.vue';
+import FormDevolucion from '@/views/FormDevolucion.vue';
+import OrdenSalida from '@/views/FormOrdenSalida.vue';
+const limpiarForm = ref(false);
 
+  const enviarFormulario = () => {
+    limpiarForm.value = true;
+    // 
+  }; */
 /* ----------------------------------- */
 
+/* ----------------------------------- */
 
 const dt = ref();
 const activos = ref();
@@ -233,18 +241,18 @@ const guardarActivo = () => {
         if (activo.value.id) {
             activos.value[findIndexById(activo.value.id)] = activo.value;
             toast.add({ severity: 'success', summary: 'Exitoso', detail: 'Activo Modificado', life: 4000 });
-           
+
         }
         else {
             activo.value.id = createId();
             /* activo.value.code = createId(); */
             activos.value.push(activo.value);
             toast.add({ severity: 'success', summary: 'Exitoso', detail: 'Activo Agregado', life: 4000 });
-            
+
         }
 
         activoDialog.value = false;
-        activo.value = {}; 
+        activo.value = {};
     }
 };
 const editarActivo = (prod) => {
@@ -296,15 +304,19 @@ const eliminarActivosSelec = () => {
 
 
 const enviar = () => {
-    /* console.log('enviar') */
     console.log(activos)
+    activos.value = [];
+    dt.value = '';
+
+    toast.add({ severity: 'success', summary: 'Exitoso', detail: 'Se ha generado el Acta', life: 4000 });
+
+
 };
+
 
 </script>
 
 <style scoped>
-
-
 /* equipamiento */
 .contenedorEquipamiento {
     width: 1000px;

@@ -5,7 +5,7 @@
         <p>El departamento de Tecnologías de la Información y la Comunicación (TIC) de la Presidencia
             de la Republica, hace entrega del equipamiento computacional a:
         </p>
-        <div class="formulario">
+        <div class="formulario" >
 
             <span class="p-float-label">
                 <InputText id="nombre" v-model="acta.nombre" />
@@ -65,9 +65,9 @@ import Equipamiento from '@/components/Equipamiento.vue';
 
 const acta = ref({});
 
-/* const nombre = ref(null);
-const rut = ref(null);
-const cargo = ref(null); */
+
+/* const rut = ref(null);
+const cargo = ref(null); */ 
 const date = ref(new Date());
 window.addEventListener('load', () => {
     date.value = new Date();
