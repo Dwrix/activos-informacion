@@ -10,7 +10,7 @@
     "type-check": "vue-tsc --noEmit"
   },
   "dependencies": {
-    "pinia": "^2.0.32",
+    "pinia": "^2.0.35",
     "primeicons": "^6.0.1",
     "primevue": "^3.26.1",
     "vue": "^3.2.47",

@@ -39,6 +39,7 @@ import router from './router'
 
 import './assets/main.css'
 
+const pinia = createPinia()
 const app = createApp(App)
 
 app.use(createPinia())
@@ -66,5 +67,7 @@ app.component('Calendar', Calendar);
 app.component('Dropdown', Dropdown);
 app.component('Button', Button);
 app.component('Textarea', Textarea);
+
+app.use(pinia)
 
 app.mount('#app')
