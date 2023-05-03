@@ -204,6 +204,27 @@ const limpiarForm = ref(false);
   }; */
 /* ----------------------------------- */
 
+/* const props = {
+  
+  marca: {
+    type: String,
+    required: true
+  },
+  modelo: {
+    type: String,
+    required: true
+  }
+} */
+/* const activo = ref({ marca: 'marca', modelo: 'modelo', ... })
+
+// función para actualizar el activo
+function actualizarActivo(marca, modelo) {
+  activo.value.marca = marca
+  activo.value.modelo = modelo
+}
+
+// exportar variables y funciones que necesitamos
+export { activo, actualizarActivo } */
 /* ----------------------------------- */
 
 const dt = ref();
@@ -312,12 +333,12 @@ const eliminarActivosSelec = () => {
 
 
 const enviar = () => {
-    console.log(activos)
-    activos.value = [];
-    dt.value = '';
-
+    console.log(activos.value);
+    activos.value = []; 
+    /* dt.value = ''; */
+ 
     toast.add({ severity: 'success', summary: 'Exitoso', detail: 'Se ha generado el Acta', life: 4000 });
-
+    /* activos.value = []; */
 
 };
 

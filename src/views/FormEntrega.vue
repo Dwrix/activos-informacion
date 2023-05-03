@@ -15,7 +15,7 @@
                 <label for="rut">Rut</label>
             </span><br>
 
-            <Dropdown v-model="acta.selectedDir" :options="direccion" filter optionLabel="direccion"
+            <Dropdown v-model="acta.direccionSelec" :options="direccion" filter optionLabel="direccion"
                 placeholder="Dirección /Depto. /Unidad" class="w-full md:w-14rem">
                 <template #value="slotProps">
                     <div v-if="slotProps.value" class="flex align-items-center">
@@ -46,16 +46,19 @@
 
         </div>
     </div>
-    <!-- ------------------------------------- -->
-    <!-- ------------------------------------- -->
-    <!-- ------------------------------------- -->
+   
 
     <Toast />
-    <Equipamiento></Equipamiento>
+
+    <Equipamiento ></Equipamiento>
+
+    
+
 </template>
 
+
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref } from 'vue';
 /* import { ActivoService } from '@/service/ActivoService'; */
 import Equipamiento from '@/components/Equipamiento.vue';
 
@@ -68,18 +71,15 @@ window.addEventListener('load', () => {
     date.value = new Date();
 });
 
-/* const selectedDir = ref(); */
+/* const direccionSelec = ref(); */
 const direccion = ref([
-    { name: 'Departamento de Finanzas', code: 'DF' },
-    { name: 'Servicios Generales', code: 'SV' },
-    { name: 'Dirección de Gestion Ciudadana', code: 'DGC' },
+    { nombre: 'Departamento de Finanzas', code: 'DF' },
+    { nombre: 'Servicios Generales', code: 'SV' },
+    { nombre: 'Dirección de Gestion Ciudadana', code: 'DGC' },
 
 ]);
 
-/* 
-onMounted(() => {
-    ActivoService.getProducts().then((data) => (products.value = data));
-}); */
+
 
 const enviar = () => {
     /* console.log('enviar') */
@@ -103,7 +103,7 @@ const enviar = () => {
 
 .formulario {
     margin-top: 20px;
-    
+
 }
 </style>
 
