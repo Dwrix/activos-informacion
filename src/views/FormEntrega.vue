@@ -46,14 +46,11 @@
 
         </div>
     </div>
-   
+    <!-- <button @click="enviar">Enviar</button> -->
 
     <Toast />
 
-    <Equipamiento ></Equipamiento>
-
-    
-
+    <Equipamiento></Equipamiento>
 </template>
 
 
@@ -61,6 +58,10 @@
 import { ref } from 'vue';
 /* import { ActivoService } from '@/service/ActivoService'; */
 import Equipamiento from '@/components/Equipamiento.vue';
+
+/* import { useStore } from '@/stores/store'
+
+const store = useStore() */
 
 
 const acta = ref({});
@@ -82,9 +83,20 @@ const direccion = ref([
 
 
 const enviar = () => {
-    /* console.log('enviar') */
-    console.log(acta)
-};
+    console.log(store.inputs)
+    console.log(store.activos)
+    store.inputs = {
+        nombre: '',
+        rut: '',
+        direccionSelec: '',
+        cargo: '',
+        date: '',
+        // Aquí estableces los valores iniciales de tus inputs en FormEntrega.vue
+    }
+    store.activos = []
+
+    // Tu lógica adicional para generar el Acta
+}
 
 </script>
 

@@ -8,12 +8,14 @@
                     <Column field="nombre" header="Nombre"></Column>
                     <Column field="tipo" header="Tipo"></Column>
                     <Column field="fecha" header="Fecha"></Column>
-                    <Column field="acta" header="Acta">
-                        <template #body>
-                            <Button label="Entrega" class="mr-2" />
+                    <Column :exportable="false" style="min-width:8rem">
+                        <template #body="slotProps">
+                            <Button icon="pi pi-pencil" outlined rounded class="mr-2"
+                                @click="$router.push('/FormEntrega')" />
+                            
                         </template>
                     </Column>
-                    
+
                 </DataTable>
             </div>
         </div>
@@ -22,15 +24,14 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
-/*  import { ListSolicitudes } from '@/service/ListSolicitudes' */ 
+/*  import { ListSolicitudes } from '@/service/ListSolicitudes'  */
 
 
-/* onMounted(() => {
-    ListSolicitudes.getSolicitudesData().then((data) => (products.value = data));
-});  */
+ /* onMounted(() => {
+    ListSolicitudes.getSolicitudesData().then((data) => (activos.value = data));
+});   */
 
 const solicitudes = ref();
-
 
 
 </script>

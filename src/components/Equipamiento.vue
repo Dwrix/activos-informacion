@@ -17,7 +17,7 @@
                 currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} activos">
 
                 <Column selectionMode="multiple" style="width: 3rem" :exportable="false"></Column>
-                <Column field="id" header="id" sortable style="min-width:5rem"></Column>
+                <Column field="id" header="id" sortable style="min-width:5rem"></Column>  
                 <Column field="tipo" header="Tipo" sortable style="min-width:5rem"></Column>
                 <Column field="marca" header="Marca" sortable style="min-width:5rem"></Column>
                 <Column field="modelo" header="Modelo" sortable style="min-width:5rem"></Column>
@@ -68,8 +68,13 @@
                         <label for="tipo6"> Proyector</label>
                     </div>
                     <div class="field-radiobutton">
-                        <RadioButton id="tipo7" name="tipo" value="Otro" v-model="activo.tipo" />
+                        <RadioButton id="tipo7" name="tipo" value="Otro" v-model="activo.tipo"
+                            @change="activo.otroSeleccionado = true" />
                         <label for="tipo7"> Otro</label>
+                    </div>
+                    <div class="field" v-if="activo.tipo === 'Otro'" >
+                        <label for="tipoOtro"></label>
+                        <InputText id="tipoOtro"  v-model="activo.tipoOtro" />
                     </div>
                 </div>
             </div><br>
@@ -79,28 +84,28 @@
                     <div class="field">
                         <label for="marca">Marca</label>
                         <InputText id="marca" v-model.trim="activo.marca" required="true"
-                            :class="{ 'p-invalid': submitted && !activo.marca }" style="display: block;" />
-                        <small class="p-error" v-if="submitted && !activo.marca">marca es obligatorio.</small>
+                            :class="{ 'p-invalid': agregar && !activo.marca }" style="display: block;" />
+                        <small class="p-error" v-if="agregar && !activo.marca">marca es obligatorio.</small>
                     </div>
 
                     <div class="field">
                         <label for="modelo">Modelo</label>
                         <InputText id="modelo" v-model.trim="activo.modelo" required="true"
-                            :class="{ 'p-invalid': submitted && !activo.modelo }" style="display: block;" />
-                        <small class="p-error" v-if="submitted && !activo.modelo">modelo es obligatorio.</small>
+                            :class="{ 'p-invalid': agregar && !activo.modelo }" style="display: block;" />
+                        <small class="p-error" v-if="agregar && !activo.modelo">modelo es obligatorio.</small>
                     </div>
 
                     <div class="field">
                         <label for="serie">Serie</label>
                         <InputText id="serie" v-model.trim="activo.serie" required="true"
-                            :class="{ 'p-invalid': submitted && !activo.serie }" style="display: block;" />
-                        <small class="p-error" v-if="submitted && !activo.modelo">serie es obligatorio.</small>
+                            :class="{ 'p-invalid': agregar && !activo.serie }" style="display: block;" />
+                        <small class="p-error" v-if="agregar && !activo.modelo">serie es obligatorio.</small>
                     </div>
 
                     <div class="field">
                         <label for="numInv">Número Inventario</label>
                         <InputText id="numInv" v-model.trim="activo.numInv"
-                            :class="{ 'p-invalid': submitted && !activo.numInv }" style="display: block;" />
+                            :class="{ 'p-invalid': agregar && !activo.numInv }" style="display: block;" />
                     </div><br>
 
                 </div>
@@ -110,24 +115,24 @@
                     <div class="field">
                         <label for="procesador">Procesador</label>
                         <InputText id="procesador" v-model.trim="activo.procesador"
-                            :class="{ 'p-invalid': submitted && !activo.procesador }" />
+                            :class="{ 'p-invalid': agregar && !activo.procesador }" />
                     </div>
 
                     <div class="field">
                         <label for="ram">Memoria RAM</label>
-                        <InputText id="ram" v-model.trim="activo.ram" :class="{ 'p-invalid': submitted && !activo.ram }" />
+                        <InputText id="ram" v-model.trim="activo.ram" :class="{ 'p-invalid': agregar && !activo.ram }" />
                     </div>
 
                     <div class="field">
                         <label for="discoDuro">Disco Duro</label>
                         <InputText id="discoDuro" v-model.trim="activo.discoDuro"
-                            :class="{ 'p-invalid': submitted && !activo.discoDuro }" />
+                            :class="{ 'p-invalid': agregar && !activo.discoDuro }" />
                     </div>
 
                     <div class="field">
                         <label for="tarjetavideo">Tarjeta de Video</label>
                         <InputText id="tarjetavideo" v-model.trim="activo.tarjetavideo"
-                            :class="{ 'p-invalid': submitted && !activo.tarjetavideo }" />
+                            :class="{ 'p-invalid': agregar && !activo.tarjetavideo }" />
                     </div>
 
                     <div class="formgrid grid">
@@ -189,7 +194,7 @@
 </template>
 
 <script setup >
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, watch } from 'vue';
 import { useToast } from 'primevue/usetoast';
 import { ActivoService } from '@/service/ActivoService';
 
@@ -232,11 +237,32 @@ const activos = ref();
 const activoDialog = ref(false);
 const eliminarActivoDialog = ref(false);
 const eliminarActivosDialog = ref(false);
-const activo = ref({});
+
+const activo = ref({
+    tipo: '',
+    marca: '',
+    modelo: '',
+    serie: '',
+    numInv: '',
+    procesador: '',
+    ram: '',
+    discoDuro: '',
+    tarjetavideo: '',
+    dvd: '',
+    tecladoMouse: '',
+    /* tipoOtro: '', */
+});
+
+watch(() => activo.value.tipo, (nuevoValor, valorAnterior) => {
+  if (nuevoValor !== 'Otro') {
+    activo.value.tipoOtro = '';
+  }
+});
+
 const activosSeleccionados = ref();
 const activoSeleccionado = ref(null);
 const toast = useToast();
-const submitted = ref(false);
+const agregar = ref(false);
 
 onMounted(() => {
     ActivoService.getActivos().then((data) => (activos.value = data));
@@ -246,15 +272,20 @@ onMounted(() => {
 
 const abrirDialog = () => {
     activo.value = {};
-    submitted.value = false;
+    agregar.value = false;
     activoDialog.value = true;
+    activo.otroSeleccionado = false;
+    
 };
+
+
+
 const cerrarDialog = () => {
     activoDialog.value = false;
-    submitted.value = false;
+    agregar.value = false;
 };
 const guardarActivo = () => {
-    submitted.value = true;
+    agregar.value = true;
 
     if (!activo.value.tipo || !activo.value.tipo.trim()) {
         toast.add({
@@ -334,9 +365,9 @@ const eliminarActivosSelec = () => {
 
 const enviar = () => {
     console.log(activos.value);
-    activos.value = []; 
+    activos.value = [];
     /* dt.value = ''; */
- 
+
     toast.add({ severity: 'success', summary: 'Exitoso', detail: 'Se ha generado el Acta', life: 4000 });
     /* activos.value = []; */
 
