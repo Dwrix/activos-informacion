@@ -7,6 +7,7 @@
                     <Column field="id" header="id"></Column>
                     <Column field="nombre" header="Nombre"></Column>
                     <Column field="depto" header="Departamento"></Column>
+                    <Column field="tipo" header="Tipo"></Column>
                     <Column field="fecha" header="Fecha acta"></Column>
                     <Column :exportable="false" style="min-width:8rem" header="">
                         <template #body="slotProps">

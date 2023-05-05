@@ -16,7 +16,7 @@
                 <label for="rut">Rut</label>
             </span><br>
 
-            <Dropdown v-model="selectedDir" :options="direccion" filter optionLabel="direccion"
+            <Dropdown v-model="direccionSelec" :options="direccion" filter optionLabel="direccion"
                 placeholder="Dirección /Depto. /Unidad" class="w-full md:w-14rem">
                 <template #value="slotProps">
                     <div v-if="slotProps.value" class="flex align-items-center">
@@ -73,7 +73,7 @@ window.addEventListener('load', () => {
 // Actualizar la fecha cada 1000 milisegundos 1 segundo  */
 const encargado = ref(null);
 
-const selectedDir = ref();
+const direccionSelec = ref();
 const direccion = ref([
     { name: 'Departamento de Finanzas', code: 'DF' },
     { name: 'Servicios Generales', code: 'SV' },

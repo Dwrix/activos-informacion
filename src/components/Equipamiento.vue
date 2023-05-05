@@ -17,7 +17,8 @@
                 currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} activos">
 
                 <Column selectionMode="multiple" style="width: 3rem" :exportable="false"></Column>
-                <Column field="id" header="id" sortable style="min-width:5rem"></Column>  
+                <Column field="id" header="id" sortable style="min-width:5rem"></Column> 
+                <!-- <Column field="nombre" header="Nombre Equipo" sortable style="min-width:5rem"></Column> -->  
                 <Column field="tipo" header="Tipo" sortable style="min-width:5rem"></Column>
                 <Column field="marca" header="Marca" sortable style="min-width:5rem"></Column>
                 <Column field="modelo" header="Modelo" sortable style="min-width:5rem"></Column>
@@ -81,6 +82,7 @@
 
             <div class="contenedorPadre">
                 <div class="contenedorGeneral">
+
                     <div class="field">
                         <label for="marca">Marca</label>
                         <InputText id="marca" v-model.trim="activo.marca" required="true"
@@ -111,6 +113,14 @@
                 </div>
                 <div class="ContenedorPcs"
                     v-if="activo.tipo === 'Computador Escritorio' || activo.tipo === 'Computador Portatil'">
+
+                    
+                    <div class="field">
+                        <label for="nombre">Nombre Equipo</label>
+                        <InputText id="nombre" v-model.trim="activo.nombre" required="true"
+                            :class="{ 'p-invalid': agregar && !activo.nombre }" style="display: block;" />
+                        <small class="p-error" v-if="agregar && !activo.nombre">nombre es obligatorio.</small>
+                    </div>
 
                     <div class="field">
                         <label for="procesador">Procesador</label>

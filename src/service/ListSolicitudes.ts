@@ -34,12 +34,14 @@ getSolicitudesData() {
         nombre:'Diego Perez',
         depto:'TIC',
         fecha:'05/02/2023',
+        tipo: 'Entrega'
       },
       {
         id: '2',
         nombre:'Maria Perez',
         depto:'TIC',
         fecha:'05/02/2023',
+        tipo: 'Entrega'
       },
       /* {
         id: '2',

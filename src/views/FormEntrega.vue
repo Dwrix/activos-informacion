@@ -15,7 +15,7 @@
                 <label for="rut">Rut</label>
             </span><br>
 
-            <Dropdown v-model="acta.direccionSelec" :options="direccion" filter optionLabel="direccion"
+            <Dropdown v-model="direccionSelec" :options="direccion" filter optionLabel="direccion"
                 placeholder="Dirección /Depto. /Unidad" class="w-full md:w-14rem">
                 <template #value="slotProps">
                     <div v-if="slotProps.value" class="flex align-items-center">
@@ -72,7 +72,7 @@ window.addEventListener('load', () => {
     date.value = new Date();
 });
 
-/* const direccionSelec = ref(); */
+const direccionSelec = ref(); 
 const direccion = ref([
     { nombre: 'Departamento de Finanzas', code: 'DF' },
     { nombre: 'Servicios Generales', code: 'SV' },
