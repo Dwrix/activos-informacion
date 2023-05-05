@@ -1,6 +1,6 @@
 <template>
     <div class="contenedor">
-        <h1>Form Orden de Salida</h1>
+        <h1>Orden de Salida</h1>
         <p>La Jefatura del Departamento de Tecnologías de la Información y la Comunicación (TIC) de la Presidencia
             de la Republica, <b>autoriza</b> la salida del equipamiento computacional a:
         </p>

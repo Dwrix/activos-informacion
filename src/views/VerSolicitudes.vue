@@ -6,12 +6,12 @@
                 <DataTable :value="solicitudes" tableStyle="min-width: 50rem">
                     <Column field="id" header="id"></Column>
                     <Column field="nombre" header="Nombre"></Column>
-                    <Column field="tipo" header="Tipo"></Column>
-                    <Column field="fecha" header="Fecha"></Column>
-                    <Column :exportable="false" style="min-width:8rem">
+                    <Column field="depto" header="Departamento"></Column>
+                    <Column field="fecha" header="Fecha Solicitud"></Column>
+                    <Column :exportable="false" style="min-width:8rem" header="Actas">
                         <template #body="slotProps">
-                            <Button icon="pi pi-pencil" outlined rounded class="mr-2"
-                                @click="$router.push('/FormEntrega')" />
+                            <Button label="Entrega"   outlined rounded class="mr-2"
+                                @click="$router.push('/Entrega')" />
                             
                         </template>
                     </Column>
@@ -24,12 +24,12 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
-/*  import { ListSolicitudes } from '@/service/ListSolicitudes'  */
+ import { ListSolicitudes } from '@/service/ListSolicitudes'  
 
 
- /* onMounted(() => {
-    ListSolicitudes.getSolicitudesData().then((data) => (activos.value = data));
-});   */
+ onMounted(() => {
+  ListSolicitudes.getSolicitudesData().then((data) => (solicitudes.value = data));
+});  
 
 const solicitudes = ref();
 

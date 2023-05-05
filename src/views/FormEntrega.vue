@@ -1,6 +1,6 @@
 <template>
     <div class="contenedor">
-        <h1>Form Entrega de Activos</h1>
+        <h1>Entrega de Activos</h1>
         <p>El departamento de Tecnologías de la Información y la Comunicación (TIC) de la Presidencia
             de la Republica, hace entrega del equipamiento computacional a:
         </p>

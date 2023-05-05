@@ -1,6 +1,6 @@
 <template>
     <div class="contenedor">
-        <h1>Form Devolución de Activos</h1>
+        <h1>Devolución de Activos</h1>
         <!-- <p>El departamento de Tecnologías de la informaciòn y la Comunicación (TIC) de la Presidencia
             de la Republica, hace entrega del equipamiento computacional a:
         </p> -->
