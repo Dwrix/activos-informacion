@@ -1,19 +1,29 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
+import { format } from 'date-fns'
 
 export const useEquipStore = defineStore('Equipamiento', () => {
 
   function enviar() {
-    console.log(datosFormulario)
-    console.log(listaActivos)
+    console.log(datosFormulario.value)
+    console.log(listaActivos.value)
+
   }
+
+  const date = ref(new Date());
+  window.addEventListener('load', () => {
+    date.value = new Date();
+  });
+
   const datosFormulario = ref({
     nombre: '',
     rut: '',
-    direccion: '',
+    direccionSelec: '',
     cargo: '',
-    fecha: ''
+    /* fecha: new Date() */ //toma la fecha y hora
+    fecha: format(date.value, 'dd/MM/yyyy')
   })
+
   const activo = ref({
     tipo: '',
     marca: '',
@@ -26,12 +36,12 @@ export const useEquipStore = defineStore('Equipamiento', () => {
     tarjetavideo: '',
     dvd: '',
     tecladoMouse: '',
-    tipoOtro: '', 
-});
+    tipoOtro: '',
+  });
 
   const listaActivos = ref([])
   return { datosFormulario, activo, listaActivos, enviar }
-  
+
 })
 
 

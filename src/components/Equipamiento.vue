@@ -10,15 +10,15 @@
                 </template>
             </Toolbar>
 
-            <DataTable ref="dt" :value="store.listaActivos" v-model:selection="activosSeleccionados" dataKey="id" :paginator="true"
-                :rows="10"
+            <DataTable ref="dt" :value="store.listaActivos" v-model:selection="activosSeleccionados" dataKey="id"
+                :paginator="true" :rows="10"
                 paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
                 :rowsPerPageOptions="[5, 10, 25]"
                 currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} activos">
 
                 <Column selectionMode="multiple" style="width: 3rem" :exportable="false"></Column>
-                <Column field="id" header="id" sortable style="min-width:5rem"></Column> 
-                <!-- <Column field="nombre" header="Nombre Equipo" sortable style="min-width:5rem"></Column> -->  
+                <Column field="id" header="id" sortable style="min-width:5rem"></Column>
+                <!-- <Column field="nombre" header="Nombre Equipo" sortable style="min-width:5rem"></Column> -->
                 <Column field="tipo" header="Tipo" sortable style="min-width:5rem"></Column>
                 <Column field="marca" header="Marca" sortable style="min-width:5rem"></Column>
                 <Column field="modelo" header="Modelo" sortable style="min-width:5rem"></Column>
@@ -73,9 +73,9 @@
                             @change="activo.otroSeleccionado = true" />
                         <label for="tipo7"> Otro</label>
                     </div>
-                    <div class="field" v-if="store.activo.tipo === 'Otro'" >
+                    <div class="field" v-if="store.activo.tipo === 'Otro'">
                         <label for="tipoOtro"></label>
-                        <InputText id="tipoOtro"  v-model="store.activo.tipoOtro" />
+                        <InputText id="tipoOtro" v-model="store.activo.tipoOtro" />
                     </div>
                 </div>
             </div><br>
@@ -114,7 +114,7 @@
                 <div class="ContenedorPcs"
                     v-if="store.activo.tipo === 'Computador Escritorio' || store.activo.tipo === 'Computador Portatil'">
 
-                    
+
                     <div class="field">
                         <label for="nombre">Nombre Equipo</label>
                         <InputText id="nombre" v-model.trim="store.activo.nombre" required="true"
@@ -130,7 +130,8 @@
 
                     <div class="field">
                         <label for="ram">Memoria RAM</label>
-                        <InputText id="ram" v-model.trim="store.activo.ram" :class="{ 'p-invalid': agregar && !store.activo.ram }" />
+                        <InputText id="ram" v-model.trim="store.activo.ram"
+                            :class="{ 'p-invalid': agregar && !store.activo.ram }" />
                     </div>
 
                     <div class="field">
@@ -156,9 +157,11 @@
                         </div><br>
                         <div class="field-radiobutton col-6">
                             <label> Teclado y Mouse</label>
-                            <RadioButton id="tecladoMousesi" name="tecladoMouse" value="Si" v-model="store.activo.tecladoMouse" />
+                            <RadioButton id="tecladoMousesi" name="tecladoMouse" value="Si"
+                                v-model="store.activo.tecladoMouse" />
                             <label for="tecladoMousesi"> Si </label>
-                            <RadioButton id="tecladoMouseNo" name="tecladoMouse" value="No" v-model="store.activo.tecladoMouse" />
+                            <RadioButton id="tecladoMouseNo" name="tecladoMouse" value="No"
+                                v-model="store.activo.tecladoMouse" />
                             <label for="tecladoMouseNo"> No </label>
 
                         </div>
@@ -199,7 +202,7 @@
         <div class="card flex justify-content-center">
             <Button label="Enviar" icon="pi pi-check" iconPos="right" @click="enviar" />
         </div>
-        
+
     </div>
     <Toast />
 </template>
@@ -208,9 +211,9 @@
 import { ref, onMounted, watch } from 'vue';
 import { useToast } from 'primevue/usetoast';
 import { ActivoService } from '@/service/ActivoService';
- import { useEquipStore } from '@/stores/store'
+import { useEquipStore } from '@/stores/store'
 
- const store = useEquipStore() 
+const store = useEquipStore()
 
 const dt = ref();
 /* const activos = ref(); */
@@ -255,7 +258,7 @@ const abrirDialog = () => {
     agregar.value = false;
     activoDialog.value = true;
     store.activo.otroSeleccionado = false;
-    
+
 };
 
 
@@ -264,39 +267,44 @@ const cerrarDialog = () => {
     activoDialog.value = false;
     agregar.value = false;
 };
+
 const guardarActivo = () => {
     agregar.value = true;
-    console.log(store.activo.tipo)
+
     if (!store.activo.tipo || !store.activo.tipo.trim()) {
-        toast.add({ severity: 'error', summary: 'Error',  detail: 'Por favor selecciona un tipo', life: 4000, });
+        toast.add({ severity: 'error', summary: 'Error', detail: 'Por favor selecciona un tipo', life: 4000 });
         return;
     }
 
-    if (store.activo.tipo.trim()) {
-        if (store.activo.id) {
-            store.listaActivos[findIndexById(store.activo.id)] = store.activo;
-            toast.add({ severity: 'success', summary: 'Exitoso', detail: 'Activo Modificado', life: 4000 });
-            
-        }
-        else {
-            store.activo.id = createId();
-            /* activo.value.code = createId(); */
-            store.listaActivos.push(store.activo);
-            toast.add({ severity: 'success', summary: 'Exitoso', detail: 'Activo Agregado', life: 4000 });
+    //busca el indice en la lista listaActivos que tiene el mismo valor de id que el objeto activo seleccionado
+    //const index = store.listaActivos.findIndex((activo) => activo.id === store.activo.id);
 
-        }
+    const index = findIndexById(store.activo.id);
 
-        
-        
-        activoDialog.value = false;
-        /* store.activo = {}; */
+    if (index > -1) {
+        store.listaActivos[index] = store.activo;
+        toast.add({
+            severity: 'success', summary: 'Exitoso', detail: 'Activo Modificado', life: 4000
+
+        });
+
+    } else {
+        store.activo.id = createId();
+        store.listaActivos.push(store.activo);
+        toast.add({
+            severity: 'success', summary: 'Exitoso', detail: 'Activo Agregado', life: 4000
+
+        });
     }
+
+    activoDialog.value = false;
+    store.activo = {};
 };
 
 
 
 const editarActivo = (prod) => {
-    store.activo.value = { ...prod };
+    store.activo = { ...prod };
     activoSeleccionado.value = prod;
     activoDialog.value = true;
 
@@ -345,12 +353,12 @@ const eliminarActivosSelec = () => {
 
 const enviar = () => {
     store.enviar()
-    /* console.log(store.listaActivos); */
-    store.listaActivos = [];
+    /* console.log(store.listaActivos);  */
+    store.listaActivos = []; 
     /* dt.value = ''; */
 
     toast.add({ severity: 'success', summary: 'Exitoso', detail: 'Se ha generado el Acta', life: 4000 });
-    /* store.listaActivos = []; */
+    /* store.listaActivos = [];  */
 
 };
 
