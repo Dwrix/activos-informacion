@@ -6,15 +6,15 @@
         </p>
         <div class="formulario p-grid">
             <span class="p-float-label p-col-6">
-                <InputText id="nombre" v-model="nombre" />
+                <InputText id="nombre" v-model="store.acta.nombre" />
                 <label for="nombre">Nombre</label>
             </span><br>
             <span class="p-float-label p-col-6">
-                <InputText id="rut" v-model="rut" />
+                <InputText id="rut" v-model="store.acta.rut" />
                 <label for="rut">Rut</label>
             </span><br>
 
-            <Dropdown v-model="selectedDir" :options="direccion" filter optionLabel="direccion"
+            <Dropdown v-model="store.acta.direccionSelec" :options="direccion" filter optionLabel="direccion"
                 placeholder="Dirección /Depto. /Unidad" class="w-full md:w-14rem">
                 <template #value="slotProps">
                     <div v-if="slotProps.value" class="flex align-items-center">
@@ -38,18 +38,18 @@
             </Dropdown>
             <br><br>
             <span class="p-float-label p-col-6">
-                <InputText id="cargo" v-model="cargo" />
+                <InputText id="cargo" v-model="store.acta.cargo" />
                 <label for="cargo">Cargo</label>
             </span><br>
             <div class="p-col-6 md-offset-6">
-                <Calendar v-model="date" showIcon disabled /><br><br>
+                <Calendar v-model="store.acta.fecha" showIcon disabled /><br><br>
                 <span class="p-float-label">
-                    <InputText id="encargado" v-model="encargado" />
+                    <InputText id="encargado" v-model="store.acta.encargado" />
                     <label for="encargado">Encargado</label>
                 </span><br>
                 <div class="card flex justify-content-center">
                     <span class="p-float-label">
-                        <Textarea v-model="motivoSalida" rows="5" cols="30" />
+                        <Textarea v-model="store.acta.motivoSalida" rows="5" cols="30" />
                         <label>Motivo Salida</label>
                     </span>
                 </div>
@@ -66,27 +66,29 @@
 </template>
 
 <script setup lang="ts">
-import Equipamiento from '@/components/Equipamiento.vue';
 import { ref } from 'vue';
+import Equipamiento from '@/components/Equipamiento.vue';
+import { useEquipStore } from '@/stores/store'   
 
+const store = useEquipStore() 
 
-const nombre = ref(null);
+/* const nombre = ref(null);
 const rut = ref(null);
 const cargo = ref(null);
 const date = ref(new Date());
 
 window.addEventListener('load', () => {
     date.value = new Date();
-});
+}); */
 /* setInterval(() => {
   date.value = new Date(); 
 }, 3600000 );
 // Actualizar la fecha cada 1000 milisegundos 1 segundo  */
 
-const encargado = ref();
-const motivoSalida = ref('');
+/* const encargado = ref();
+const motivoSalida = ref(''); */
 
-
+store.acta.tipo = "OrdenSalida"
 const selectedDir = ref();
 const direccion = ref([
     { name: 'Departamento de Finanzas', code: 'DF' },

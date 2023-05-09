@@ -117,9 +117,9 @@
 
                     <div class="field">
                         <label for="nombre">Nombre Equipo</label>
-                        <InputText id="nombre" v-model.trim="store.activo.nombre" required="true"
-                            :class="{ 'p-invalid': agregar && !store.activo.nombre }" style="display: block;" />
-                        <small class="p-error" v-if="agregar && !store.activo.nombre">nombre es obligatorio.</small>
+                        <InputText id="nombre" v-model.trim="store.activo.nombreEquipo" required="true"
+                            :class="{ 'p-invalid': agregar && !store.activo.nombreEquipo }" style="display: block;" />
+                        <small class="p-error" v-if="agregar && !store.activo.nombreEquipo">nombre es obligatorio.</small>
                     </div>
 
                     <div class="field">
@@ -215,6 +215,7 @@ import { useEquipStore } from '@/stores/store'
 
 const store = useEquipStore()
 
+
 const dt = ref();
 /* const activos = ref(); */
 const activoDialog = ref(false);
@@ -236,11 +237,11 @@ const eliminarActivosDialog = ref(false);
     /* tipoOtro: '', 
 }); */
 
- /* watch(() => store.activo.value.tipo, (nuevoValor, valorAnterior) => {
-  if (nuevoValor !== 'Otro') {
-    activo.value.tipoOtro = '';
+/* watch(() => store.activo.tipoOtro, (newVal) => {
+  if (store.activo.tipo === 'Otro' && newVal.trim() !== '') {
+    store.activo.tipo = newVal.trim()
   }
-});  */
+}) */
 
 /* const otroSeleccionado = () => {
   if (store.activo.tipo === 'Otro') {
@@ -295,14 +296,16 @@ const guardarActivo = () => {
     //si es asi se edita
     if (index > -1) {
         store.listaActivos[index] = store.activo;
-        toast.add({ severity: 'success', summary: 'Exitoso', detail: 'Activo Modificado', life: 4000
+        toast.add({
+            severity: 'success', summary: 'Exitoso', detail: 'Activo Modificado', life: 4000
         });
 
-    //Si index es menor que 0, no se encontró un elemento con el mismo id en la lista listaActivos, por lo cual se agrega uno nuevo
+        //Si index es menor que 0, no se encontró un elemento con el mismo id en la lista listaActivos, por lo cual se agrega uno nuevo
     } else {
         store.activo.id = createId();
         store.listaActivos.push(store.activo);
-        toast.add({ severity: 'success', summary: 'Exitoso', detail: 'Activo Agregado', life: 4000
+        toast.add({
+            severity: 'success', summary: 'Exitoso', detail: 'Activo Agregado', life: 4000
         });
     }
 
@@ -346,13 +349,20 @@ const findIndexById = (id) => {
 
     return index;
 };
-const createId = () => {
+
+/* const createId = () => {
     let id = '';
     var chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
     for (var i = 0; i < 5; i++) {
         id += chars.charAt(Math.floor(Math.random() * chars.length));
     }
     return id;
+} */
+
+let idCounter = 0;
+const createId = () => {
+    idCounter++;
+    return idCounter.toString();
 }
 
 const confirmarEliminarSelec = () => {
@@ -369,7 +379,7 @@ const eliminarActivosSelec = () => {
 const enviar = () => {
     store.enviar()
     /* console.log(store.listaActivos);  */
-    store.listaActivos = []; 
+    store.listaActivos = [];
     /* dt.value = ''; */
 
     toast.add({ severity: 'success', summary: 'Exitoso', detail: 'Se ha generado el Acta', life: 4000 });

@@ -1,11 +1,18 @@
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import { defineStore } from 'pinia'
 import { format } from 'date-fns'
 
 export const useEquipStore = defineStore('Equipamiento', () => {
 
+  /* const idCounter = ref(0);
+
+  function getNextId() {
+    idCounter.value++;
+    return idCounter.value;
+  } */
+
   function enviar() {
-    console.log(datosFormulario.value)
+    console.log(acta.value)
     console.log(listaActivos.value)
 
   }
@@ -15,14 +22,20 @@ export const useEquipStore = defineStore('Equipamiento', () => {
     date.value = new Date();
   });
 
-  const datosFormulario = ref({
+  const acta = ref({
+    /* id: getNextId(), */
+    tipo: '',
     nombre: '',
     rut: '',
     direccionSelec: '',
     cargo: '',
+    encargado:'',
+    motivoSalida:'',
     /* fecha: new Date() */ //toma la fecha y hora
     fecha: format(date.value, 'dd/MM/yyyy')
   })
+
+  /* const tipoSeleccionado = ref('') */
 
   const activo = ref({
     tipo: '',
@@ -30,17 +43,22 @@ export const useEquipStore = defineStore('Equipamiento', () => {
     modelo: '',
     serie: '',
     numInv: '',
+    nombreEquipo: '',
     procesador: '',
     ram: '',
     discoDuro: '',
     tarjetavideo: '',
     dvd: '',
     tecladoMouse: '',
-    tipoOtro: '',
+    tipoOtro: '', 
   });
 
   const listaActivos = ref([])
-  return { datosFormulario, activo, listaActivos, enviar }
+
+ 
+
+
+  return { /* tipoSeleccionado, */ acta, activo, listaActivos, enviar }
 
 })
 

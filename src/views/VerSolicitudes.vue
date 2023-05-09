@@ -3,11 +3,19 @@
         <h1>Solicitudes</h1>
         <div class="contenedorDt">
             <div class="card">
-                <DataTable :value="solicitudes" tableStyle="min-width: 50rem">
-                    <Column field="id" header="id"></Column>
-                    <Column field="nombre" header="Nombre"></Column>
-                    <Column field="depto" header="Departamento"></Column>
-                    <Column field="fecha" header="Fecha Solicitud"></Column>
+                
+                <DataTable ref="dt" :value="solicitudes" dataKey="id" :paginator="true" :rows="10"
+                    paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
+                    :rowsPerPageOptions="[5, 10, 25]"
+                    currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} activos">
+
+                    <Column selectionMode="multiple" style="width: 3rem" :exportable="false"></Column>
+                    <Column field="id" header="id" sortable style="min-width:5rem"></Column>
+                    <!-- <Column field="nombre" header="Nombre Equipo" sortable style="min-width:5rem"></Column> -->
+                    <Column field="nombre" header="Nombre" sortable style="min-width:5rem"></Column>
+                    <Column field="depto" header="Departamento" sortable style="min-width:5rem"></Column>
+                    <Column field="tipo" header="Tipo" sortable style="min-width:5rem"></Column>
+                    <Column field="fecha" header="Fecha Entrega" sortable style="min-width:5rem"></Column>
                     <Column :exportable="false" style="min-width:8rem" header="Actas">
                         <template #body="slotProps">
                             <Button label="Entrega"   outlined rounded class="mr-2"
@@ -15,7 +23,13 @@
                             
                         </template>
                     </Column>
-
+                    <Column :exportable="false" style="min-width:8rem">
+                        <template #body="slotProps">
+                            <!-- <Button icon="pi pi-pencil" outlined rounded class="mr-2" @click="editarActivo(slotProps.data)" />
+                        <Button icon="pi pi-trash" outlined rounded severity="danger"
+                            @click="confirmarEliminarActivo(slotProps.data)" /> -->
+                        </template>
+                    </Column>
                 </DataTable>
             </div>
         </div>
@@ -24,9 +38,10 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
- import { ListSolicitudes } from '@/service/ListSolicitudes'  
 
+import { ListSolicitudes } from '@/service/ListSolicitudes'  
 
+//data son los datos que se obtuvieron en el get solicitudes
  onMounted(() => {
   ListSolicitudes.getSolicitudesData().then((data) => (solicitudes.value = data));
 });  

@@ -7,16 +7,6 @@ import vue from '@vitejs/plugin-vue';
 export default defineConfig({
   base: '/',
   plugins: [vue()],
-/*   server: {
-    port: 8080,
-    proxy: {
-      '/api': {
-        target: '192.168.206.36', // aquí debes cambiar la dirección IP por la del servidor DNS interno que deseas usar
-        changeOrigin: true,
-        rewrite: path => path.replace(/^\/api/, '')
-      }
-    }
-  }, */
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url))

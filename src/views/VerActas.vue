@@ -3,37 +3,53 @@
         <h1>Actas</h1>
         <div class="contenedorDt">
             <div class="card">
-                <DataTable :value="actas" tableStyle="min-width: 50rem">
-                    <Column field="id" header="id"></Column>
-                    <Column field="nombre" header="Nombre"></Column>
-                    <Column field="depto" header="Departamento"></Column>
-                    <Column field="tipo" header="Tipo"></Column>
-                    <Column field="fecha" header="Fecha acta"></Column>
-                    <Column :exportable="false" style="min-width:8rem" header="">
+                <DataTable ref="dt" :value="actas" dataKey="id" :paginator="true" :rows="10"
+                    paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
+                    :rowsPerPageOptions="[5, 10, 25]"
+                    currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} activos">
+
+                    <Column selectionMode="multiple" style="width: 3rem" :exportable="false"></Column>
+                    <Column field="id" header="id" sortable style="min-width:5rem"></Column>
+                    <!-- <Column field="nombre" header="Nombre Equipo" sortable style="min-width:5rem"></Column> -->
+                    <Column field="nombre" header="Nombre" sortable style="min-width:5rem"></Column>
+                    <Column field="depto" header="Departamento" sortable style="min-width:5rem"></Column>
+                    <Column field="tipo" header="Tipo" sortable style="min-width:5rem"></Column>
+                    <Column field="fecha" header="Fecha Entrega" sortable style="min-width:5rem"></Column>
+                    <Column :exportable="false" style="min-width:8rem" header="Actas">
                         <template #body="slotProps">
-                            <Button label="Exportar"   outlined rounded class="mr-2"
-                                 />
+                            <Button @click="exportPDF()" label="Exportar"   outlined rounded class="mr-2" />
                             
                         </template>
                     </Column>
-
                 </DataTable>
             </div>
         </div>
     </div>
 </template>
 
-<script setup lang="ts">
+<script setup >
 import { ref, onMounted } from 'vue';
- import { ListSolicitudes } from '@/service/ListSolicitudes'  
+import { ListSolicitudes } from '@/service/ListSolicitudes';
+import jsPDF from "jspdf";
 
 
- onMounted(() => {
-  ListSolicitudes.getSolicitudesData().then((data) => (actas.value = data));
-});  
+onMounted(() => {
+    ListSolicitudes.getSolicitudesData().then((data) => (actas.value = data));
+});
 
+const selectedActa = ref(null);
 const actas = ref();
 
+function exportPDF() {
+  // Crea un nuevo documento PDF
+  const doc = new jsPDF();
+
+  // Agrega el contenido del PDF
+  doc.text("Contenido del PDF", 10, 10); // Reemplaza "Contenido del PDF" con la información que deseas exportar
+
+  // Descarga el PDF
+  doc.save("archivo.pdf");
+};
 
 </script>
 
