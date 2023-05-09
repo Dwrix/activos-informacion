@@ -70,7 +70,7 @@
                     </div>
                     <div class="field-radiobutton">
                         <RadioButton id="tipo7" name="tipo" value="Otro" v-model="store.activo.tipo"
-                            @change="activo.otroSeleccionado = true" />
+                           />
                         <label for="tipo7"> Otro</label>
                     </div>
                     <div class="field" v-if="store.activo.tipo === 'Otro'">
@@ -236,11 +236,17 @@ const eliminarActivosDialog = ref(false);
     /* tipoOtro: '', 
 }); */
 
-/* watch(() => activo.value.tipo, (nuevoValor, valorAnterior) => {
+ /* watch(() => store.activo.value.tipo, (nuevoValor, valorAnterior) => {
   if (nuevoValor !== 'Otro') {
     activo.value.tipoOtro = '';
   }
-}); */
+});  */
+
+/* const otroSeleccionado = () => {
+  if (store.activo.tipo === 'Otro') {
+    store.activo.tipo = store.activo.tipoOtro;
+  }
+} */
 
 const activosSeleccionados = ref();
 const activoSeleccionado = ref(null);
@@ -257,7 +263,7 @@ const abrirDialog = () => {
     store.activo.value = {};
     agregar.value = false;
     activoDialog.value = true;
-    store.activo.otroSeleccionado = false;
+    /* otroSeleccionado.value = false; */
 
 };
 
@@ -271,6 +277,8 @@ const cerrarDialog = () => {
 const guardarActivo = () => {
     agregar.value = true;
 
+    //Comprueba si el objeto activo actual en la store tiene una propiedad tipo definida y no está vacía después de recortar los espacios en blanco.
+    //Si la propiedad tipo no está definida o está vacía, se muestra el toast de error
     if (!store.activo.tipo || !store.activo.tipo.trim()) {
         toast.add({ severity: 'error', summary: 'Error', detail: 'Por favor selecciona un tipo', life: 4000 });
         return;
@@ -279,31 +287,35 @@ const guardarActivo = () => {
     //busca el indice en la lista listaActivos que tiene el mismo valor de id que el objeto activo seleccionado
     //const index = store.listaActivos.findIndex((activo) => activo.id === store.activo.id);
 
+    //llama la func findIndexById encontrar el índice de un elemento en la lista listaActivos que tiene un valor de id igual al id del objeto 
+    //activo actual en la store. El resultado se almacena en una variable index.
     const index = findIndexById(store.activo.id);
 
+    //Comprueba si index es mayor que -1, lo que significa que se encontró un elemento con el mismo id en la lista listaActivos
+    //si es asi se edita
     if (index > -1) {
         store.listaActivos[index] = store.activo;
-        toast.add({
-            severity: 'success', summary: 'Exitoso', detail: 'Activo Modificado', life: 4000
-
+        toast.add({ severity: 'success', summary: 'Exitoso', detail: 'Activo Modificado', life: 4000
         });
 
+    //Si index es menor que 0, no se encontró un elemento con el mismo id en la lista listaActivos, por lo cual se agrega uno nuevo
     } else {
         store.activo.id = createId();
         store.listaActivos.push(store.activo);
-        toast.add({
-            severity: 'success', summary: 'Exitoso', detail: 'Activo Agregado', life: 4000
-
+        toast.add({ severity: 'success', summary: 'Exitoso', detail: 'Activo Agregado', life: 4000
         });
     }
 
     activoDialog.value = false;
+    //para que cuando se abra el dialog denuevo esten los campos vacios
     store.activo = {};
 };
 
-
-
+//se utiliza para seleccionar un objeto activo específico de la lista listaActivos en la store, crear una copia de ese objeto y establecerla como el objeto activo actual en la store
 const editarActivo = (prod) => {
+    //Establece el objeto activo actual en la store como una copia del objeto prod que se pasa como argumento a la función. La sintaxis { ...prod } 
+    //se utiliza para crear una copia superficial del objeto prod,
+    // lo que significa que se crea un nuevo objeto que tiene las mismas propiedades que prod, pero que no está conectado directamente a prod.
     store.activo = { ...prod };
     activoSeleccionado.value = prod;
     activoDialog.value = true;
@@ -320,7 +332,10 @@ const eliminarActivo = () => {
     store.activo.value = {};
     toast.add({ severity: 'success', summary: 'Exitoso', detail: 'Activo Eliminado', life: 4000 });
 };
+
 const findIndexById = (id) => {
+    //let index = -1; - Inicializa la variable index en -1 como valor predeterminado. 
+    //Esto se hace porque si no se encuentra ningún objeto con el ID dado en la lista listaActivos, se debe devolver -1 para indicar que no se encontró ningún objeto.
     let index = -1;
     for (let i = 0; i < store.listaActivos.length; i++) {
         if (store.listaActivos[i].id === id) {
