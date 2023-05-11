@@ -3,7 +3,7 @@
         <h1>Solicitudes</h1>
         <div class="contenedorDt">
             <div class="card">
-
+                
                 <DataTable ref="dt" :value="solicitudes" dataKey="id" :paginator="true" :rows="10" :filters="filters"
                     paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
                     :rowsPerPageOptions="[5, 10, 25]"
@@ -13,8 +13,8 @@
                         <div class="flex flex-wrap gap-2 align-items-center justify-content-between">
                             <!-- <h4 class="m-0">Buscar Solicitud</h4> -->
                             <span class="p-input-icon-left">
-                                <i class="pi pi-search" />
                                 <InputText v-model="filters['global'].value" placeholder="Busqueda" />
+                                <i class="pi pi-search"></i>
                             </span>
                         </div>
                     </template>

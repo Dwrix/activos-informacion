@@ -3,10 +3,19 @@
         <h1>Actas</h1>
         <div class="contenedorDt">
             <div class="card">
-                <DataTable ref="dt" :value="actas" dataKey="id" :paginator="true" :rows="10"
+                <DataTable ref="dt" :value="actas" dataKey="id" :paginator="true" :rows="10" :filters="filters"
                     paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
                     :rowsPerPageOptions="[5, 10, 25]"
                     currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} activos">
+
+                    <template #header>
+                        <div class="flex flex-wrap gap-2 align-items-center justify-content-between">
+                            <span class="p-input-icon-left">
+                                <InputText v-model="filters['global'].value" placeholder="Busqueda" />
+                                <i class="pi pi-search"></i>
+                            </span>
+                        </div>
+                    </template>
 
                     <Column selectionMode="multiple" style="width: 3rem" :exportable="false"></Column>
                     <Column field="id" header="id" sortable style="min-width:5rem"></Column>
@@ -30,8 +39,12 @@
 <script setup >
 import { ref, onMounted } from 'vue';
 import { ListSolicitudes } from '@/service/ListSolicitudes';
+import { FilterMatchMode } from 'primevue/api';
 import jsPDF from "jspdf";
 
+const filters = ref({
+    'global': {value: null, matchMode: FilterMatchMode.CONTAINS},
+});
 
 onMounted(() => {
     ListSolicitudes.getSolicitudesData().then((data) => (actas.value = data));
