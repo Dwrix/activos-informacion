@@ -43,11 +43,17 @@
                     <InputText id="cargo" v-model="store.acta.cargo" />
                     <label for="cargo">Cargo</label>
                 </span><br>
+
                 <Calendar v-model="store.acta.fecha" showIcon disabled /><br><br>
+
+                <span class="p-float-label">
+                    <Textarea v-model="store.acta.observaciones" rows="2" cols="30" />
+                    <label>Observaciones</label>
+                </span>
 
             </div>
             <!-- <button type="submit">Guardar</button> -->
-            
+
         </form>
     </div>
     <!-- <button @click="enviar">Enviar</button> -->
@@ -55,7 +61,6 @@
     <Toast />
 
     <Equipamiento></Equipamiento>
-    
 </template>
 
 
@@ -64,9 +69,9 @@ import { ref } from 'vue';
 /* import { ActivoService } from '@/service/ActivoService'; */
 import Equipamiento from '@/components/Equipamiento.vue';
 /* import { useStore } from 'pinia' */
-import { useEquipStore } from '@/stores/store'   
- 
-const store = useEquipStore() 
+import { useEquipStore } from '@/stores/store'
+
+const store = useEquipStore()
 
 /* const acta = ref({}); */
 /* const rut = ref(null);
@@ -78,13 +83,13 @@ window.addEventListener('load', () => {
 
 store.acta.tipo = "Entrega"
 /* const direccionSelec = ref();*/
- 
+
 const direccion = ref([
     { nombre: 'Departamento de Finanzas', code: 'DF' },
     { nombre: 'Servicios Generales', code: 'SV' },
     { nombre: 'Dirección de Gestion Ciudadana', code: 'DGC' },
 
-]); 
+]);
 
 /* const acta = ref({
   nombre: '',
@@ -114,6 +119,5 @@ const direccion = ref([
     margin-top: 20px;
 
 }
-
 </style>
 

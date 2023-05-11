@@ -311,7 +311,8 @@ const guardarActivo = () => {
 
     activoDialog.value = false;
     //para que cuando se abra el dialog denuevo esten los campos vacios
-    store.activo = {};
+    store.activo = {}; 
+    
 };
 
 //se utiliza para seleccionar un objeto activo específico de la lista listaActivos en la store, crear una copia de ese objeto y establecerla como el objeto activo actual en la store

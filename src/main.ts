@@ -1,4 +1,3 @@
-/* import{ formData } from '@/stores/store' */
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 import PrimeVue from 'primevue/config';
@@ -71,4 +70,3 @@ app.use(pinia)
 
 app.mount('#app')
 
-/* const useformData = formData() */

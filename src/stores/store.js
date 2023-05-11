@@ -1,4 +1,4 @@
-import { ref, watch } from 'vue'
+import { ref } from 'vue'
 import { defineStore } from 'pinia'
 import { format } from 'date-fns'
 
@@ -10,12 +10,6 @@ export const useEquipStore = defineStore('Equipamiento', () => {
     idCounter.value++;
     return idCounter.value;
   } */
-
-  function enviar() {
-    console.log(acta.value)
-    console.log(listaActivos.value)
-
-  }
 
   const date = ref(new Date());
   window.addEventListener('load', () => {
@@ -29,10 +23,11 @@ export const useEquipStore = defineStore('Equipamiento', () => {
     rut: '',
     direccionSelec: '',
     cargo: '',
-    encargado:'',
-    motivoSalida:'',
+    encargado: '',
+    motivoSalida: '',
     /* fecha: new Date() */ //toma la fecha y hora
-    fecha: format(date.value, 'dd/MM/yyyy')
+    fecha: format(date.value, 'dd/MM/yyyy'),
+    observaciones: '',
   })
 
   /* const tipoSeleccionado = ref('') */
@@ -50,36 +45,56 @@ export const useEquipStore = defineStore('Equipamiento', () => {
     tarjetavideo: '',
     dvd: '',
     tecladoMouse: '',
-    tipoOtro: '', 
+    tipoOtro: '',
   });
 
   const listaActivos = ref([])
 
- 
+  function limpiarCampos() {
+    acta.value = {
+      tipo: '',
+      nombre: '',
+      rut: '',
+      direccionSelec: '',
+      cargo: '',
+      encargado: '',
+      motivoSalida: '',
+      fecha: format(date.value, 'dd/MM/yyyy'),
+      observaciones: '',
+    };
+    activo.value = {
+      tipo: '',
+      marca: '',
+      modelo: '',
+      serie: '',
+      numInv: '',
+      nombreEquipo: '',
+      procesador: '',
+      ram: '',
+      discoDuro: '',
+      tarjetavideo: '',
+      dvd: '',
+      tecladoMouse: '',
+      tipoOtro: '',
+    };
+  }
 
+  function enviar() {
+    console.log(acta.value)
+    console.log(listaActivos.value)
+    limpiarCampos();
+
+  }
 
   return { /* tipoSeleccionado, */ acta, activo, listaActivos, enviar }
 
 })
 
+//counter
+/* import { ref, computed } from 'vue'
+import { defineStore } from 'pinia'
 
-
-/* export const useFormData = defineStore('FormData', () => {
-
-  const datosFormulario = ref({
-    nombre: '',
-    rut: '',
-    direccion: '',
-    cargo: '',
-    fecha: ''
-
-  });
-  return { datosFormulario }
-  
-}) */
-
-
-/* export const useEquipStore = defineStore('Equipamiento', () => {
+export const useCounterStore = defineStore('counter', () => {
   const count = ref(0)
   const doubleCount = computed(() => count.value * 2)
   function increment() {
@@ -88,20 +103,3 @@ export const useEquipStore = defineStore('Equipamiento', () => {
 
   return { count, doubleCount, increment }
 }) */
-
-
-/* const formDataStore = pinia.store({
-  id: 'formData',
-  state: () => ({
-    datosFormulario: {
-      nombre: '',
-      rut: '',
-      direccion: '',
-      cargo: '',
-      fecha: ''
-    },
-    listaActivos: []
-  })
-})
-
-export { pinia, formDataStore } */

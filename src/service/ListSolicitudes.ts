@@ -44,6 +44,13 @@ getSolicitudesData() {
         tipo: 'Entrega'
       },
       /* {
+        id: '3',
+        nombre:'Maria diaz',
+        depto:'SEV',
+        fecha:'05/02/2023',
+        tipo: 'Devolucion'
+      }, */
+      /* {
         id: '2',
         code:'DFX2',
         tipo:'Impresora',
