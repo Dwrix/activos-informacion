@@ -19,10 +19,11 @@
 
 </template>
 
-<script setup lang="ts">
+<script setup>
 
 import { RouterLink, RouterView, } from 'vue-router'
-
+/* import db from '@/firestore';
+import { collection, addDoc } from "firebase/firestore";  */
 
 </script>
 

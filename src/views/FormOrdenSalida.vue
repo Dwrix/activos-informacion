@@ -62,8 +62,8 @@
                     <label>Observaciones</label>
                 </span>
             </div>
-            </div>
-            
+        </div>
+
     </div>
 
     <Equipamiento></Equipamiento>
@@ -72,9 +72,9 @@
 <script setup>
 import { ref } from 'vue';
 import Equipamiento from '@/components/Equipamiento.vue';
-import { useEquipStore } from '@/stores/store'
+import { useActaStore } from '@/stores/store'
 
-const store = useEquipStore()
+const store = useActaStore()
 
 /* const nombre = ref(null);
 const rut = ref(null);
@@ -122,18 +122,20 @@ const direccion = ref([
 .p-grid {
     display: flex;
     flex-wrap: wrap;
-  }
+}
 
-  .p-col-6 {
+.p-col-6 {
     width: 50%;
-  }
+}
 
-  .p-col-right {
+.p-col-right {
     margin-left: auto;
-  }
+}
 
-  .p-col-right .p-field {
+.p-col-right .p-field {
     display: block;
     margin-bottom: 1rem;
-  }
+}
+
+
 </style>

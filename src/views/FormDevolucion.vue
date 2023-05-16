@@ -64,9 +64,9 @@
 <script setup>
 import Equipamiento from '@/components/Equipamiento.vue';
 import { ref } from 'vue';
-import { useEquipStore } from '@/stores/store'
+import { useActaStore } from '@/stores/store'
 
-const store = useEquipStore()
+const store = useActaStore()
 
 /* const nombre = ref(null);
 const rut = ref(null);

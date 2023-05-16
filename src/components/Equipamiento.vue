@@ -80,7 +80,7 @@
                 </div>
             </div><br>
 
-            <div class="contenedorPadre">
+            <div class="contenedorDialog">
                 <div class="contenedorGeneral">
 
                     <div class="field">
@@ -101,7 +101,7 @@
                         <label for="serie">Serie</label>
                         <InputText id="serie" v-model.trim="store.activo.serie" required="true"
                             :class="{ 'p-invalid': agregar && !store.activo.serie }" style="display: block;" />
-                        <small class="p-error" v-if="agregar && !store.activo.modelo">serie es obligatorio.</small>
+                        <small class="p-error" v-if="agregar && !store.activo.serie">serie es obligatorio.</small>
                     </div>
 
                     <div class="field">
@@ -211,9 +211,11 @@
 import { ref, onMounted, watch } from 'vue';
 import { useToast } from 'primevue/usetoast';
 import { ActivoService } from '@/service/ActivoService';
-import { useEquipStore } from '@/stores/store'
+import { useActaStore } from '@/stores/store'
+import db from '../firestore'; 
 
-const store = useEquipStore()
+ 
+const store = useActaStore()
 
 
 const dt = ref();
@@ -278,7 +280,6 @@ const cerrarDialog = () => {
 const guardarActivo = () => {
     agregar.value = true;
 
-    //Comprueba si el objeto activo actual en la store tiene una propiedad tipo definida y no está vacía después de recortar los espacios en blanco.
     //Si la propiedad tipo no está definida o está vacía, se muestra el toast de error
     if (!store.activo.tipo || !store.activo.tipo.trim()) {
         toast.add({ severity: 'error', summary: 'Error', detail: 'Por favor selecciona un tipo', life: 4000 });
@@ -316,18 +317,18 @@ const guardarActivo = () => {
 };
 
 //se utiliza para seleccionar un objeto activo específico de la lista listaActivos en la store, crear una copia de ese objeto y establecerla como el objeto activo actual en la store
-const editarActivo = (prod) => {
-    //Establece el objeto activo actual en la store como una copia del objeto prod que se pasa como argumento a la función. La sintaxis { ...prod } 
-    //se utiliza para crear una copia superficial del objeto prod,
-    // lo que significa que se crea un nuevo objeto que tiene las mismas propiedades que prod, pero que no está conectado directamente a prod.
-    store.activo = { ...prod };
-    activoSeleccionado.value = prod;
+const editarActivo = (act) => {
+    //Establece el objeto activo actual en la store como una copia del objeto act que se pasa como argumento a la función. La sintaxis { ...act } 
+    //se utiliza para crear una copia superficial del objeto act,
+    // lo que significa que se crea un nuevo objeto que tiene las mismas propiedades que act, pero que no está conectado directamente a act.
+    store.activo = { ...act };
+    activoSeleccionado.value = act;
     activoDialog.value = true;
 
 };
 
-const confirmarEliminarActivo = (prod) => {
-    store.activo.value = prod;
+const confirmarEliminarActivo = (act) => {
+    store.activo.value = act;
     eliminarActivoDialog.value = true;
 };
 const eliminarActivo = () => {
@@ -413,7 +414,7 @@ const enviar = () => {
     width: 200px;
 }
 
-.contenedorPadre {
+.contenedorDialog {
     display: grid;
     grid-template-columns: 1fr 1fr;
     /* define dos columnas de igual tamaño */

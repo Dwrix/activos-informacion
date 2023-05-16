@@ -69,9 +69,10 @@ import { ref } from 'vue';
 /* import { ActivoService } from '@/service/ActivoService'; */
 import Equipamiento from '@/components/Equipamiento.vue';
 /* import { useStore } from 'pinia' */
-import { useEquipStore } from '@/stores/store'
+import { useActaStore } from '@/stores/store'
+/* import db from '../firebase'; */
 
-const store = useEquipStore()
+const store = useActaStore()
 
 /* const acta = ref({}); */
 /* const rut = ref(null);

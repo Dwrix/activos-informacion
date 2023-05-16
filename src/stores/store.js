@@ -1,8 +1,15 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
 import { format } from 'date-fns'
+import { collection, addDoc } from 'firebase/firestore';
+import db from '../firestore';
 
-export const useEquipStore = defineStore('Equipamiento', () => {
+
+
+
+export const useActaStore = defineStore('Acta', () => {
+
+  
 
   /* const idCounter = ref(0);
 
@@ -62,33 +69,41 @@ export const useEquipStore = defineStore('Equipamiento', () => {
       fecha: format(date.value, 'dd/MM/yyyy'),
       observaciones: '',
     };
-    activo.value = {
-      tipo: '',
-      marca: '',
-      modelo: '',
-      serie: '',
-      numInv: '',
-      nombreEquipo: '',
-      procesador: '',
-      ram: '',
-      discoDuro: '',
-      tarjetavideo: '',
-      dvd: '',
-      tecladoMouse: '',
-      tipoOtro: '',
-    };
+
   }
 
   function enviar() {
-    console.log(acta.value)
-    console.log(listaActivos.value)
-    limpiarCampos();
+    /* console.log(acta.value)
+    console.log(listaActivos.value) */
+    
+     // Crea un nuevo documento en la colección "actaCollection" con los datos del formulario
+     addDoc(collection(db, 'actaCollection'), {
+      nombre: acta.value.nombre,
+      rut: acta.value.rut,
+      tipo: acta.value.tipo,
+      // ... otros campos del acta.value
+    })
+      .then((docRef) => {
+        console.log('Documento guardado con ID:', docRef.id);
+        limpiarCampos();
+        // Realizar acciones adicionales después de guardar los datos
+      })
+      .catch((error) => {
+        console.error('Error al guardar el documento:', error);
+        // Manejo de errores
+      });
+    
+
+    
+ 
 
   }
+ 
 
   return { /* tipoSeleccionado, */ acta, activo, listaActivos, enviar }
 
 })
+
 
 //counter
 /* import { ref, computed } from 'vue'
@@ -103,3 +118,28 @@ export const useCounterStore = defineStore('counter', () => {
 
   return { count, doubleCount, increment }
 }) */
+
+
+
+/* db.collection("actaCollection").add({
+  tipo: acta.value.tipo,
+  nombre: acta.value.nombre,
+  rut: acta.value.rut,
+  direccionSelec: acta.value.direccionSelec,
+  cargo: acta.value.cargo,
+  encargado: acta.value.encargado,
+  motivoSalida: acta.value.motivoSalida,
+
+fecha: format(date.value, 'dd/MM/yyyy'),
+observaciones: acta.value.observaciones,
+  // ...otros campos del acta...
+})
+.then((docRef) => {
+  console.log("Documento guardado con ID:", docRef.id);
+  
+  // Realizar acciones adicionales después de guardar los datos
+})
+.catch((error) => {
+  console.error("Error al guardar el documento:", error);
+  // Manejo de errores
+}); */
