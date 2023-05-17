@@ -1,30 +1,16 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
 import { format } from 'date-fns'
-import { collection, addDoc } from 'firebase/firestore';
-import db from '../firestore';
-
-
-
+import { collection, addDoc, doc, updateDoc, setDoc, getDoc, increment } from 'firebase/firestore'
+import db from '../firestore'
 
 export const useActaStore = defineStore('Acta', () => {
-
-  
-
-  /* const idCounter = ref(0);
-
-  function getNextId() {
-    idCounter.value++;
-    return idCounter.value;
-  } */
-
-  const date = ref(new Date());
+  const date = ref(new Date())
   window.addEventListener('load', () => {
-    date.value = new Date();
-  });
+    date.value = new Date()
+  })
 
   const acta = ref({
-    /* id: getNextId(), */
     tipo: '',
     nombre: '',
     rut: '',
@@ -32,12 +18,9 @@ export const useActaStore = defineStore('Acta', () => {
     cargo: '',
     encargado: '',
     motivoSalida: '',
-    /* fecha: new Date() */ //toma la fecha y hora
     fecha: format(date.value, 'dd/MM/yyyy'),
     observaciones: '',
   })
-
-  /* const tipoSeleccionado = ref('') */
 
   const activo = ref({
     tipo: '',
@@ -53,7 +36,7 @@ export const useActaStore = defineStore('Acta', () => {
     dvd: '',
     tecladoMouse: '',
     tipoOtro: '',
-  });
+  })
 
   const listaActivos = ref([])
 
@@ -68,78 +51,56 @@ export const useActaStore = defineStore('Acta', () => {
       motivoSalida: '',
       fecha: format(date.value, 'dd/MM/yyyy'),
       observaciones: '',
-    };
-
+    }
   }
 
-  function enviar() {
-    /* console.log(acta.value)
-    console.log(listaActivos.value) */
-    
-     // Crea un nuevo documento en la colección "actaCollection" con los datos del formulario
-     addDoc(collection(db, 'actaCollection'), {
+  async function enviar() {
+    // Obtén la referencia al contador
+    const counterRef = doc(db, 'counters', 'counterId')
+
+    // Incrementa el contador en 1 y obtén el nuevo valor
+    const newActaId = await updateDoc(counterRef, {
+      actaId: increment(1),
+    }).then(() => {
+      return getDoc(counterRef).then((docSnapshot) => {
+        return docSnapshot.data().actaId
+      })
+    })
+
+    // Crea el nuevo documento utilizando el ID incrementado
+    const nuevoDocumentoRef = doc(collection(db, 'actaCollection'), String(newActaId))
+
+    // Establece los datos del documento
+    await setDoc(nuevoDocumentoRef, {
+      id: newActaId,
+      tipo: acta.value.tipo,
       nombre: acta.value.nombre,
       rut: acta.value.rut,
-      tipo: acta.value.tipo,
-      // ... otros campos del acta.value
+      direccionSelec: acta.value.direccionSelec,
+      cargo: acta.value.cargo,
+      encargado: acta.value.encargado,
+      motivoSalida: acta.value.motivoSalida,
+      fecha: format(date.value, 'dd/MM/yyyy'),
+      observaciones: acta.value.observaciones,
     })
-      .then((docRef) => {
-        console.log('Documento guardado con ID:', docRef.id);
-        limpiarCampos();
-        // Realizar acciones adicionales después de guardar los datos
+
+    await setDoc(nuevoDocumentoRef, datosActa);
+
+    // Crea una colección "activos" dentro del documento del acta
+    const activosCollectionRef = collection(nuevoDocumentoRef, 'activos');
+
+    // Guarda la lista de activos en la subcolección "activos"
+    await Promise.all(
+      listaActivos.value.map(async (activo) => {
+        await addDoc(activosCollectionRef, activo);
       })
-      .catch((error) => {
-        console.error('Error al guardar el documento:', error);
-        // Manejo de errores
-      });
-    
+    );
 
     
- 
-
-  }
- 
-
-  return { /* tipoSeleccionado, */ acta, activo, listaActivos, enviar }
-
-})
-
-
-//counter
-/* import { ref, computed } from 'vue'
-import { defineStore } from 'pinia'
-
-export const useCounterStore = defineStore('counter', () => {
-  const count = ref(0)
-  const doubleCount = computed(() => count.value * 2)
-  function increment() {
-    count.value++
   }
 
-  return { count, doubleCount, increment }
-}) */
-
-
-
-/* db.collection("actaCollection").add({
-  tipo: acta.value.tipo,
-  nombre: acta.value.nombre,
-  rut: acta.value.rut,
-  direccionSelec: acta.value.direccionSelec,
-  cargo: acta.value.cargo,
-  encargado: acta.value.encargado,
-  motivoSalida: acta.value.motivoSalida,
-
-fecha: format(date.value, 'dd/MM/yyyy'),
-observaciones: acta.value.observaciones,
-  // ...otros campos del acta...
+  return { acta, activo, listaActivos, enviar }
 })
-.then((docRef) => {
-  console.log("Documento guardado con ID:", docRef.id);
-  
-  // Realizar acciones adicionales después de guardar los datos
-})
-.catch((error) => {
-  console.error("Error al guardar el documento:", error);
-  // Manejo de errores
-}); */
+
+
+

@@ -210,10 +210,9 @@
 <script setup >
 import { ref, onMounted, watch } from 'vue';
 import { useToast } from 'primevue/usetoast';
-import { ActivoService } from '@/service/ActivoService';
+/* import { ActivoService } from '@/service/ActivoService'; */
 import { useActaStore } from '@/stores/store'
-import db from '../firestore'; 
-
+import { getFirestore, collection, doc, setDoc } from 'firebase/firestore';
  
 const store = useActaStore()
 
@@ -257,7 +256,7 @@ const toast = useToast();
 const agregar = ref(false);
 
 onMounted(() => {
-    ActivoService.getActivos().then((data) => (store.listaActivos = data));
+   /*  ActivoService.getActivos().then((data) => (store.listaActivos = data)); */
 });
 
 
@@ -309,7 +308,7 @@ const guardarActivo = () => {
             severity: 'success', summary: 'Exitoso', detail: 'Activo Agregado', life: 4000
         });
     }
-
+    
     activoDialog.value = false;
     //para que cuando se abra el dialog denuevo esten los campos vacios
     store.activo = {}; 

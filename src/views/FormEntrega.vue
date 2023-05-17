@@ -74,31 +74,16 @@ import { useActaStore } from '@/stores/store'
 
 const store = useActaStore()
 
-/* const acta = ref({}); */
-/* const rut = ref(null);
-const cargo = ref(null); */
-/* const date = ref(new Date());
-window.addEventListener('load', () => {
-    date.value = new Date();
-}); */
 
 store.acta.tipo = "Entrega"
-/* const direccionSelec = ref();*/
 
+/* const direccionSelec = ref();*/
 const direccion = ref([
     { nombre: 'Departamento de Finanzas', code: 'DF' },
     { nombre: 'Servicios Generales', code: 'SV' },
     { nombre: 'Dirección de Gestion Ciudadana', code: 'DGC' },
 
 ]);
-
-/* const acta = ref({
-  nombre: '',
-  rut: '',
-  direccion: '',
-  cargo: '',
-  fecha: ''
-}) */
 
 
 </script>
