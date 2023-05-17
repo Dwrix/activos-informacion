@@ -3,7 +3,7 @@
         <h1>Actas</h1>
         <div class="contenedorDt">
             <div class="card">
-                <DataTable ref="dt" :value="actas" dataKey="id" :paginator="true" :rows="10" :filters="filters"
+                <DataTable ref="dt" :value="actas" dataKey="id" :paginator="true" :rows="5" :filters="filters"
                     paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
                     :rowsPerPageOptions="[5, 10, 25]"
                     currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} activos">
@@ -26,11 +26,27 @@
                     <Column field="fecha" header="Fecha Entrega" sortable style="min-width:5rem"></Column>
                     <Column :exportable="false" style="min-width:8rem" header="Actas">
                         <template #body="slotProps">
-                            <Button @click="exportPDF()" label="Exportar"   outlined rounded class="mr-2" />
-                            
+                            <Button @click="exportPDF()" label="Exportar" outlined rounded class="mr-2" />
+
+                        </template>
+                    </Column>
+
+                    <Column :exportable="false" style="min-width:10rem" header="Activos">
+                        <template #body="slotProps">
+                            <Button @click="mostrarActivos(slotProps.data)" label="Ver Activos" outlined rounded
+                                class="mr-2" />
                         </template>
                     </Column>
                 </DataTable>
+
+                <Dialog v-model:visible.sync="mostrarDialogActivos"
+                    :header="`Activos del acta ${activoSeleccionado && activoSeleccionado.value ? activoSeleccionado.value.id : ''}`">
+                    <ul
+                        v-if="activoSeleccionado && activoSeleccionado.value && activoSeleccionado.value.activos && activoSeleccionado.value.activos.length > 0">
+                        <li v-for="activo in activoSeleccionado.value.activos" :key="activo.id">{{ activo.nombre }}</li>
+                    </ul>
+                    <p v-else>No se encontraron activos asociados.</p>
+                </Dialog>
             </div>
         </div>
     </div>
@@ -38,30 +54,62 @@
 
 <script setup >
 import { ref, onMounted } from 'vue';
-import { ListSolicitudes } from '@/service/ListSolicitudes';
+import { collection, getDocs, doc, query, where } from 'firebase/firestore'
 import { FilterMatchMode } from 'primevue/api';
 import jsPDF from "jspdf";
+import db from '@/firestore';
+
 
 const filters = ref({
-    'global': {value: null, matchMode: FilterMatchMode.CONTAINS},
+    'global': { value: null, matchMode: FilterMatchMode.CONTAINS },
 });
 
-onMounted(() => {
+/* onMounted(() => {
     ListSolicitudes.getSolicitudesData().then((data) => (actas.value = data));
+}); */
+
+/* const selectedActa = ref(null); */
+const actas = ref([]);
+const mostrarDialogActivos = ref(false);
+const activoSeleccionado = ref({});
+
+onMounted(async () => {
+    await obtenerActas();
 });
 
-const selectedActa = ref(null);
-const actas = ref();
+
+
+async function obtenerActas() {
+    const querySnapshot = await getDocs(collection(db, 'actaCollection'));
+    actas.value = await Promise.all(querySnapshot.docs.map(async (doc) => {
+        const acta = doc.data();
+        const activosQuerySnapshot = await getDocs(collection(db, 'actaCollection', doc.id, 'activos'));
+        acta.activos = activosQuerySnapshot.docs.map((activoDoc) => activoDoc.data());
+        return acta;
+    }));
+}
+
+async function mostrarActivos(acta) {
+    console.log(acta)
+    // Verifica si hay activos asociados en el objeto acta
+    if (acta.activos && acta.activos.length > 0) {
+        activoSeleccionado.value = acta;
+        mostrarDialogActivos.value = true;
+        console.log('aca')
+    } else {
+        console.log('No se encontraron activos asociados');
+    }
+}
 
 function exportPDF() {
-  // Crea un nuevo documento PDF
-  const doc = new jsPDF();
+    // Crea un nuevo documento PDF
+    const doc = new jsPDF();
 
-  // Agrega el contenido del PDF
-  doc.text("Contenido del PDF", 10, 10); // Reemplaza "Contenido del PDF" con la información que deseas exportar
+    // Agrega el contenido del PDF
+    doc.text("Contenido del PDF", 10, 10); // Reemplaza "Contenido del PDF" con la información que deseas exportar
 
-  // Descarga el PDF
-  doc.save("archivo.pdf");
+    // Descarga el PDF
+    doc.save("archivo.pdf");
 };
 
 </script>

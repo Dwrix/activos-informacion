@@ -208,11 +208,11 @@
 </template>
 
 <script setup >
-import { ref, onMounted, watch } from 'vue';
+import { ref, onMounted } from 'vue';
 import { useToast } from 'primevue/usetoast';
 /* import { ActivoService } from '@/service/ActivoService'; */
 import { useActaStore } from '@/stores/store'
-import { getFirestore, collection, doc, setDoc } from 'firebase/firestore';
+
  
 const store = useActaStore()
 
@@ -380,10 +380,10 @@ const eliminarActivosSelec = () => {
 const enviar = () => {
     store.enviar()
     /* console.log(store.listaActivos);  */
-    store.listaActivos = [];
+    /* store.listaActivos = []; */
     /* dt.value = ''; */
 
-    toast.add({ severity: 'success', summary: 'Exitoso', detail: 'Se ha generado el Acta', life: 4000 });
+   /*  toast.add({ severity: 'success', summary: 'Exitoso', detail: 'Se ha generado el Acta', life: 4000 }); */
     /* store.listaActivos = [];  */
 
 };

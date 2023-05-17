@@ -5,6 +5,17 @@ import { collection, addDoc, doc, updateDoc, setDoc, getDoc, increment } from 'f
 import db from '../firestore'
 
 export const useActaStore = defineStore('Acta', () => {
+
+  const activoSeleccionado = ref({});
+
+  function setActivoSeleccionado(activo) {
+    activoSeleccionado.value = activo;
+  }
+
+  function getActivoSeleccionado() {
+    return activoSeleccionado.value;
+  }
+
   const date = ref(new Date())
   window.addEventListener('load', () => {
     date.value = new Date()
@@ -20,6 +31,7 @@ export const useActaStore = defineStore('Acta', () => {
     motivoSalida: '',
     fecha: format(date.value, 'dd/MM/yyyy'),
     observaciones: '',
+    activos: [] 
   })
 
   const activo = ref({
@@ -51,8 +63,26 @@ export const useActaStore = defineStore('Acta', () => {
       motivoSalida: '',
       fecha: format(date.value, 'dd/MM/yyyy'),
       observaciones: '',
+      activos: [] 
     }
+    activo.value = {
+      tipo: '',
+      marca: '',
+      modelo: '',
+      serie: '',
+      numInv: '',
+      nombreEquipo: '',
+      procesador: '',
+      ram: '',
+      discoDuro: '',
+      tarjetavideo: '',
+      dvd: '',
+      tecladoMouse: '',
+      tipoOtro: '',
+    }
+    listaActivos.value = []; 
   }
+
 
   async function enviar() {
     // Obtén la referencia al contador
@@ -69,8 +99,9 @@ export const useActaStore = defineStore('Acta', () => {
 
     // Crea el nuevo documento utilizando el ID incrementado
     const nuevoDocumentoRef = doc(collection(db, 'actaCollection'), String(newActaId))
-
+    
     // Establece los datos del documento
+    //await para garantizar que los doc se establezcan y se agegen correctamente antes de seguir
     await setDoc(nuevoDocumentoRef, {
       id: newActaId,
       tipo: acta.value.tipo,
@@ -84,7 +115,6 @@ export const useActaStore = defineStore('Acta', () => {
       observaciones: acta.value.observaciones,
     })
 
-    await setDoc(nuevoDocumentoRef, datosActa);
 
     // Crea una colección "activos" dentro del documento del acta
     const activosCollectionRef = collection(nuevoDocumentoRef, 'activos');
@@ -96,10 +126,14 @@ export const useActaStore = defineStore('Acta', () => {
       })
     );
 
-    
+    console.log('se guardo el acta');
+    console.log(listaActivos.value);
+    console.log(acta.value);
+
+    limpiarCampos()
   }
 
-  return { acta, activo, listaActivos, enviar }
+  return { acta, activo, listaActivos, enviar, setActivoSeleccionado, getActivoSeleccionado }
 })
 
 
