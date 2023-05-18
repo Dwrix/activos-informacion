@@ -5,8 +5,8 @@
             <div class="card">
                 <DataTable ref="dt" :value="actas" dataKey="id" :paginator="true" :rows="5" :filters="filters"
                     paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
-                    :rowsPerPageOptions="[5, 10, 25]"
-                    currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} activos">
+                    :rowsPerPageOptions="[5, 10, 25, 50]"
+                    currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} Actas en total">
 
                     <template #header>
                         <div class="flex flex-wrap gap-2 align-items-center justify-content-between">
@@ -21,43 +21,92 @@
                     <Column field="id" header="id" sortable style="min-width:5rem"></Column>
                     <!-- <Column field="nombre" header="Nombre Equipo" sortable style="min-width:5rem"></Column> -->
                     <Column field="nombre" header="Nombre" sortable style="min-width:5rem"></Column>
-                    <Column field="depto" header="Departamento" sortable style="min-width:5rem"></Column>
+                    <Column field="direccionSelec.nombre" header="Departamento" sortable style="min-width:5rem"></Column>
                     <Column field="tipo" header="Tipo" sortable style="min-width:5rem"></Column>
                     <Column field="fecha" header="Fecha Entrega" sortable style="min-width:5rem"></Column>
-                    <Column :exportable="false" style="min-width:8rem" header="Actas">
-                        <template #body="slotProps">
-                            <Button @click="exportPDF()" label="Exportar" outlined rounded class="mr-2" />
-
-                        </template>
-                    </Column>
-
                     <Column :exportable="false" style="min-width:10rem" header="Activos">
                         <template #body="slotProps">
                             <Button @click="mostrarActivos(slotProps.data)" label="Ver Activos" outlined rounded
                                 class="mr-2" />
                         </template>
                     </Column>
+                    <Column :exportable="false" style="min-width:8rem" header="Actas">
+                        <template #body>
+                            <Button label="Exportar" icon="pi pi-download" text class="p-button-success" @click="exportarPDF" />
+
+                        </template>
+                    </Column>
+
+                    
                 </DataTable>
 
-                <Dialog v-model:visible.sync="mostrarDialogActivos" :style="{ width: '500px' }"
-                :header="`Activos del acta ${activoSeleccionado ? activoSeleccionado.id : ''}`">
-                    <ul v-if="activoSeleccionado && activoSeleccionado.activos && activoSeleccionado.activos.length > 0">
-                        <li v-for="activo in activoSeleccionado.activos" :key="activo.id">{{ activo.tipo }}</li>
-                    </ul>
+                <Dialog v-model:visible.sync="mostrarDialogActivos" :modal="true"
+                    :header="`Activos del Acta ${activoSeleccionado && activoSeleccionado ? activoSeleccionado.id : ''}`"
+                    ref="dialogActa">
+                    <div v-if="activoSeleccionado && activoSeleccionado.activos && activoSeleccionado.activos.length > 0">
+
+                        <DataTable v-if="tieneOtrosActivos(activoSeleccionado.activos)"
+                            :value="filtrarOtrosActivos(activoSeleccionado.activos)" dataKey="id"
+                            :style="{ width: '500px' }">
+                            <!-- Columnas del DataTable para otros activos -->
+                            <Column field="id" header="ID"></Column>
+                            <Column field="tipo" header="Tipo"></Column>
+                            <Column field="marca" header="Marca"></Column>
+                            <Column field="modelo" header="Modelo"></Column>
+                            <Column field="serie" header="Serie"></Column>
+                            <Column field="numInv" header="NumInv"></Column>
+                        </DataTable>
+
+                        <DataTable v-if="tieneComputadorEscritorioPortatil(activoSeleccionado.activos)"
+                            :value="filtrarComputadorEscritorioPortatil(activoSeleccionado.activos)" dataKey="id">
+                            <!-- Columnas del DataTable para Computador Escritorio y Portatil -->
+                            <h4>Equipamiento Computacional</h4>
+                            <Column field="id" header="ID"></Column>
+                            <Column field="nombreEquipo" header="Nombre"></Column>
+                            <Column field="tipo" header="Tipo"></Column>
+                            <Column field="marca" header="Marca"></Column>
+                            <Column field="modelo" header="Modelo"></Column>
+                            <Column field="serie" header="Serie"></Column>
+                            <Column field="numInv" header="NumInv"></Column>
+                            <Column field="procesador" header="Procesador"></Column>
+                            <Column field="ram" header="RAM"></Column>
+                            <Column field="discoDuro" header="Disco Duro"></Column>
+                            <Column field="dvd" header="Lector/Grab DVD"></Column>
+                            <Column field="tecladoMouse" header="Teclado Y Mouse"></Column>
+
+                        </DataTable>
+
+
+                    </div>
                     <p v-else>No se encontraron activos asociados.</p>
+
+                    <template #footer>
+                        <Button label="Cerrar" icon="pi pi-times" text @click="cerrarDialog" />
+                        
+                    </template>
                 </Dialog>
+                <!-- prueba -->
+
             </div>
         </div>
+
+
     </div>
+    <Toast />
 </template>
 
 <script setup >
 import { ref, onMounted } from 'vue';
-import { collection, getDocs, doc, query, where } from 'firebase/firestore'
+import { collection, getDocs } from 'firebase/firestore'
 import { FilterMatchMode } from 'primevue/api';
-import jsPDF from "jspdf";
+import jsPDF from 'jspdf';
 import db from '@/firestore';
+import { useToast } from 'primevue/usetoast';
+import html2pdf from 'html2pdf.js';
 
+
+
+const toast = useToast();
 
 const filters = ref({
     'global': { value: null, matchMode: FilterMatchMode.CONTAINS },
@@ -67,15 +116,31 @@ const filters = ref({
     ListSolicitudes.getSolicitudesData().then((data) => (actas.value = data));
 }); */
 
+
 /* const selectedActa = ref(null); */
 const actas = ref([]);
 const mostrarDialogActivos = ref(false);
 const activoSeleccionado = ref({});
 
+const dialogActa = ref(null);
+
 onMounted(async () => {
     await obtenerActas();
 });
 
+const exportarPDF = () => {
+  try {
+    const dialogElement = dialogActa.value.$el;
+    const dialogHTML = dialogElement.innerHTML;
+
+    const element = document.createElement('div');
+    element.innerHTML = dialogHTML;
+
+    html2pdf().from(element).save('acta.pdf');
+  } catch (error) {
+    console.error('Error al exportar a PDF:', error);
+  }
+};
 
 
 async function obtenerActas() {
@@ -86,58 +151,79 @@ async function obtenerActas() {
         acta.activos = activosQuerySnapshot.docs.map((activoDoc) => activoDoc.data());
         return acta;
     }));
+
+    //invierte el array PERMANENTEMENTE para que la primera acta de la lista sea la ultima ingresada
+    actas.value.reverse();
 }
 
 
 async function mostrarActivos(acta) {
 
-// Verifica si hay activos asociados en el objeto acta
-if (acta.activos && acta.activos.length > 0) {
-    console.log(acta)
-    activoSeleccionado.value = acta;
-    mostrarDialogActivos.value = true;
+    /* expandedRowKeys.value = []; */
+    // Verifica si hay activos asociados en el objeto acta
+    if (acta.activos && acta.activos.length > 0) {
 
-} else {
-    console.log('No se encontraron activos asociados');
+        activoSeleccionado.value = acta;
+        mostrarDialogActivos.value = true;
+
+
+    } else {
+        toast.add({ severity: 'error', summary: 'Error', detail: 'No se encontraron Activos asociados', life: 4000 });
+        return;
+    }
 }
+
+function tieneComputadorEscritorioPortatil(activos) {
+    return activos.some(activo => activo.tipo === 'Computador Escritorio' || activo.tipo === 'Computador Portatil');
 }
 
-function exportPDF() {
-    // Crea un nuevo documento PDF
-    const doc = new jsPDF();
+function filtrarComputadorEscritorioPortatil(activos) {
+    return activos.filter(activo => activo.tipo === 'Computador Escritorio' || activo.tipo === 'Computador Portatil');
+}
 
-    // Agrega el contenido del PDF
-    doc.text("Contenido del PDF", 10, 10); // Reemplaza "Contenido del PDF" con la información que deseas exportar
+function tieneOtrosActivos(activos) {
+    return activos.some(activo => activo.tipo !== 'Computador Escritorio' && activo.tipo !== 'Computador Portatil');
+}
 
-    // Descarga el PDF
-    doc.save("archivo.pdf");
+function filtrarOtrosActivos(activos) {
+    return activos.filter(activo => activo.tipo !== 'Computador Escritorio' && activo.tipo !== 'Computador Portatil');
+}
+
+const cerrarDialog = () => {
+    mostrarDialogActivos.value = false;
+
 };
+
 
 </script>
 
 <style scoped>
 .contenedorSol {
     font-size: small;
-    width: 1000px;
+    width: 1050px;
     height: auto;
     padding: 20px;
     border-radius: 20px;
-    background: rgb(223, 223, 223);
+    /* background: rgb(223, 223, 223); */
     margin-left: 180px;
     margin-top: -20px;
 }
 
 
 h1,
-h2 {
+h2,
+h4
+ {
     text-align: center;
+
 }
 
 .contenedorDt {
-    width: 950px;
-    height: 500px;
+    font-size: small;
+    width: auto;
+    height: auto;
     border-radius: 20px;
     background: rgb(236, 236, 236);
-    padding-left: 20px;
+    padding: 20px;
 }
 </style>

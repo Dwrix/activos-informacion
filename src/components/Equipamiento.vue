@@ -116,8 +116,8 @@
 
 
                     <div class="field">
-                        <label for="nombre">Nombre Equipo</label>
-                        <InputText id="nombre" v-model.trim="store.activo.nombreEquipo" required="true"
+                        <label for="nombreEquipo">Nombre Equipo</label>
+                        <InputText id="nombreEquipo" v-model.trim="store.activo.nombreEquipo" required="true"
                             :class="{ 'p-invalid': agregar && !store.activo.nombreEquipo }" style="display: block;" />
                         <small class="p-error" v-if="agregar && !store.activo.nombreEquipo">nombre es obligatorio.</small>
                     </div>
