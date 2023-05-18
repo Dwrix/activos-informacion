@@ -39,11 +39,10 @@
                     </Column>
                 </DataTable>
 
-                <Dialog v-model:visible.sync="mostrarDialogActivos"
-                    :header="`Activos del acta ${activoSeleccionado && activoSeleccionado.value ? activoSeleccionado.value.id : ''}`">
-                    <ul
-                        v-if="activoSeleccionado && activoSeleccionado.value && activoSeleccionado.value.activos && activoSeleccionado.value.activos.length > 0">
-                        <li v-for="activo in activoSeleccionado.value.activos" :key="activo.id">{{ activo.nombre }}</li>
+                <Dialog v-model:visible.sync="mostrarDialogActivos" :style="{ width: '500px' }"
+                :header="`Activos del acta ${activoSeleccionado ? activoSeleccionado.id : ''}`">
+                    <ul v-if="activoSeleccionado && activoSeleccionado.activos && activoSeleccionado.activos.length > 0">
+                        <li v-for="activo in activoSeleccionado.activos" :key="activo.id">{{ activo.tipo }}</li>
                     </ul>
                     <p v-else>No se encontraron activos asociados.</p>
                 </Dialog>
@@ -89,16 +88,18 @@ async function obtenerActas() {
     }));
 }
 
+
 async function mostrarActivos(acta) {
+
+// Verifica si hay activos asociados en el objeto acta
+if (acta.activos && acta.activos.length > 0) {
     console.log(acta)
-    // Verifica si hay activos asociados en el objeto acta
-    if (acta.activos && acta.activos.length > 0) {
-        activoSeleccionado.value = acta;
-        mostrarDialogActivos.value = true;
-        console.log('aca')
-    } else {
-        console.log('No se encontraron activos asociados');
-    }
+    activoSeleccionado.value = acta;
+    mostrarDialogActivos.value = true;
+
+} else {
+    console.log('No se encontraron activos asociados');
+}
 }
 
 function exportPDF() {
