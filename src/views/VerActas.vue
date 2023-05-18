@@ -31,13 +31,13 @@
                         </template>
                     </Column>
                     <Column :exportable="false" style="min-width:8rem" header="Actas">
-                        <template #body>
-                            <Button label="Exportar" icon="pi pi-download" text class="p-button-success" @click="exportarPDF" />
-
+                        <template #body="slotProps">
+                            <Button label="Exportar" icon="pi pi-download" text class="p-button-success"
+                                @click="exportarPDF(slotProps.data)" />
                         </template>
                     </Column>
 
-                    
+
                 </DataTable>
 
                 <Dialog v-model:visible.sync="mostrarDialogActivos" :modal="true"
@@ -82,7 +82,7 @@
 
                     <template #footer>
                         <Button label="Cerrar" icon="pi pi-times" text @click="cerrarDialog" />
-                        
+
                     </template>
                 </Dialog>
                 <!-- prueba -->
@@ -99,7 +99,6 @@
 import { ref, onMounted } from 'vue';
 import { collection, getDocs } from 'firebase/firestore'
 import { FilterMatchMode } from 'primevue/api';
-import jsPDF from 'jspdf';
 import db from '@/firestore';
 import { useToast } from 'primevue/usetoast';
 import html2pdf from 'html2pdf.js';
@@ -128,14 +127,18 @@ onMounted(async () => {
     await obtenerActas();
 });
 
-const exportarPDF = () => {
+const exportarPDF = (rowData) => {
   try {
-    const dialogElement = dialogActa.value.$el;
-    const dialogHTML = dialogElement.innerHTML;
-
     const element = document.createElement('div');
-    element.innerHTML = dialogHTML;
-
+    element.innerHTML = `
+      <h3>ID: ${rowData.id}</h3>
+      <p>Nombre: ${rowData.nombre}</p>
+      <p>Departamento: ${rowData.direccionSelec.nombre}</p>
+      <p>Tipo: ${rowData.tipo}</p>
+      <p>Fecha Entrega: ${rowData.nombreEquipo}</p>
+      <!-- Agrega aquí cualquier otra información que desees incluir en el PDF -->
+    `;
+  
     html2pdf().from(element).save('acta.pdf');
   } catch (error) {
     console.error('Error al exportar a PDF:', error);
@@ -212,8 +215,7 @@ const cerrarDialog = () => {
 
 h1,
 h2,
-h4
- {
+h4 {
     text-align: center;
 
 }
