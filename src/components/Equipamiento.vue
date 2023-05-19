@@ -383,7 +383,7 @@ const enviar = () => {
     /* store.listaActivos = []; */
     /* dt.value = ''; */
 
-   /*  toast.add({ severity: 'success', summary: 'Exitoso', detail: 'Se ha generado el Acta', life: 4000 }); */
+    toast.add({ severity: 'success', summary: 'Exitoso', detail: 'Se ha generado el Acta', life: 4000 }); 
     /* store.listaActivos = [];  */
 
 };

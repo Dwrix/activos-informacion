@@ -1,13 +1,13 @@
 <template>
     <div class="contenedorSol">
-        <h1>Actas</h1>
+
         <div class="contenedorDt">
             <div class="card">
                 <DataTable ref="dt" :value="actas" dataKey="id" :paginator="true" :rows="5" :filters="filters"
                     paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
                     :rowsPerPageOptions="[5, 10, 25, 50]"
                     currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} Actas en total">
-
+                    <h2>Actas</h2>
                     <template #header>
                         <div class="flex flex-wrap gap-2 align-items-center justify-content-between">
                             <span class="p-input-icon-left">
@@ -18,12 +18,13 @@
                     </template>
 
                     <Column selectionMode="multiple" style="width: 3rem" :exportable="false"></Column>
-                    <Column field="id" header="id" sortable style="min-width:5rem"></Column>
+                    <Column field="id" header="id" :sortable="true" style="min-width:5rem" :sort-function="sortById">
+                    </Column>
                     <!-- <Column field="nombre" header="Nombre Equipo" sortable style="min-width:5rem"></Column> -->
                     <Column field="nombre" header="Nombre" sortable style="min-width:5rem"></Column>
                     <Column field="direccionSelec.nombre" header="Departamento" sortable style="min-width:5rem"></Column>
                     <Column field="tipo" header="Tipo" sortable style="min-width:5rem"></Column>
-                    <Column field="fecha" header="Fecha Entrega" sortable style="min-width:5rem"></Column>
+                    <Column field="fecha" header="Fecha Acta" sortable style="min-width:5rem"></Column>
                     <Column :exportable="false" style="min-width:10rem" header="Activos">
                         <template #body="slotProps">
                             <Button @click="mostrarActivos(slotProps.data)" label="Ver Activos" outlined rounded
@@ -115,7 +116,7 @@ const filters = ref({
     ListSolicitudes.getSolicitudesData().then((data) => (actas.value = data));
 }); */
 
-
+const sortById = (value1, value2) => value2 - value1;
 /* const selectedActa = ref(null); */
 const actas = ref([]);
 const mostrarDialogActivos = ref(false);
@@ -127,23 +128,145 @@ onMounted(async () => {
     await obtenerActas();
 });
 
-const exportarPDF = (rowData) => {
-  try {
-    const element = document.createElement('div');
-    element.innerHTML = `
-      <h3>ID: ${rowData.id}</h3>
-      <p>Nombre: ${rowData.nombre}</p>
-      <p>Departamento: ${rowData.direccionSelec.nombre}</p>
-      <p>Tipo: ${rowData.tipo}</p>
-      <p>Fecha Entrega: ${rowData.nombreEquipo}</p>
-      <!-- Agrega aquí cualquier otra información que desees incluir en el PDF -->
+async function exportarPDF(rowData) {
+    try {
+        const element = document.createElement('div');
+        
+        // Construye la tabla de activos para Computador Escritorio y Portátil
+        let computadorTable = '';
+        if (tieneComputadorEscritorioPortatil(rowData.activos)) {
+            computadorTable = `
+        
+        <table style="border-collapse: collapse; margin-top: 10px; margin-left: 10px;">
+          <caption>Equipamiento Computacional</caption>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Nombre</th>
+              <th>Tipo</th>
+              <th>Marca</th>
+              <th>Modelo</th>
+              <th>Serie</th>
+              <th>NumInv</th>
+              <th>Procesador</th>
+              <th>RAM</th>
+              <th>Disco Duro</th>
+              <th>Lector/Grab DVD</th>
+              <th>Teclado y Mouse</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${filtrarComputadorEscritorioPortatil(rowData.activos)
+                    .map(activo => `
+                <tr>
+                  <td>${activo.id}</td>
+                  <td>${activo.nombreEquipo}</td>
+                  <td>${activo.tipo}</td>
+                  <td>${activo.marca}</td>
+                  <td>${activo.modelo}</td>
+                  <td>${activo.serie}</td>
+                  <td>${activo.numInv}</td>
+                  <td>${activo.procesador}</td>
+                  <td>${activo.ram}</td>
+                  <td>${activo.discoDuro}</td>
+                  <td>${activo.dvd}</td>
+                  <td>${activo.tecladoMouse}</td>
+                </tr>
+              `)
+                    .join('')}
+          </tbody>
+        </table>
+      `;
+        }
+
+        // Construye la tabla de otros activos
+        let otrosActivosTable = '';
+        if (tieneOtrosActivos(rowData.activos)) {
+            otrosActivosTable = `
+       
+        <table style="border-collapse: collapse; margin-top: 10px; margin-left: 10px;">
+          <caption>Periféricos</caption>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Tipo</th>
+              <th>Marca</th>
+              <th>Modelo</th>
+              <th>Serie</th>
+              <th>NumInv</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${filtrarOtrosActivos(rowData.activos)
+                    .map(activo => `
+                <tr>
+                  <td>${activo.id}</td>
+                  <td>${activo.tipo}</td>
+                  <td>${activo.marca}</td>
+                  <td>${activo.modelo}</td>
+                  <td>${activo.serie}</td>
+                  <td>${activo.numInv}</td>
+                </tr>
+              `)
+                    .join('')}
+          </tbody>
+        </table>
+      `;
+        }
+
+        element.innerHTML = `
+      <table style="border-collapse: collapse; margin-top: 10px; margin-left: 10px;">
+        <tr>
+          <td>ID:</td>
+          <td>${rowData.id}</td>
+        </tr>
+        <tr>
+          <td>Nombre:</td>
+          <td>${rowData.nombre}</td>
+        </tr>
+        <tr>
+          <td>Departamento:</td>
+          <td>${rowData.direccionSelec.nombre}</td>
+        </tr>
+        <tr>
+          <td>Tipo:</td>
+          <td>${rowData.tipo}</td>
+        </tr>
+        <tr>
+          <td>Fecha Acta:</td>
+          <td>${rowData.fecha}</td>
+        </tr>
+      </table>
+      <br>
+      ${computadorTable}
+      ${otrosActivosTable}
+      <br>
+
+
+    <style>
+        table tr th, table tr td {
+            padding: 10px 5px 5px 5px;
+            border: 1px solid;
+        }
+        table caption {
+          font-weight: bold;
+        }
+        th {
+          font-weight: bold;
+        }
+        body {
+            color: #000000; 
+        }
+        
+    </style>
+      
     `;
-  
-    html2pdf().from(element).save('acta.pdf');
-  } catch (error) {
-    console.error('Error al exportar a PDF:', error);
-  }
-};
+
+        html2pdf().from(element).save(`Acta_${rowData.id}.pdf`);
+    } catch (error) {
+        console.error('Error al exportar a PDF:', error);
+    }
+}
 
 
 async function obtenerActas() {

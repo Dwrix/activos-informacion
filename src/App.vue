@@ -1,29 +1,26 @@
-
 <template>
-  <!-- <header>
-  
-    </header> -->
-    
   <div class="contenedorNav">
-    <nav>
-      <RouterLink to="/" exact activeClass="active" class="pi pi-home"> Home</RouterLink>
-      <RouterLink to="/VerSolicitudes" exact activeClass="active" class="pi pi-file"> Ver Solicitudes</RouterLink>
-      <RouterLink to="/Entrega" exact activeClass="active" class="pi pi-file"> Entrega</RouterLink>
-      <RouterLink to="/Devolucion" exact activeClass="active" class="pi pi-file"> Devolución</RouterLink>
-      <RouterLink to="/OrdenSalida" exact activeClass="active" class="pi pi-file"> Orden de Salida</RouterLink>
-      <RouterLink to="/VerActas" exact activeClass="active" class="pi pi-file"> Ver Actas</RouterLink>
-    </nav>
-  </div>  
+    <Menu :model="items"></Menu>
+  </div>
   
   <RouterView />
-
 </template>
 
 <script setup>
 
-import { RouterLink, RouterView, } from 'vue-router'
-/* import db from '@/firestore';
-import { collection, addDoc } from "firebase/firestore";  */
+import { RouterView, } from 'vue-router'
+import Menu from 'primevue/menu';
+import { ref } from 'vue';
+
+
+const items = ref([
+  { label: 'Home', icon: 'pi pi-home', to: '/' },
+  { label: 'Ver Solicitudes', icon: 'pi pi-file', to: '/VerSolicitudes' },
+  { label: 'Entrega', icon: 'pi pi-file', to: '/Entrega' },
+  { label: 'Devolución', icon: 'pi pi-file', to: '/Devolucion' },
+  { label: 'Orden de Salida', icon: 'pi pi-file', to: '/OrdenSalida' },
+  { label: 'Ver Actas', icon: 'pi pi-file', to: '/VerActas' }
+]);
 
 </script>
 
@@ -43,30 +40,7 @@ import { collection, addDoc } from "firebase/firestore";  */
   
 }
 
-/* nav a.router-link-exact-active {
-  color: var(--color-text);
-}
 
-nav a.router-link-exact-active:hover {
-  background-color: transparent;
-} */
-
-nav a {
-  display: block;
-  margin: 0.5rem 0;
-  padding: 0.5rem;
-  text-align: left;
-  border-radius: 0.25rem;
-  margin-left: 15px;
-}
-
-nav a.active {
-  background-color: #59585abe;
-  color: #fff;
-}
-nav a:first-of-type {
-  border: 0;
-}
 
 /* @media (min-width: 1024px) {
   header {

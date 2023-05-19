@@ -4,6 +4,8 @@ import { format } from 'date-fns'
 import { collection, addDoc, doc, updateDoc, setDoc, getDoc, increment } from 'firebase/firestore'
 import db from '../firestore'
 
+
+
 export const useActaStore = defineStore('Acta', () => {
 
   const activoSeleccionado = ref({});
@@ -97,8 +99,12 @@ export const useActaStore = defineStore('Acta', () => {
       })
     })
 
+    //  convertir el valor de `newActaId` a un número, para que firestore lo detecte como un numero 
+    // y no alfanumerico y arreglar el problema de la lista
+    const newActaIdNumber = Number(newActaId);
+
     // Crea el nuevo documento utilizando el ID incrementado
-    const nuevoDocumentoRef = doc(collection(db, 'actaCollection'), String(newActaId))
+    const nuevoDocumentoRef = doc(collection(db, 'actaCollection'), String(newActaIdNumber))
     
     // Establece los datos del documento
     //await para garantizar que los doc se establezcan y se agegen correctamente antes de seguir
@@ -126,10 +132,11 @@ export const useActaStore = defineStore('Acta', () => {
       })
     );
 
-    console.log('se guardo el acta');
+    /* console.log('se guardo el acta');
     console.log(listaActivos.value);
-    console.log(acta.value);
-
+    console.log(acta.value); */
+    
+      
     limpiarCampos()
   }
 
