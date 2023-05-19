@@ -158,6 +158,7 @@ async function exportarPDF(rowData) {
           <tbody>
             ${filtrarComputadorEscritorioPortatil(rowData.activos)
                     .map(activo => `
+                    
                 <tr>
                   <td>${activo.id}</td>
                   <td>${activo.nombreEquipo}</td>
@@ -183,7 +184,7 @@ async function exportarPDF(rowData) {
         let otrosActivosTable = '';
         if (tieneOtrosActivos(rowData.activos)) {
             otrosActivosTable = `
-       
+        
         <table style="border-collapse: collapse; margin-top: 10px; margin-left: 10px;">
           <caption>Periféricos</caption>
           <thead>
