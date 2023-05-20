@@ -24,6 +24,7 @@
                     <Column field="nombre" header="Nombre" sortable style="min-width:5rem"></Column>
                     <Column field="direccionSelec.nombre" header="Departamento" sortable style="min-width:5rem"></Column>
                     <Column field="tipo" header="Tipo" sortable style="min-width:5rem"></Column>
+                    <Column field="encargado" header="Encargado" sortable style="min-width:5rem"></Column>
                     <Column field="fecha" header="Fecha Acta" sortable style="min-width:5rem"></Column>
                     <Column :exportable="false" style="min-width:10rem" header="Activos">
                         <template #body="slotProps">
@@ -76,7 +77,19 @@
                             <Column field="tecladoMouse" header="Teclado Y Mouse"></Column>
 
                         </DataTable>
-
+                        <br>
+                        <div>
+                            <div v-if="activoSeleccionado.tipo === 'Orden de Salida'">
+                                <strong>Motivo Salida: </strong>
+                                <InputText v-model="activoSeleccionado.motivoSalida" readonly
+                                    :size="activoSeleccionado.motivoSalida.length || 50" />
+                            </div><br>
+                            <div>
+                                <strong>Observaciones:</strong>
+                                <InputText v-model="activoSeleccionado.observaciones" readonly
+                                    :size="activoSeleccionado.motivoSalida.length || 50" />
+                            </div>
+                        </div>
 
                     </div>
                     <p v-else>No se encontraron activos asociados.</p>
@@ -131,7 +144,7 @@ onMounted(async () => {
 async function exportarPDF(rowData) {
     try {
         const element = document.createElement('div');
-        
+
         // Construye la tabla de activos para Computador Escritorio y Portátil
         let computadorTable = '';
         if (tieneComputadorEscritorioPortatil(rowData.activos)) {
@@ -327,8 +340,8 @@ const cerrarDialog = () => {
 <style scoped>
 .contenedorSol {
     font-size: small;
-    width: 1050px;
-    height: auto;
+    width: 1300px;
+    height: auto; 
     padding: 20px;
     border-radius: 20px;
     /* background: rgb(223, 223, 223); */
@@ -346,8 +359,8 @@ h4 {
 
 .contenedorDt {
     font-size: small;
-    width: auto;
-    height: auto;
+    /* width: auto;
+    height: auto; */
     border-radius: 20px;
     background: rgb(236, 236, 236);
     padding: 20px;

@@ -43,7 +43,10 @@
                     <InputText id="cargo" v-model="store.acta.cargo" />
                     <label for="cargo">Cargo</label>
                 </span><br>
-
+                <span class="p-float-label">
+                    <InputText id="encargado" v-model="store.acta.encargado" />
+                    <label for="encargado">Encargado</label>
+                </span><br>
                 <Calendar v-model="store.acta.fecha" showIcon disabled /><br><br>
 
                 <span class="p-float-label">

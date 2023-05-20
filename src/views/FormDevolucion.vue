@@ -45,8 +45,8 @@
                 <label for="cargo">Cargo</label>
             </span><br>
             <span class="p-float-label">
-                <InputText id="encargado" v-model="store.acta.encargado" />
-                <label for="encargado">Persona que recibe</label>
+                    <InputText id="encargado" v-model="store.acta.encargado" />
+                    <label for="encargado">Encargado</label>
             </span><br>
 
             <Calendar v-model="store.acta.fecha" showIcon disabled /><br><br>
