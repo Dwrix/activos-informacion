@@ -109,61 +109,47 @@
                             :class="{ 'p-invalid': agregar && !store.activo.numInv }" style="display: block;" />
                     </div><br>
 
-                    <div class="ContenedorPcs"
-                        v-if="store.activo.tipo === 'Computador Escritorio' || store.activo.tipo === 'Computador Portatil'">
+                    <div class="ContOfiSeguridad"
+                    v-if="store.acta.tipo === 'Entrega' && (store.activo.tipo === 'Computador Escritorio' || store.activo.tipo === 'Computador Portatil')">
                         <div class="ofiSeguridad">
                             <label> S.O.- OFIMÁTICA-SEGURIDAD </label><br>
 
-                            <div class="field-radiobutton col-6">
-                                <label> MacOS : </label>
-                                <RadioButton id="macOS" name="macOS" value="Si" v-model="store.activo.macOS" />
-                                
-                                
-                            </div>
-                            <div class="field-radiobutton col-6">
-                                <label> MS OFFICE : </label>
-                                <label for="msOffice"> </label>
-                                <RadioButton id="msOffice" name="msOffice" value="Si" v-model="store.activo.msOffice" />
-                              
-                                
-                            </div>
-                            <div class="field-radiobutton col-6">
-                                <label> MS PROYECT : </label>
-                                <label for="msProyect"> </label>
-                                <RadioButton id="msProyect" name="msProyect" value="Si" v-model="store.activo.msProyect" />
-                               
-                                
-                            </div>
-                            <div class="field-radiobutton col-6">
-                                <label> ACROBAT READER : </label>
-                                <label for="acrobatReader"></label>
-                                <RadioButton id="acrobatReader" name="acrobatReader" value="Si" v-model="store.activo.acrobatReader" />
-                               
-                                
-                            </div>
-                            <div class="field-radiobutton col-6">
-                                <label> SQL SERVER : </label>
-                                <label for="sqlServer"> </label>
-                                <RadioButton id="sqlServer" name="sqlServer" value="Si" v-model="store.activo.sqlServer" />
-                                
-                                
-                            </div>
-                            <div class="field-radiobutton col-6">
-                                <label> PHOTOSHOP : </label>
-                                <label for="photoshop"></label>
-                                <RadioButton id="photoshop" name="photoshop" value="Si" v-model="store.activo.photoshop" />
-                                
-                                
-                            </div>
-                            <div class="field-radiobutton col-6">
-                                <label> ANTIVIRUS : </label>
-                                <label for="av"></label>
-                                <RadioButton id="av" name="av" value="Si" v-model="store.activo.av" />
-                               
-                                
-                            </div>
+                            <div class="checkbox-row">
+                                <div class="checkbox-col">
+                                    <label class="checkbox-label">MacOS</label>
+                                    <input type="checkbox" id="macOS" v-model="store.activo.macOS" />
+                                </div>
 
-                            
+                                <div class="checkbox-col">
+                                    <label class="checkbox-label">MS OFFICE</label>
+                                    <input type="checkbox" id="msOffice" v-model="store.activo.msOffice" />
+                                </div>
+
+                                <div class="checkbox-col">
+                                    <label class="checkbox-label">MS PROYECT</label>
+                                    <input type="checkbox" id="msProyect" v-model="store.activo.msProyect" />
+                                </div>
+
+                                <div class="checkbox-col">
+                                    <label class="checkbox-label">ACROBAT READER</label>
+                                    <input type="checkbox" id="acrobatReader" v-model="store.activo.acrobatReader" />
+                                </div>
+
+                                <div class="checkbox-col">
+                                    <label class="checkbox-label">SQL SERVER</label>
+                                    <input type="checkbox" id="sqlServer" v-model="store.activo.sqlServer" />
+                                </div>
+
+                                <div class="checkbox-col">
+                                    <label class="checkbox-label">PHOTOSHOP</label>
+                                    <input type="checkbox" id="photoshop" v-model="store.activo.photoshop" />
+                                </div>
+
+                                <div class="checkbox-col">
+                                    <label class="checkbox-label">ANTIVIRUS</label>
+                                    <input type="checkbox" id="av" v-model="store.activo.av" />
+                                </div>
+                            </div>
                         </div>
                     </div>
 
@@ -213,7 +199,7 @@
 
                         </div><br>
                         <div class="field-radiobutton col-6">
-                            <label> Teclado y Mouse</label>
+                            <label> Teclado y Mouse</label><br>
                             <RadioButton id="tecladoMousesi" name="tecladoMouse" value="Si"
                                 v-model="store.activo.tecladoMouse" />
                             <label for="tecladoMousesi"> Si </label>
@@ -319,7 +305,13 @@ onMounted(() => {
     /*  ActivoService.getActivos().then((data) => (store.listaActivos = data)); */
 });
 
-
+const toggleRadio = (field, value) => {
+    if (store.activo[field] === value) {
+        store.activo[field] = '';
+    } else {
+        store.activo[field] = value;
+    }
+};
 
 const abrirDialog = () => {
     store.activo.value = {};
@@ -498,6 +490,33 @@ const enviar = () => {
     /* define dos columnas de igual tamaño */
     grid-gap: 10px;
     /* define un espacio entre las dos columnas */
+}
+
+.ContOfiSeguridad {
+    background-color: rgb(245, 245, 245);
+    width: 220px;
+    border-radius: 20px;
+    padding: 5px;
+}
+
+.checkbox-row {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.checkbox-col {
+    display: flex;
+    align-items: center;
+    max-width: 200px;
+
+    /* Espacio entre columnas */
+}
+
+.checkbox-label {
+
+    min-width: 130px;
+
+    /* Ancho mínimo para los labels */
 }
 
 /* equipamiento */

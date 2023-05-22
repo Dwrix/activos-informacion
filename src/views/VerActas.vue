@@ -4,7 +4,6 @@
     <div class="contenedorDt">
       <div class="card">
         <DataTable ref="dt" :value="actas" dataKey="id" :paginator="true" :rows="5" :filters="filters"
-          
           paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
           :rowsPerPageOptions="[5, 10, 25, 50]"
           currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} Actas en total">
@@ -41,6 +40,11 @@
             </template>
           </Column>
 
+          <Column :exportable="false" style="min-width:10rem" header="Importar PDF">
+            <template #body="slotProps">
+              <input type="file" @change="importarPDF(slotProps.data.id, $event.target.files[0])">
+            </template>
+          </Column>
 
         </DataTable>
 
@@ -77,8 +81,25 @@
               <Column field="dvd" header="Lector/Grab DVD"></Column>
               <Column field="tecladoMouse" header="Teclado Y Mouse"></Column>
 
+
+
             </DataTable>
             <br>
+            <div v-if="activoSeleccionado.tipo === 'Entrega'">
+              <DataTable v-if="tieneComputadorEscritorioPortatil(activoSeleccionado.activos)"
+                :value="activoSeleccionado.activos" dataKey="id" :style="{ width: '700px' }">
+                <Column field="id" header="ID del Activo"></Column>
+                <Column field="macOS" header="MacOS"></Column>
+                <Column field="msOffice" header="MS Office"></Column>
+                <Column field="msProyect" header="MS Proyect"></Column>
+                <Column field="acrobatReader" header="Acrobat Reader"></Column>
+                <Column field="sqlServer" header="Sql Server"></Column>
+                <Column field="photoshop" header="Photoshop"></Column>
+                <Column field="av" header="Antivirus"></Column>
+
+              </DataTable><br>
+            </div>
+
             <div>
               <div v-if="activoSeleccionado.tipo === 'Orden de Salida'">
                 <strong>Motivo Salida: </strong>
@@ -112,16 +133,19 @@
 
 <script setup >
 import { ref, onMounted } from 'vue';
-import { collection, getDocs } from 'firebase/firestore'
+import { collection, getDocs, addDoc } from 'firebase/firestore'
 import { FilterMatchMode } from 'primevue/api';
 import db from '@/firestore';
+import storage from '@/firestore';
+import { getStorage, ref as storageRef, uploadBytes } from 'firebase/storage';
 import { useToast } from 'primevue/usetoast';
 import html2pdf from 'html2pdf.js';
+
 /* import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
  */
-
-
+ /* const storage = getStorage(); */
+ /* const archivoRef = storageRef(storage, 'ruta/del/archivo'); */
 const toast = useToast();
 
 const filters = ref({
@@ -199,6 +223,25 @@ const cerrarDialog = () => {
 
 };
 
+async function importarPDF(actaId, archivo) {
+  try {
+    const storage = getStorage();
+    const storageReference = storageRef(storage, `pdfs/${actaId}.pdf`);
+
+    await uploadBytes(storageReference, archivo);
+
+    // Guardar la referencia del PDF en Firestore
+    const actaRef = collection(db, 'actaCollection').doc(actaId);
+    await addDoc(collection(actaRef, 'pdf'), { nombre: archivo.name, ruta: `pdf/${actaId}.pdf` });
+
+    toast.add({ severity: 'success', summary: 'PDF importado', detail: 'El PDF ha sido importado exitosamente', life: 4000 });
+  } catch (error) {
+    console.error('Error al importar el PDF:', error);
+    toast.add({ severity: 'error', summary: 'Error', detail: 'Ocurrió un error al importar el PDF', life: 4000 });
+  }
+}
+
+
 async function exportarPDF(rowData) {
   try {
     const element = document.createElement('div');
@@ -215,7 +258,7 @@ async function exportarPDF(rowData) {
     if (rowData.tipo === 'Entrega') {
       titulo = 'Acta de Entrega';
       parrafo = 'El Departamento de Tecnologías de la Información y la Comunicación (TIC) de la Presidencia de La República, mediante el presente acto, hace entrega de equipamiento computacional a:';
-    } else if (rowData.tipo === 'Devolucion') {
+    } else if (rowData.tipo === 'Devolución') {
       titulo = 'Acta de Devolución';
       parrafo = 'Mediante el presente acto, el usuario hace devolución del equipamiento computacional otorgado por el Departamento de Tecnologías de la Información y la Comunicación (TIC) de la Presidencia de la República, los datos son los siguientes:';
     } else if (rowData.tipo === 'Orden de Salida') {
@@ -341,7 +384,7 @@ async function exportarPDF(rowData) {
     if (computadorTable.length > 0) {
       const computadorTableHtml = `
         <table style="width: 70%; border-collapse: collapse; margin-top: 10px; margin-left: 80px; margin-right: 100px;">
-          <caption>Equipamiento Computacional</caption>
+          <caption>EQUIPAMIENTO COMPUTACIONAL</caption>
           <thead>
             <tr>
               <th>ID</th>
@@ -375,12 +418,63 @@ async function exportarPDF(rowData) {
                   <td>${activo.dvd}</td>
                   <td>${activo.tecladoMouse}</td>
                 </tr>
+
               `)
           .join('')}
           </tbody>
         </table>
+
+        
       `;
-      element.innerHTML += computadorTableHtml;
+      /*  */
+
+      const softwareTableHtml = `
+        <table style="width: 70%; border-collapse: collapse; margin-top: 10px; margin-left: 80px; margin-right: 100px;">
+          <caption>S.O.- OFIMÁTICA-SEGURIDAD</caption>
+          <thead>
+            <tr>
+              <th>ID Activo</th>
+              <th>MacOS</th>
+              <th>Ms Office</th>
+              <th>Ms Proyect</th>
+              <th>Acrobat Reader</th>
+              <th>SQL Server</th>
+              <th>Photoshop</th>
+              <th>Antivirus</th>
+              
+            </tr>
+          </thead>
+          <tbody>
+            ${computadorTable
+          .map(activo => `
+                <tr>
+                  <td>${activo.id}</td>
+                  <td>${activo.macOS}</td>
+                  <td>${activo.msOffice}</td>
+                  <td>${activo.msProyect}</td>
+                  <td>${activo.acrobatReader}</td>
+                  <td>${activo.sqlServer}</td>
+                  <td>${activo.photoshop}</td>
+                  <td>${activo.av}</td>
+                  
+                </tr>
+
+              `)
+          .join('')}
+          </tbody>
+        </table>
+        
+      `;
+      /*  */
+
+      if (rowData.tipo === 'Entrega') {
+        element.innerHTML += computadorTableHtml;
+        element.innerHTML += softwareTableHtml;
+      } else {
+        element.innerHTML += computadorTableHtml;
+      }
+
+
     }
 
     if (otrosActivosTable.length > 0) {
@@ -444,6 +538,14 @@ h1,
 h2,
 h4 {
   text-align: center;
+
+}
+
+.ofiSegTable {
+  width: 200px;
+  background-color: rgb(245, 245, 245);
+  border-collapse: collapse;
+  border-radius: 10px;
 
 }
 

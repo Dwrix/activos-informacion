@@ -1,7 +1,8 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
 import { format } from 'date-fns'
-import { collection, addDoc, doc, updateDoc, setDoc, getDoc, increment } from 'firebase/firestore'
+import { collection, addDoc, doc, updateDoc, setDoc, getDoc, increment} from 'firebase/firestore'
+import { uploadString } from 'firebase/storage';
 import db from '../firestore'
 
 
@@ -33,7 +34,8 @@ export const useActaStore = defineStore('Acta', () => {
     motivoSalida: '',
     fecha: format(date.value, 'dd/MM/yyyy'),
     observaciones: '',
-    activos: [] 
+    activos: [],
+    pdf: null,
   })
 
   const activo = ref({
@@ -50,6 +52,13 @@ export const useActaStore = defineStore('Acta', () => {
     dvd: '',
     tecladoMouse: '',
     tipoOtro: '',
+    macOS: false,
+    msOffice: false,
+    msProyect: false,
+    acrobatReader: false,
+    sqlServer: false,
+    photoshop: false,
+    av: false,
   })
 
   const listaActivos = ref([])
@@ -65,7 +74,7 @@ export const useActaStore = defineStore('Acta', () => {
       motivoSalida: '',
       fecha: format(date.value, 'dd/MM/yyyy'),
       observaciones: '',
-      activos: [] 
+      activos: []
     }
     activo.value = {
       tipo: '',
@@ -82,7 +91,7 @@ export const useActaStore = defineStore('Acta', () => {
       tecladoMouse: '',
       tipoOtro: '',
     }
-    listaActivos.value = []; 
+    listaActivos.value = [];
   }
 
 
@@ -105,7 +114,7 @@ export const useActaStore = defineStore('Acta', () => {
 
     // Crea el nuevo documento utilizando el ID incrementado
     const nuevoDocumentoRef = doc(collection(db, 'actaCollection'), String(newActaIdNumber))
-    
+
     // Establece los datos del documento
     //await para garantizar que los doc se establezcan y se agegen correctamente antes de seguir
     await setDoc(nuevoDocumentoRef, {
@@ -125,18 +134,38 @@ export const useActaStore = defineStore('Acta', () => {
     // Crea una colección "activos" dentro del documento del acta
     const activosCollectionRef = collection(nuevoDocumentoRef, 'activos');
 
-    // Guarda la lista de activos en la subcolección "activos"
     await Promise.all(
       listaActivos.value.map(async (activo) => {
-        await addDoc(activosCollectionRef, activo);
+        const activoConValoresSiNo = {
+          ...activo,
+          macOS: activo.macOS ? 'Si' : 'No',
+          msOffice: activo.msOffice ? 'Si' : 'No',
+          msProyect: activo.msProyect ? 'Si' : 'No',
+          acrobatReader: activo.acrobatReader ? 'Si' : 'No',
+          sqlServer: activo.sqlServer ? 'Si' : 'No',
+          photoshop: activo.photoshop ? 'Si' : 'No',
+          av: activo.av ? 'Si' : 'No',
+        };
+
+        await addDoc(activosCollectionRef, activoConValoresSiNo);
       })
     );
 
-    /* console.log('se guardo el acta');
-    console.log(listaActivos.value);
-    console.log(acta.value); */
-    
-      
+    // Agrega el PDF asociado al acta si está definido
+    if (acta.value.pdf) {
+      const pdfCollectionRef = collection(nuevoDocumentoRef, 'pdfs');
+      const pdfDocRef = doc(pdfCollectionRef, 'documentoPdf');
+
+      await setDoc(pdfDocRef, {
+        nombre: acta.value.pdf.nombre,
+        ruta: `pdfs/${nuevoDocumentoRef.id}/${acta.value.pdf.nombre}`,
+      });
+
+      const pdfStorageRef = ref(storage, `pdfs/${nuevoDocumentoRef.id}/${acta.value.pdf.name}`);
+      await uploadString(pdfStorageRef, acta.value.pdf, 'data_url');
+    }
+
+
     limpiarCampos()
   }
 
