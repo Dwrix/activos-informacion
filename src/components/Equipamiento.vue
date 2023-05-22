@@ -23,7 +23,7 @@
                 <Column field="marca" header="Marca" sortable style="min-width:5rem"></Column>
                 <Column field="modelo" header="Modelo" sortable style="min-width:5rem"></Column>
                 <Column field="serie" header="Serie" sortable style="min-width:5rem"></Column>
-                <Column field="numInv" header="Num Inventario" sortable style="min-width:10rem"></Column>
+                <Column field="numInv" header="Nro Inventario" sortable style="min-width:10rem"></Column>
 
                 <Column :exportable="false" style="min-width:8rem">
                     <template #body="slotProps">
@@ -69,8 +69,7 @@
                         <label for="tipo6"> Proyector</label>
                     </div>
                     <div class="field-radiobutton">
-                        <RadioButton id="tipo7" name="tipo" value="Otro" v-model="store.activo.tipo"
-                           />
+                        <RadioButton id="tipo7" name="tipo" value="Otro" v-model="store.activo.tipo" />
                         <label for="tipo7"> Otro</label>
                     </div>
                     <div class="field" v-if="store.activo.tipo === 'Otro'">
@@ -109,6 +108,64 @@
                         <InputText id="numInv" v-model.trim="store.activo.numInv"
                             :class="{ 'p-invalid': agregar && !store.activo.numInv }" style="display: block;" />
                     </div><br>
+
+                    <div class="ContenedorPcs"
+                        v-if="store.activo.tipo === 'Computador Escritorio' || store.activo.tipo === 'Computador Portatil'">
+                        <div class="ofiSeguridad">
+                            <label> S.O.- OFIMÁTICA-SEGURIDAD </label><br>
+
+                            <div class="field-radiobutton col-6">
+                                <label> MacOS : </label>
+                                <RadioButton id="macOS" name="macOS" value="Si" v-model="store.activo.macOS" />
+                                
+                                
+                            </div>
+                            <div class="field-radiobutton col-6">
+                                <label> MS OFFICE : </label>
+                                <label for="msOffice"> </label>
+                                <RadioButton id="msOffice" name="msOffice" value="Si" v-model="store.activo.msOffice" />
+                              
+                                
+                            </div>
+                            <div class="field-radiobutton col-6">
+                                <label> MS PROYECT : </label>
+                                <label for="msProyect"> </label>
+                                <RadioButton id="msProyect" name="msProyect" value="Si" v-model="store.activo.msProyect" />
+                               
+                                
+                            </div>
+                            <div class="field-radiobutton col-6">
+                                <label> ACROBAT READER : </label>
+                                <label for="acrobatReader"></label>
+                                <RadioButton id="acrobatReader" name="acrobatReader" value="Si" v-model="store.activo.acrobatReader" />
+                               
+                                
+                            </div>
+                            <div class="field-radiobutton col-6">
+                                <label> SQL SERVER : </label>
+                                <label for="sqlServer"> </label>
+                                <RadioButton id="sqlServer" name="sqlServer" value="Si" v-model="store.activo.sqlServer" />
+                                
+                                
+                            </div>
+                            <div class="field-radiobutton col-6">
+                                <label> PHOTOSHOP : </label>
+                                <label for="photoshop"></label>
+                                <RadioButton id="photoshop" name="photoshop" value="Si" v-model="store.activo.photoshop" />
+                                
+                                
+                            </div>
+                            <div class="field-radiobutton col-6">
+                                <label> ANTIVIRUS : </label>
+                                <label for="av"></label>
+                                <RadioButton id="av" name="av" value="Si" v-model="store.activo.av" />
+                               
+                                
+                            </div>
+
+                            
+                        </div>
+                    </div>
 
                 </div>
                 <div class="ContenedorPcs"
@@ -166,6 +223,9 @@
 
                         </div>
 
+
+
+
                     </div>
 
                 </div>
@@ -213,7 +273,7 @@ import { useToast } from 'primevue/usetoast';
 /* import { ActivoService } from '@/service/ActivoService'; */
 import { useActaStore } from '@/stores/store'
 
- 
+
 const store = useActaStore()
 
 
@@ -256,7 +316,7 @@ const toast = useToast();
 const agregar = ref(false);
 
 onMounted(() => {
-   /*  ActivoService.getActivos().then((data) => (store.listaActivos = data)); */
+    /*  ActivoService.getActivos().then((data) => (store.listaActivos = data)); */
 });
 
 
@@ -308,11 +368,11 @@ const guardarActivo = () => {
             severity: 'success', summary: 'Exitoso', detail: 'Activo Agregado', life: 4000
         });
     }
-    
+
     activoDialog.value = false;
     //para que cuando se abra el dialog denuevo esten los campos vacios
-    store.activo = {}; 
-    
+    store.activo = {};
+
 };
 
 //se utiliza para seleccionar un objeto activo específico de la lista listaActivos en la store, crear una copia de ese objeto y establecerla como el objeto activo actual en la store
@@ -383,7 +443,7 @@ const enviar = () => {
     /* store.listaActivos = []; */
     /* dt.value = ''; */
 
-    toast.add({ severity: 'success', summary: 'Exitoso', detail: 'Se ha generado el Acta', life: 4000 }); 
+    toast.add({ severity: 'success', summary: 'Exitoso', detail: 'Se ha generado el Acta', life: 4000 });
     /* store.listaActivos = [];  */
 
 };

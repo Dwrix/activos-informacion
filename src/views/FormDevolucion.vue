@@ -85,7 +85,7 @@ window.addEventListener('load', () => {
 
 const direccionSelec = ref(); */
 
-store.acta.tipo = "Devolucion"
+store.acta.tipo = "Devolución"
 const direccion = ref([
     { nombre: 'Departamento de Finanzas', code: 'DF' },
     { nombre: 'Servicios Generales', code: 'SV' },

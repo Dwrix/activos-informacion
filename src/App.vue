@@ -15,7 +15,7 @@ import { ref } from 'vue';
 
 const items = ref([
   { label: 'Home', icon: 'pi pi-home', to: '/' },
-  { label: 'Ver Solicitudes', icon: 'pi pi-file', to: '/VerSolicitudes' },
+  /* { label: 'Ver Solicitudes', icon: 'pi pi-file', to: '/VerSolicitudes' }, */
   { label: 'Entrega', icon: 'pi pi-file', to: '/Entrega' },
   { label: 'Devolución', icon: 'pi pi-file', to: '/Devolucion' },
   { label: 'Orden de Salida', icon: 'pi pi-file', to: '/OrdenSalida' },
