@@ -1,9 +1,17 @@
 <template>
-  <div class="contenedorNav">
-    <Menu :model="items"></Menu>
-  </div>
+  <div>
+    <header class="encabezado">
+      <h1>Gestión de Actas Activos de Información</h1>
+
+    </header>
   
+    <div class="contenedorNav">
+      <Menu :model="items" style="background-color: #fdfcfc;"></Menu>
+    </div>
+  
+
   <RouterView />
+</div>
 </template>
 
 <script setup>
@@ -20,26 +28,44 @@ const items = ref([
   { label: 'Devolución', icon: 'pi pi-file', to: '/Devolucion' },
   { label: 'Préstamo', icon: 'pi pi-file', to: '/Prestamo' },
   { label: 'Orden de Salida', icon: 'pi pi-file', to: '/OrdenSalida' },
-  { label: 'Ver Actas', icon: 'pi pi-file', to: '/VerActas' }
+  { label: 'Ver Actas', icon: 'pi pi-copy', to: '/VerActas' }
 ]);
 
 </script>
 
 
 <style scoped>
-
 .contenedorNav {
   position: fixed;
-  top: 0;
+  top: 60px; /* Ajusta el valor en función de la altura del encabezado */
   left: 0;
   width: 200px;
   margin-top: 20px;
   border-radius: 20px;
   z-index: 999;
-  background-color: #f2f2f2;
-  
-  
+
+
+
 }
+
+.encabezado {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 80px;
+  background-color: #1e6774; 
+ 
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+}
+h1{
+  color: white;
+}
+
+
 
 
 

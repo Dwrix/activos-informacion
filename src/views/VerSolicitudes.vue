@@ -72,7 +72,7 @@ const solicitudes = ref();
     border-radius: 20px;
     background: rgb(223, 223, 223);
     margin-left: 180px;
-    margin-top: -20px;
+    
 }
 
 

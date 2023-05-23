@@ -128,7 +128,7 @@
                 <strong style="margin-right: 30px;">Nombre persona que gestiona entrega y devolución:</strong>
                  <InputText v-model="" readonly
                    /> 
-              </div -->>
+              </div -->
               <div style="display: flex; align-items: center;">
                 <strong style="margin-right: 30px;">Fecha del Préstamo:</strong>
                 <Calendar v-model="activoSeleccionado.fechaEntregaPrestamo" showIcon disabled />
@@ -337,26 +337,26 @@ async function exportarPDF(rowData) {
 
     const motivoSalida = rowData.tipo === 'Orden de Salida' ? `
       <tr>
-        <td> • Motivo Salida:</td>
+        <td style='background-color: #dcdcdc; font-weight: bold;'> • Motivo Salida:</td>
         <td>${rowData.motivoSalida}</td>
       </tr>
     ` : '';
 
     const observaciones = rowData.observaciones ? `
       <tr>
-        <td> • Observaciones:</td>
+        <td style='background-color: #dcdcdc; font-weight: bold;'> • Observaciones:</td>
         <td>${rowData.observaciones}</td>
       </tr>
     ` : '';
     const fechaEntregaPrestamo = rowData.tipo === 'Prestamo' ? `
       <tr>
-        <td> • Fecha del Préstamo:</td>
+        <td style='background-color: #dcdcdc; font-weight: bold;'> • Fecha del Préstamo:</td>
         <td>${rowData.fechaEntregaPrestamo}</td>
       </tr>
     ` : '';
     const fechaDevolucionPrestamo = rowData.tipo === 'Prestamo' ? `
       <tr>
-        <td> • Fecha de la devolución:</td>
+        <td style='background-color: #dcdcdc; font-weight: bold;'> • Fecha de la devolución:</td>
         <td>${rowData.fechaDevolucionPrestamo}</td>
       </tr>
     ` : '';
@@ -369,6 +369,7 @@ async function exportarPDF(rowData) {
           margin: 0;
         }
 
+        
         table {
           border-collapse: collapse;
           margin-top: 10px;
@@ -381,6 +382,7 @@ async function exportarPDF(rowData) {
         th {
           font-weight: bold;
           text-align: left;
+          background-color: #dcdcdc;
         }
 
         th,
@@ -388,7 +390,9 @@ async function exportarPDF(rowData) {
           padding: 5px;
           border: 1px solid;
           text-align: left;
+          
         }
+        
 
         .column {
           width: 20px;
@@ -402,33 +406,33 @@ async function exportarPDF(rowData) {
       <br>
       <p>${parrafo1}</p>
       <br>
-      <table style="width: 70%; border-collapse: collapse; margin-top: 10px; margin-left: 80px; margin-right: 30px;">
+      <table style='width: 70%; border-collapse: collapse; margin-top: 10px; margin-left: 80px; margin-right: 30px;'>
         <tr>
-          <td> • ID del Acta:</td>
+          <td style='background-color: #dcdcdc; font-weight: bold;'> • ID del Acta:</td>
           <td>${rowData.id}</td>
         </tr>
         <tr>
-          <td> • Sr.(a):</td>
+          <td style='background-color: #dcdcdc; font-weight: bold;'> • Sr.(a):</td>
           <td>${rowData.nombre}</td>
         </tr>
         <tr>
-          <td> • Rut:</td>
+          <td style='background-color: #dcdcdc; font-weight: bold;' > • Rut:</td>
           <td>${rowData.rut}</td>
         </tr>
         <tr>
-          <td> • Firma:</td>
+          <td style='background-color: #dcdcdc; font-weight: bold;'> • Firma:</td>
           <td></td>
         </tr>
         <tr>
-          <td> • Dirección /Depto. /Unidad:</td>
+          <td style='background-color: #dcdcdc; font-weight: bold;'> • Dirección /Depto. /Unidad:</td>
           <td>${rowData.direccionSelec.nombre}</td>
         </tr>
         <tr>
-          <td> • Cargo:</td>
+          <td style='background-color: #dcdcdc; font-weight: bold;'> • Cargo:</td>
           <td>${rowData.cargo}</td>
         </tr>
         <tr>
-          <td> • Tipo:</td>
+          <td style='background-color: #dcdcdc; font-weight: bold;'> • Tipo:</td>
           <td>${rowData.tipo}</td>
         </tr>
        
@@ -592,8 +596,8 @@ async function exportarPDF(rowData) {
   padding: 20px;
   border-radius: 20px;
   /* background: rgb(223, 223, 223); */
-  margin-left: 180px;
-  margin-top: -20px;
+  margin-left: 170px;
+  margin-top: -40px;
 }
 
 

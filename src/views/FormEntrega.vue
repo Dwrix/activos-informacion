@@ -123,7 +123,7 @@ const direccion = ref([
     border-radius: 20px;
     background: rgb(240, 240, 240);
     margin-left: 180px;
-    margin-top: -20px;
+    margin-top: -10px;
 
 }
 
