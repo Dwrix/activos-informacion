@@ -1,6 +1,6 @@
 <template>
     <div class="contenedor">
-        <h1>Orden de Salida</h1>
+        <h2>Orden de Salida</h2>
         <p>La Jefatura del Departamento de Tecnologías de la Información y la Comunicación (TIC) de la Presidencia
             de la Republica, <b>autoriza</b> la salida del equipamiento computacional a:
         </p>
@@ -133,8 +133,8 @@ const direccion = ref([
     padding: 20px;
     border-radius: 20px;
     background: rgb(240, 240, 240);
-    margin-left: 180px;
-    margin-top: -10px;
+    margin-left: 170px;
+    margin-top: 50px;
 
 }
 

@@ -16,6 +16,7 @@
     border-radius: 20px;
     background: rgb(240, 240, 240);
     margin-left: 180px;
+    margin-top: 50px;
     
 }
 </style>

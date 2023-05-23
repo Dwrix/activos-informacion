@@ -1,17 +1,17 @@
 <template>
   <div>
     <header class="encabezado">
-      <h1>Gestión de Actas Activos de Información</h1>
+      <h2>Gestión de Actas Activos de Información</h2>
 
     </header>
-  
-    <div class="contenedorNav">
-      <Menu :model="items" style="background-color: #fdfcfc;"></Menu>
-    </div>
-  
 
-  <RouterView />
-</div>
+    <div class="contenedorNav">
+      <Menu :model="items" style="background-color: #fdfcfc; border-color: gray; border-radius: 10px;"></Menu>
+    </div>
+
+
+    <RouterView />
+  </div>
 </template>
 
 <script setup>
@@ -37,7 +37,8 @@ const items = ref([
 <style scoped>
 .contenedorNav {
   position: fixed;
-  top: 60px; /* Ajusta el valor en función de la altura del encabezado */
+  top: 60px;
+  /* Ajusta el valor en función de la altura del encabezado */
   left: 0;
   width: 200px;
   margin-top: 20px;
@@ -54,14 +55,17 @@ const items = ref([
   left: 0;
   width: 100%;
   height: 80px;
-  background-color: #1e6774; 
- 
+  background-color: #374d96;
+
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: left;
   z-index: 999;
+
 }
-h1{
+
+h2 {
+  margin-left: 20px;
   color: white;
 }
 

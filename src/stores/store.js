@@ -33,8 +33,8 @@ export const useActaStore = defineStore('Acta', () => {
     encargado: '',
     motivoSalida: '',
     fecha: format(date.value, 'dd/MM/yyyy'),
-    fechaEntregaPrestamo: format(date.value, 'dd/MM/yyyy'),
-    fechaDevolucionPrestamo: format(date.value, 'dd/MM/yyyy'),
+    fechaEntregaPrestamo: '',
+    fechaDevolucionPrestamo: '',
     nombreGestion: '',
     observaciones: '',
     activos: [],
@@ -75,7 +75,7 @@ export const useActaStore = defineStore('Acta', () => {
       cargo: '',
       encargado: '',
       motivoSalida: '',
-      fecha: format(date.value, 'dd/MM/yyyy'),
+      /* fecha: format(date.value, 'dd/MM/yyyy'), */
       observaciones: '',
       activos: []
     }
@@ -130,8 +130,8 @@ export const useActaStore = defineStore('Acta', () => {
       encargado: acta.value.encargado,
       motivoSalida: acta.value.motivoSalida,
       fecha: format(date.value, 'dd/MM/yyyy'),
-      fechaEntregaPrestamo: format(acta.value.fechaEntregaPrestamo, 'dd/MM/yyyy'),
-      fechaDevolucionPrestamo: format(acta.value.fechaDevolucionPrestamo, 'dd/MM/yyyy'),
+      fechaEntregaPrestamo: acta.value.fechaEntregaPrestamo,
+      fechaDevolucionPrestamo: acta.value.fechaDevolucionPrestamo,
       nombreGestion: acta.value.nombreGestion,
       observaciones: acta.value.observaciones,
     })
@@ -171,12 +171,18 @@ export const useActaStore = defineStore('Acta', () => {
       await uploadString(pdfStorageRef, acta.value.pdf, 'data_url');
     }
 
+    if (acta.value.fechaEntregaPrestamo) {
+      acta.fechaEntregaPrestamo = format(acta.value.fechaEntregaPrestamo, 'dd/MM/yyyy');
+    }
+
+    if (acta.value.fechaDevolucionPrestamo) {
+      acta.fechaDevolucionPrestamo = format(acta.value.fechaDevolucionPrestamo, 'dd/MM/yyyy');
+    }
 
     limpiarCampos()
   }
 
   return { acta, activo, listaActivos, enviar, setActivoSeleccionado, getActivoSeleccionado }
 })
-
 
 

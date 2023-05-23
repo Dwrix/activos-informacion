@@ -1,6 +1,6 @@
 <template>
     <div class="contenedor">
-        <h2>Préstamo de Equipamiento Computacional</h2><br>
+        <h2>Préstamo de Equipamiento Computacional</h2>
         <p>El Departamento de Tecnologías de la Información y la Comunicación (TIC) de la Presidencia de La República,
             mediante el presente acto, hace préstamo del equipamiento computacional a:
         </p>
@@ -129,8 +129,8 @@ const direccion = ref([
     padding: 20px;
     border-radius: 20px;
     background: rgb(240, 240, 240);
-    margin-left: 180px;
-    margin-top: -10px;
+    margin-left: 170px;
+    margin-top: 50px;
 
 }
 

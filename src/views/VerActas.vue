@@ -7,7 +7,7 @@
           paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
           :rowsPerPageOptions="[5, 10, 25, 50]"
           currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} Actas en total">
-          <h2>Actas</h2>
+          
           <template #header>
             <div class="flex flex-wrap gap-2 align-items-center justify-content-between">
               <span class="p-input-icon-left">
@@ -596,8 +596,8 @@ async function exportarPDF(rowData) {
   padding: 20px;
   border-radius: 20px;
   /* background: rgb(223, 223, 223); */
-  margin-left: 170px;
-  margin-top: -40px;
+  margin-left: 150px;
+  margin-top: 30px;
 }
 
 

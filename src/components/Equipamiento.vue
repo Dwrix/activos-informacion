@@ -451,7 +451,7 @@ const enviar = () => {
     padding: 20px;
     border-radius: 20px;
     background: rgb(240, 240, 240);
-    margin-left: 180px;
+    margin-left: 170px;
     margin-top: -20px;
 }
 

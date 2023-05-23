@@ -27,8 +27,8 @@ import InputNumber from 'primevue/inputnumber';
 
 
 //theme
-/* import "primevue/resources/themes/lara-light-indigo/theme.css";    */
-import './assets/theme.css';  
+ import "primevue/resources/themes/lara-light-indigo/theme.css";    
+/* import './assets/theme.css';   */
     
 //core
 import "primevue/resources/primevue.min.css";
