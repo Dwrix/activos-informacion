@@ -1,7 +1,7 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
 import { format } from 'date-fns'
-import { collection, addDoc, doc, updateDoc, setDoc, getDoc, increment} from 'firebase/firestore'
+import { collection, addDoc, doc, updateDoc, setDoc, getDoc, increment } from 'firebase/firestore'
 import { uploadString } from 'firebase/storage';
 import db from '../firestore'
 
@@ -130,6 +130,9 @@ export const useActaStore = defineStore('Acta', () => {
       encargado: acta.value.encargado,
       motivoSalida: acta.value.motivoSalida,
       fecha: format(date.value, 'dd/MM/yyyy'),
+      fechaEntregaPrestamo: format(acta.value.fechaEntregaPrestamo, 'dd/MM/yyyy'),
+      fechaDevolucionPrestamo: format(acta.value.fechaDevolucionPrestamo, 'dd/MM/yyyy'),
+      nombreGestion: acta.value.nombreGestion,
       observaciones: acta.value.observaciones,
     })
 

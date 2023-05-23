@@ -54,23 +54,23 @@
                 <span class="p-float-label">
                     <Calendar v-model="store.acta.fechaEntregaPrestamo" showIcon />
                 </span><br>
-                <label for="fechaEntregaPrestamo">Fecha de la devolución</label>
-                <span class="p-float-label">
-                    <Calendar v-model="store.acta.fechaDevolucionPrestamo" showIcon />
-                </span><br>
-                <label for="fechaEntregaPrestamo">Nombre persona que autoriza el préstamo</label>
-                <span class="p-float-label">
-                    <InputText id="encargado" v-model="store.acta.encargado" />
+                <label>Fecha de la devolución</label><br>
 
-                </span><br>
-                <label for="fechaEntregaPrestamo">Nombre persona que gestiona entrega y retorno</label>
+                <Calendar v-model="store.acta.fechaDevolucionPrestamo" showIcon />
+                <br>
+                <label>Nombre persona que autoriza el préstamo</label>
+
+                <InputText id="encargado" v-model="store.acta.encargado" />
+
+                <br>
+                <label for="nombreGestion">Nombre persona que gestiona entrega y retorno</label>
                 <span class="p-float-label">
 
-                    <InputText id="encargado" v-model="store.acta.nombreGestion" />
-                    <label for="encargado"></label>
+                    <InputText id="nombreGestion" v-model="store.acta.nombreGestion" />
+                    <label for="nombreGestion"></label>
                 </span><br>
 
-                
+
             </div>
         </div>
 

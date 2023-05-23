@@ -44,8 +44,7 @@
               <div class="p-inputgroup">
                 <div class="p-fileupload">
                   <input type="file" @change="importarPDF(slotProps.data.id, $event.target.files[0])">
-                  <span class="p-button p-button-help "
-                    @click="$event.target.previousElementSibling.click()">
+                  <span class="p-button p-button-help " @click="$event.target.previousElementSibling.click()">
                     <i class="pi pi-upload"></i>&nbsp;Importar
                   </span>
                 </div>
@@ -122,7 +121,24 @@
                 <InputText v-model="activoSeleccionado.observaciones" readonly
                   :size="activoSeleccionado.motivoSalida.length || 50" />
               </div>
+            </div><br>
+
+            <div v-if="activoSeleccionado.tipo === 'Prestamo'">
+              <!-- <div>
+                <strong style="margin-right: 30px;">Nombre persona que gestiona entrega y devolución:</strong>
+                 <InputText v-model="" readonly
+                   /> 
+              </div -->>
+              <div style="display: flex; align-items: center;">
+                <strong style="margin-right: 30px;">Fecha del Préstamo:</strong>
+                <Calendar v-model="activoSeleccionado.fechaEntregaPrestamo" showIcon disabled />
+              </div>
+              <div style="display: flex; align-items: center;">
+                <strong style="margin-right: 5px;">Fecha de la Devolución:</strong>
+                <Calendar v-model="activoSeleccionado.fechaDevolucionPrestamo" showIcon disabled />
+              </div>
             </div>
+
 
           </div>
           <p v-else>No se encontraron activos asociados.</p>
@@ -253,7 +269,7 @@ async function descargarPDF(actaId) {
   } catch (error) {
     console.error('Error al descargar el PDF:', error);
     toast.add({ severity: 'error', summary: 'Error', detail: 'No se encontro el PDF correspondiente al Acta', life: 4000 });
-    // Mostrar mensaje de error al usuario si es necesario
+    
   }
 }
 
@@ -282,22 +298,24 @@ async function exportarPDF(rowData) {
     const fecha = rowData.fecha; // Fecha del acta
     const version = '1.0'; // Versión del acta
 
-    let tipoActa = '';
-    let parrafo = '';
+    /* let tipoActa = ''; */
+    let parrafo1 = '';
+    let parrafo2 = '';
 
     // Verifica el tipo de acta y establece el título correspondiente
     if (rowData.tipo === 'Entrega') {
       titulo = 'Acta de Entrega';
-      parrafo = 'El Departamento de Tecnologías de la Información y la Comunicación (TIC) de la Presidencia de La República, mediante el presente acto, hace entrega de equipamiento computacional a:';
+      parrafo1 = 'El Departamento de Tecnologías de la Información y la Comunicación (TIC) de la Presidencia de La República, mediante el presente acto, hace entrega de equipamiento computacional a:';
     } else if (rowData.tipo === 'Devolución') {
       titulo = 'Acta de Devolución';
-      parrafo = 'Mediante el presente acto, el usuario hace devolución del equipamiento computacional otorgado por el Departamento de Tecnologías de la Información y la Comunicación (TIC) de la Presidencia de la República, los datos son los siguientes:';
+      parrafo1 = 'Mediante el presente acto, el usuario hace devolución del equipamiento computacional otorgado por el Departamento de Tecnologías de la Información y la Comunicación (TIC) de la Presidencia de la República, los datos son los siguientes:';
+      parrafo2 = '';
     } else if (rowData.tipo === 'Orden de Salida') {
       titulo = 'Acta de Orden de Salida';
-      parrafo = 'La Jefatura del Departamento de Tecnologías de la Información y la Comunicación (TIC) de la Presidencia de La República, mediante el presente acto, autoriza la salida de equipamiento computacional a:';
-    }else if (rowData.tipo === 'Prestamo') {
+      parrafo1 = 'La Jefatura del Departamento de Tecnologías de la Información y la Comunicación (TIC) de la Presidencia de La República, mediante el presente acto, autoriza la salida de equipamiento computacional a:';
+    } else if (rowData.tipo === 'Prestamo') {
       titulo = 'Acta de Préstamo de Equipamiento Computacional';
-      parrafo = 'El Departamento de Tecnologías de la Información y la Comunicación (TIC) de la Presidencia de La República, mediante el presente acto, hace préstamo del equipamiento computacional a:';
+      parrafo1 = 'El Departamento de Tecnologías de la Información y la Comunicación (TIC) de la Presidencia de La República, mediante el presente acto, hace préstamo del equipamiento computacional a:';
     }
 
     const encabezadoTabla = `
@@ -328,6 +346,18 @@ async function exportarPDF(rowData) {
       <tr>
         <td> • Observaciones:</td>
         <td>${rowData.observaciones}</td>
+      </tr>
+    ` : '';
+    const fechaEntregaPrestamo = rowData.tipo === 'Prestamo' ? `
+      <tr>
+        <td> • Fecha del Préstamo:</td>
+        <td>${rowData.fechaEntregaPrestamo}</td>
+      </tr>
+    ` : '';
+    const fechaDevolucionPrestamo = rowData.tipo === 'Prestamo' ? `
+      <tr>
+        <td> • Fecha de la devolución:</td>
+        <td>${rowData.fechaDevolucionPrestamo}</td>
       </tr>
     ` : '';
 
@@ -370,7 +400,7 @@ async function exportarPDF(rowData) {
       </style>
       ${encabezadoTabla}
       <br>
-      <p>${parrafo}</p>
+      <p>${parrafo1}</p>
       <br>
       <table style="width: 70%; border-collapse: collapse; margin-top: 10px; margin-left: 80px; margin-right: 30px;">
         <tr>
@@ -401,10 +431,9 @@ async function exportarPDF(rowData) {
           <td> • Tipo:</td>
           <td>${rowData.tipo}</td>
         </tr>
-        <tr>
-          <td> • Fecha Acta:</td>
-          <td>${rowData.fecha}</td>
-        </tr>
+       
+        ${fechaEntregaPrestamo}
+        ${fechaDevolucionPrestamo}
         ${motivoSalida}
         ${observaciones}
       </table>
