@@ -35,16 +35,27 @@
           </Column>
           <Column :exportable="false" style="min-width:8rem" header="Exportar Acta">
             <template #body="slotProps">
-              <Button label="Exportar" icon="pi pi-download" text class="p-button-success" outlined rounded
-                @click="exportarPDF(slotProps.data)" />
+              <Button label="Exportar" icon="pi pi-download" @click="exportarPDF(slotProps.data)" />
             </template>
           </Column>
 
           <Column :exportable="false" style="min-width:10rem" header="Importar PDF">
             <template #body="slotProps">
-              <input type="file" @change="importarPDF(slotProps.data.id, $event.target.files[0])">
+              <div class="p-inputgroup">
+                <div class="p-fileupload">
+                  <input type="file" @change="importarPDF(slotProps.data.id, $event.target.files[0])">
+                  <span class="p-button p-button-help "
+                    @click="$event.target.previousElementSibling.click()">
+                    <i class="pi pi-upload"></i>&nbsp;Importar
+                  </span>
+                </div>
+              </div>
             </template>
           </Column>
+
+
+
+
 
         </DataTable>
 
@@ -116,6 +127,15 @@
           </div>
           <p v-else>No se encontraron activos asociados.</p>
 
+          <div v-if="activoSeleccionado"><br>
+            <Button label="Descargar PDF" icon="pi pi-download" class="p-button-success p-button-rounded"
+              @click="descargarPDF(activoSeleccionado.id)" />
+
+
+          </div>
+          <div>
+
+          </div>
           <template #footer>
             <Button label="Cerrar" icon="pi pi-times" text @click="cerrarDialog" />
 
@@ -133,19 +153,18 @@
 
 <script setup >
 import { ref, onMounted } from 'vue';
-import { collection, getDocs, addDoc } from 'firebase/firestore'
+import { collection, getDocs } from 'firebase/firestore'
 import { FilterMatchMode } from 'primevue/api';
 import db from '@/firestore';
-import storage from '@/firestore';
-import { getStorage, ref as storageRef, uploadBytes } from 'firebase/storage';
+import { getStorage, ref as storageRef, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { useToast } from 'primevue/usetoast';
 import html2pdf from 'html2pdf.js';
 
 /* import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
  */
- /* const storage = getStorage(); */
- /* const archivoRef = storageRef(storage, 'ruta/del/archivo'); */
+/* const storage = getStorage(); */
+/* const archivoRef = storageRef(storage, 'ruta/del/archivo'); */
 const toast = useToast();
 
 const filters = ref({
@@ -223,16 +242,27 @@ const cerrarDialog = () => {
 
 };
 
+async function descargarPDF(actaId) {
+  try {
+    const storage = getStorage();
+    const storageReference = storageRef(storage, `pdfs/Acta_${actaId}.pdf`);
+    const downloadURL = await getDownloadURL(storageReference);
+
+    // Abre una nueva ventana o descarga el archivo PDF
+    window.open(downloadURL);
+  } catch (error) {
+    console.error('Error al descargar el PDF:', error);
+    toast.add({ severity: 'error', summary: 'Error', detail: 'No se encontro el PDF correspondiente al Acta', life: 4000 });
+    // Mostrar mensaje de error al usuario si es necesario
+  }
+}
+
 async function importarPDF(actaId, archivo) {
   try {
     const storage = getStorage();
-    const storageReference = storageRef(storage, `pdfs/${actaId}.pdf`);
+    const storageReference = storageRef(storage, `pdfs/Acta_${actaId}.pdf`);
 
     await uploadBytes(storageReference, archivo);
-
-    // Guardar la referencia del PDF en Firestore
-    const actaRef = collection(db, 'actaCollection').doc(actaId);
-    await addDoc(collection(actaRef, 'pdf'), { nombre: archivo.name, ruta: `pdf/${actaId}.pdf` });
 
     toast.add({ severity: 'success', summary: 'PDF importado', detail: 'El PDF ha sido importado exitosamente', life: 4000 });
   } catch (error) {
@@ -240,6 +270,7 @@ async function importarPDF(actaId, archivo) {
     toast.add({ severity: 'error', summary: 'Error', detail: 'Ocurrió un error al importar el PDF', life: 4000 });
   }
 }
+
 
 
 async function exportarPDF(rowData) {
@@ -518,12 +549,13 @@ async function exportarPDF(rowData) {
 }
 
 
+
 </script>
 
 <style scoped>
 .contenedorSol {
   font-size: small;
-  width: 1300px;
+  width: 1400px;
   height: auto;
   padding: 20px;
   border-radius: 20px;
@@ -541,13 +573,7 @@ h4 {
 
 }
 
-.ofiSegTable {
-  width: 200px;
-  background-color: rgb(245, 245, 245);
-  border-collapse: collapse;
-  border-radius: 10px;
 
-}
 
 .contenedorDt {
   font-size: small;

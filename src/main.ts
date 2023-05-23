@@ -8,7 +8,7 @@ import Calendar from 'primevue/calendar';
 import Dropdown from 'primevue/dropdown';
 import Button from 'primevue/button';
 import Textarea from 'primevue/textarea';
-import Menubar from 'primevue/menubar';
+import  FileUpload  from 'primevue/fileupload';
 
 /* -- */
 
@@ -66,6 +66,7 @@ app.component('Calendar', Calendar);
 app.component('Dropdown', Dropdown);
 app.component('Button', Button);
 app.component('Textarea', Textarea);
+app.component('FileUpload', FileUpload);
 
 app.use(pinia)
 
