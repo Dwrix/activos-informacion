@@ -295,6 +295,9 @@ async function exportarPDF(rowData) {
     } else if (rowData.tipo === 'Orden de Salida') {
       titulo = 'Acta de Orden de Salida';
       parrafo = 'La Jefatura del Departamento de Tecnologías de la Información y la Comunicación (TIC) de la Presidencia de La República, mediante el presente acto, autoriza la salida de equipamiento computacional a:';
+    }else if (rowData.tipo === 'Prestamo') {
+      titulo = 'Acta de Préstamo de Equipamiento Computacional';
+      parrafo = 'El Departamento de Tecnologías de la Información y la Comunicación (TIC) de la Presidencia de La República, mediante el presente acto, hace préstamo del equipamiento computacional a:';
     }
 
     const encabezadoTabla = `

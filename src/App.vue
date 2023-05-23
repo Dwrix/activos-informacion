@@ -18,6 +18,7 @@ const items = ref([
   /* { label: 'Ver Solicitudes', icon: 'pi pi-file', to: '/VerSolicitudes' }, */
   { label: 'Entrega', icon: 'pi pi-file', to: '/Entrega' },
   { label: 'Devolución', icon: 'pi pi-file', to: '/Devolucion' },
+  { label: 'Préstamo', icon: 'pi pi-file', to: '/Prestamo' },
   { label: 'Orden de Salida', icon: 'pi pi-file', to: '/OrdenSalida' },
   { label: 'Ver Actas', icon: 'pi pi-file', to: '/VerActas' }
 ]);
