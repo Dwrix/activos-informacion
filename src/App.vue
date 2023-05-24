@@ -6,7 +6,7 @@
     </header>
 
     <div class="contenedorNav">
-      <Menu :model="items" style="background-color: #fdfcfc; border-color: gray; border-radius: 10px;"></Menu>
+      <Menu :model="items" :class="{ 'active-menu-item': items === selectedItem }"></Menu>
     </div>
 
 
@@ -16,11 +16,11 @@
 
 <script setup>
 
-import { RouterView, } from 'vue-router'
+import { RouterView } from 'vue-router'
 import Menu from 'primevue/menu';
 import { ref } from 'vue';
 
-
+const selectedItem = ref(null);
 const items = ref([
   { label: 'Home', icon: 'pi pi-home', to: '/' },
   /* { label: 'Ver Solicitudes', icon: 'pi pi-file', to: '/VerSolicitudes' }, */
@@ -30,6 +30,8 @@ const items = ref([
   { label: 'Orden de Salida', icon: 'pi pi-file', to: '/OrdenSalida' },
   { label: 'Ver Actas', icon: 'pi pi-copy', to: '/VerActas' }
 ]);
+
+
 
 </script>
 
@@ -44,8 +46,6 @@ const items = ref([
   margin-top: 20px;
   border-radius: 20px;
   z-index: 999;
-
-
 
 }
 
@@ -66,6 +66,11 @@ const items = ref([
 
 h2 {
   margin-left: 20px;
+  color: white;
+}
+
+.active-menu-item {
+  background-color: black;
   color: white;
 }
 

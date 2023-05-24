@@ -53,6 +53,10 @@
                         <RadioButton id="tipo3" name="tipo" value="Impresora" v-model="store.activo.tipo" />
                         <label for="tipo3"> Impresora</label>
                     </div>
+                    <div class="field-radiobutton">
+                        <RadioButton id="tipo8" name="tipo" value="Tablet" v-model="store.activo.tipo" />
+                        <label for="tipo8"> Tablet</label>
+                    </div>
                 </div>
                 <div class="grid-column">
                     <label>Periféricos</label>
@@ -67,6 +71,10 @@
                     <div class="field-radiobutton">
                         <RadioButton id="tipo6" name="tipo" value="Proyector" v-model="store.activo.tipo" />
                         <label for="tipo6"> Proyector</label>
+                    </div>
+                    <div class="field-radiobutton">
+                        <RadioButton id="tipo9" name="tipo" value="Lector" v-model="store.activo.tipo" />
+                        <label for="tipo9"> Lector </label>
                     </div>
                     <div class="field-radiobutton">
                         <RadioButton id="tipo7" name="tipo" value="Otro" v-model="store.activo.tipo" />
