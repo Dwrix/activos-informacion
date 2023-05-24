@@ -150,8 +150,21 @@ export const useActaStore = defineStore('Acta', () => {
 
     await Promise.all(
       listaActivos.value.map(async (activo) => {
-        const activoConValoresSiNo = {
-          ...activo,
+        const activoConValoreVacios = {
+          id: activo.id || '', // Si está vacío, asigna un valor vacío para que no salga undefined
+          tipo: activo.tipo || '', // Si está vacío, asigna un valor vacío
+          marca: activo.marca || '', // Si está vacío, asigna un valor vacío
+          modelo: activo.modelo || '', // Si está vacío, asigna un valor vacío
+          serie: activo.serie || '', // Si está vacío, asigna un valor vacío
+          numInv: activo.numInv || '', // Si está vacío, asigna un valor vacío
+          nombreEquipo: activo.nombreEquipo || '', // Si está vacío, asigna un valor vacío
+          procesador: activo.procesador || '', // Si está vacío, asigna un valor vacío
+          ram: activo.ram || '', // Si está vacío, asigna un valor vacío
+          discoDuro: activo.discoDuro || '', // Si está vacío, asigna un valor vacío
+          tarjetavideo: activo.tarjetavideo || '', // Si está vacío, asigna un valor vacío
+          dvd: activo.dvd || '', // Si está vacío, asigna un valor vacío
+          tecladoMouse: activo.tecladoMouse || '', // Si está vacío, asigna un valor vacío
+          tipoOtro: activo.tipoOtro || '', // Si está vacío, asigna un valor vacío
           macOS: activo.macOS ? 'Si' : 'No',
           msOffice: activo.msOffice ? 'Si' : 'No',
           msProyect: activo.msProyect ? 'Si' : 'No',
@@ -161,7 +174,7 @@ export const useActaStore = defineStore('Acta', () => {
           av: activo.av ? 'Si' : 'No',
         };
 
-        await addDoc(activosCollectionRef, activoConValoresSiNo);
+        await addDoc(activosCollectionRef, activoConValoreVacios);
       })
     );
 
@@ -280,7 +293,7 @@ export const useActaStore = defineStore('Acta', () => {
         </tr>
       ` : '';
 
-      
+
 
 
       const computadorTable = filtrarComputadorEscritorioPortatil(rowData.activos);
@@ -373,10 +386,10 @@ export const useActaStore = defineStore('Acta', () => {
         /*  */
 
         if (rowData.tipo === 'Entrega') {
-          contenidoAdicional  += computadorTableHtml;
-          contenidoAdicional  += softwareTableHtml;
+          contenidoAdicional += computadorTableHtml;
+          contenidoAdicional += softwareTableHtml;
         } else {
-          contenidoAdicional  += computadorTableHtml;
+          contenidoAdicional += computadorTableHtml;
         }
 
       }
@@ -411,7 +424,7 @@ export const useActaStore = defineStore('Acta', () => {
             </tbody>
           </table>
         `;
-        contenidoAdicional  += otrosActivosTableHtml;
+        contenidoAdicional += otrosActivosTableHtml;
       }
 
       element.innerHTML = `
@@ -513,7 +526,7 @@ export const useActaStore = defineStore('Acta', () => {
       </div>
         
       `;
-      
+
 
       // Crea el PDF con el contenido
       await html2pdf().from(element).save(`Acta_${rowData.id}.pdf`);
