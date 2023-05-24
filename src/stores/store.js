@@ -209,7 +209,7 @@ export const useActaStore = defineStore('Acta', () => {
 
       let contenidoAdicional = '';
 
-      const logo = 'src/assets/logo.png'; // Ruta de la imagen del logo
+      const logo = './assets/logo.png'; // Ruta de la imagen del logo
       let titulo = ''; // Título del acta
       const fecha = rowData.fecha; // Fecha del acta
       const version = '1.0'; // Versión del acta
@@ -508,8 +508,8 @@ export const useActaStore = defineStore('Acta', () => {
             <td>${rowData.cargo}</td>
           </tr>
           <tr>
-            <td style='background-color: #dcdcdc; font-weight: bold;'> • Tipo:</td>
-            <td>${rowData.tipo}</td>
+            <td style='background-color: #dcdcdc; font-weight: bold;'> • Encargado:</td>
+            <td>${rowData.encargado}</td>
           </tr>
          
           ${fechaEntregaPrestamo}
