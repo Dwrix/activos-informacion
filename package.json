@@ -10,6 +10,7 @@
     "type-check": "vue-tsc --noEmit"
   },
   "dependencies": {
+    "chart.js": "^4.3.0",
     "date-fns": "^2.30.0",
     "docxtemplater": "^3.37.8",
     "firebase": "^9.22.0",

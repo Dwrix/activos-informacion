@@ -4,7 +4,7 @@ import { format } from 'date-fns'
 import { collection, addDoc, doc, updateDoc, setDoc, getDoc, increment } from 'firebase/firestore'
 import { uploadString } from 'firebase/storage';
 import db from '../firestore'
-
+import html2pdf from 'html2pdf.js';
 
 
 export const useActaStore = defineStore('Acta', () => {
@@ -75,7 +75,10 @@ export const useActaStore = defineStore('Acta', () => {
       cargo: '',
       encargado: '',
       motivoSalida: '',
-      /* fecha: format(date.value, 'dd/MM/yyyy'), */
+      fecha: format(date.value, 'dd/MM/yyyy'),
+      fechaEntregaPrestamo: '',
+      fechaDevolucionPrestamo: '',
+      nombreGestion: '',
       observaciones: '',
       activos: []
     }
@@ -103,20 +106,22 @@ export const useActaStore = defineStore('Acta', () => {
     const counterRef = doc(db, 'counters', 'counterId')
 
     // Incrementa el contador en 1 y obtén el nuevo valor
-    const newActaId = await updateDoc(counterRef, {
+    await updateDoc(counterRef, {
       actaId: increment(1),
-    }).then(() => {
-      return getDoc(counterRef).then((docSnapshot) => {
-        return docSnapshot.data().actaId
-      })
-    })
+    });
 
-    //  convertir el valor de `newActaId` a un número, para que firestore lo detecte como un numero 
-    // y no alfanumerico y arreglar el problema de la lista
-    const newActaIdNumber = Number(newActaId);
+    // Obtiene el valor actual del contador
+    const counterDoc = await getDoc(counterRef);
+    const newActaId = counterDoc.data().actaId;
+
+    // Genera el valor del ID con ceros a la izquierda para que se guarde la lista en orden
+    const newActaIdWithPadding = newActaId.toString().padStart(3, '0');
+
+
 
     // Crea el nuevo documento utilizando el ID incrementado
-    const nuevoDocumentoRef = doc(collection(db, 'actaCollection'), String(newActaIdNumber))
+    const nuevoDocumentoRef = doc(collection(db, 'actaCollection'), newActaIdWithPadding)
+
 
     // Establece los datos del documento
     //await para garantizar que los doc se establezcan y se agegen correctamente antes de seguir
@@ -130,11 +135,13 @@ export const useActaStore = defineStore('Acta', () => {
       encargado: acta.value.encargado,
       motivoSalida: acta.value.motivoSalida,
       fecha: format(date.value, 'dd/MM/yyyy'),
-      fechaEntregaPrestamo: acta.value.fechaEntregaPrestamo,
-      fechaDevolucionPrestamo: acta.value.fechaDevolucionPrestamo,
+      //ternario para verificar que tiene un valor definido, si tiene valor formatea
+      fechaEntregaPrestamo: acta.value.fechaEntregaPrestamo ? format(acta.value.fechaEntregaPrestamo, 'dd/MM/yyyy') : null,
+      fechaDevolucionPrestamo: acta.value.fechaDevolucionPrestamo ? format(acta.value.fechaDevolucionPrestamo, 'dd/MM/yyyy') : null,
       nombreGestion: acta.value.nombreGestion,
       observaciones: acta.value.observaciones,
     })
+
 
 
     // Crea una colección "activos" dentro del documento del acta
@@ -182,7 +189,311 @@ export const useActaStore = defineStore('Acta', () => {
     limpiarCampos()
   }
 
-  return { acta, activo, listaActivos, enviar, setActivoSeleccionado, getActivoSeleccionado }
+  async function exportarPDF(rowData) {
+    try {
+      const element = document.createElement('div');
+  
+      const logo = 'src/assets/logo.png'; // Ruta de la imagen del logo
+      let titulo = ''; // Título del acta
+      const fecha = rowData.fecha; // Fecha del acta
+      const version = '1.0'; // Versión del acta
+  
+      /* let tipoActa = ''; */
+      let parrafo1 = '';
+      let parrafo2 = '';
+  
+      // Verifica el tipo de acta y establece el título correspondiente
+      if (rowData.tipo === 'Entrega') {
+        titulo = 'Acta de Entrega';
+        parrafo1 = 'El Departamento de Tecnologías de la Información y la Comunicación (TIC) de la Presidencia de La República, mediante el presente acto, hace entrega de equipamiento computacional a:';
+      } else if (rowData.tipo === 'Devolución') {
+        titulo = 'Acta de Devolución';
+        parrafo1 = 'Mediante el presente acto, el usuario hace devolución del equipamiento computacional otorgado por el Departamento de Tecnologías de la Información y la Comunicación (TIC) de la Presidencia de la República, los datos son los siguientes:';
+        parrafo2 = '';
+      } else if (rowData.tipo === 'Orden de Salida') {
+        titulo = 'Acta de Orden de Salida';
+        parrafo1 = 'La Jefatura del Departamento de Tecnologías de la Información y la Comunicación (TIC) de la Presidencia de La República, mediante el presente acto, autoriza la salida de equipamiento computacional a:';
+      } else if (rowData.tipo === 'Prestamo') {
+        titulo = 'Acta de Préstamo de Equipamiento Computacional';
+        parrafo1 = 'El Departamento de Tecnologías de la Información y la Comunicación (TIC) de la Presidencia de La República, mediante el presente acto, hace préstamo del equipamiento computacional a:';
+      }
+  
+      const encabezadoTabla = `
+      <table style="width: 80%; border-collapse: collapse; margin-top: 10px; margin-left: 80px; margin-right: 30px;">
+          <tr>
+            <td style="text-align: center; vertical-align: middle;">
+              <img src="${logo}" style="width: 100px;">
+            </td>
+            <td style="text-align: center; font-size: 18px; font-weight: bold; padding-bottom: 10px;">
+              ${titulo}
+            </td>
+            <td style="text-align: right; font-size: 12px;">
+              Fecha: ${fecha}<br>
+              Versión: ${version}
+            </td>
+          </tr>
+        </table>
+      `;
+  
+      const motivoSalida = rowData.tipo === 'Orden de Salida' ? `
+        <tr>
+          <td style='background-color: #dcdcdc; font-weight: bold;'> • Motivo Salida:</td>
+          <td>${rowData.motivoSalida}</td>
+        </tr>
+      ` : '';
+  
+      const observaciones = rowData.observaciones ? `
+        <tr>
+          <td style='background-color: #dcdcdc; font-weight: bold;'> • Observaciones:</td>
+          <td>${rowData.observaciones}</td>
+        </tr>
+      ` : '';
+      const fechaEntregaPrestamo = rowData.tipo === 'Prestamo' ? `
+        <tr>
+          <td style='background-color: #dcdcdc; font-weight: bold;'> • Fecha del Préstamo:</td>
+          <td>${rowData.fechaEntregaPrestamo}</td>
+        </tr>
+      ` : '';
+      const fechaDevolucionPrestamo = rowData.tipo === 'Prestamo' ? `
+        <tr>
+          <td style='background-color: #dcdcdc; font-weight: bold;'> • Fecha de la devolución:</td>
+          <td>${rowData.fechaDevolucionPrestamo}</td>
+        </tr>
+      ` : '';
+  
+      element.innerHTML = `
+        <style>
+          body {
+            color: #000000;
+            font-size: 12px;
+            margin: 0;
+          }
+  
+          
+          table {
+            border-collapse: collapse;
+            margin-top: 10px;
+          }
+  
+          table caption {
+            font-weight: bold;
+          }
+  
+          th {
+            font-weight: bold;
+            text-align: left;
+            background-color: #dcdcdc;
+          }
+  
+          th,
+          td {
+            padding: 5px;
+            border: 1px solid;
+            text-align: left;
+            
+          }
+          
+  
+          .column {
+            width: 20px;
+          }
+          p {
+            margin-left: 80px; margin-right: 30px;"
+          }
+          
+        </style>
+        ${encabezadoTabla}
+        <br>
+        <p>${parrafo1}</p>
+        <br>
+        <table style='width: 70%; border-collapse: collapse; margin-top: 10px; margin-left: 80px; margin-right: 30px;'>
+          <tr>
+            <td style='background-color: #dcdcdc; font-weight: bold;'> • ID del Acta:</td>
+            <td>${rowData.id}</td>
+          </tr>
+          <tr>
+            <td style='background-color: #dcdcdc; font-weight: bold;'> • Sr.(a):</td>
+            <td>${rowData.nombre}</td>
+          </tr>
+          <tr>
+            <td style='background-color: #dcdcdc; font-weight: bold;' > • Rut:</td>
+            <td>${rowData.rut}</td>
+          </tr>
+          <tr>
+            <td style='background-color: #dcdcdc; font-weight: bold;'> • Firma:</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td style='background-color: #dcdcdc; font-weight: bold;'> • Dirección /Depto. /Unidad:</td>
+            <td>${rowData.direccionSelec.nombre}</td>
+          </tr>
+          <tr>
+            <td style='background-color: #dcdcdc; font-weight: bold;'> • Cargo:</td>
+            <td>${rowData.cargo}</td>
+          </tr>
+          <tr>
+            <td style='background-color: #dcdcdc; font-weight: bold;'> • Tipo:</td>
+            <td>${rowData.tipo}</td>
+          </tr>
+         
+          ${fechaEntregaPrestamo}
+          ${fechaDevolucionPrestamo}
+          ${motivoSalida}
+          ${observaciones}
+        </table>
+        <br>
+        
+      `;
+  
+      const computadorTable = filtrarComputadorEscritorioPortatil(rowData.activos);
+      const otrosActivosTable = filtrarOtrosActivos(rowData.activos);
+  
+      if (computadorTable.length > 0) {
+        const computadorTableHtml = `
+          <table style="width: 70%; border-collapse: collapse; margin-top: 10px; margin-left: 80px; margin-right: 100px;">
+            <caption>EQUIPAMIENTO COMPUTACIONAL</caption>
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th style="width: 50px">Tipo</th>
+                <th>Marca</th>
+                <th>Modelo</th>
+                <th>Serie</th>
+                <th>Nro Inventario</th>
+                <th>Procesador</th>
+                <th>RAM</th>
+                <th>Disco Duro</th>
+                <th>Lector/Grab DVD</th>
+                <th>Teclado y Mouse</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${computadorTable
+            .map(activo => `
+                  <tr>
+                    <td>${activo.id}</td>
+                    <td>${activo.nombreEquipo}</td>
+                    <td>${activo.tipo}</td>
+                    <td>${activo.marca}</td>
+                    <td>${activo.modelo}</td>
+                    <td>${activo.serie}</td>
+                    <td>${activo.numInv}</td>
+                    <td>${activo.procesador}</td>
+                    <td>${activo.ram}</td>
+                    <td>${activo.discoDuro}</td>
+                    <td>${activo.dvd}</td>
+                    <td>${activo.tecladoMouse}</td>
+                  </tr>
+  
+                `)
+            .join('')}
+            </tbody>
+          </table>
+  
+          
+        `;
+        /*  */
+  
+        const softwareTableHtml = `
+          <table style="width: 70%; border-collapse: collapse; margin-top: 10px; margin-left: 80px; margin-right: 100px;">
+            <caption>S.O.- OFIMÁTICA-SEGURIDAD</caption>
+            <thead>
+              <tr>
+                <th>ID Activo</th>
+                <th>MacOS</th>
+                <th>Ms Office</th>
+                <th>Ms Proyect</th>
+                <th>Acrobat Reader</th>
+                <th>SQL Server</th>
+                <th>Photoshop</th>
+                <th>Antivirus</th>
+                
+              </tr>
+            </thead>
+            <tbody>
+              ${computadorTable
+            .map(activo => `
+                  <tr>
+                    <td>${activo.id}</td>
+                    <td>${activo.macOS}</td>
+                    <td>${activo.msOffice}</td>
+                    <td>${activo.msProyect}</td>
+                    <td>${activo.acrobatReader}</td>
+                    <td>${activo.sqlServer}</td>
+                    <td>${activo.photoshop}</td>
+                    <td>${activo.av}</td>
+                    
+                  </tr>
+  
+                `)
+            .join('')}
+            </tbody>
+          </table>
+          
+        `;
+        /*  */
+  
+        if (rowData.tipo === 'Entrega') {
+          element.innerHTML += computadorTableHtml;
+          element.innerHTML += softwareTableHtml;
+        } else {
+          element.innerHTML += computadorTableHtml;
+        }
+  
+  
+      }
+  
+      if (otrosActivosTable.length > 0) {
+        const otrosActivosTableHtml = `
+        <table style="width: 50%; border-collapse: collapse; margin-top: 10px; margin-left: 80px; margin-right: 30px;">
+            <caption>Periféricos</caption>
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Tipo</th>
+                <th>Marca</th>
+                <th>Modelo</th>
+                <th>Serie</th>
+                <th>Nro Inventario</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${otrosActivosTable
+            .map(activo => `
+                  <tr>
+                    <td>${activo.id}</td>
+                    <td>${activo.tipo}</td>
+                    <td>${activo.marca}</td>
+                    <td>${activo.modelo}</td>
+                    <td>${activo.serie}</td>
+                    <td>${activo.numInv}</td>
+                  </tr>
+                `)
+            .join('')}
+            </tbody>
+          </table>
+        `;
+        element.innerHTML += otrosActivosTableHtml;
+      }
+  
+      // Crea el PDF con el contenido
+      await html2pdf().from(element).save(`Acta_${rowData.id}.pdf`);
+    } catch (error) {
+      console.error('Error al exportar a PDF:', error);
+    }
+  }
+
+
+  function filtrarComputadorEscritorioPortatil(activos) {
+    return activos.filter(activo => activo.tipo === 'Computador Escritorio' || activo.tipo === 'Computador Portatil');
+  }
+  
+  function filtrarOtrosActivos(activos) {
+    return activos.filter(activo => activo.tipo !== 'Computador Escritorio' && activo.tipo !== 'Computador Portatil');
+  }
+
+  return { acta, activo, listaActivos, enviar, setActivoSeleccionado, getActivoSeleccionado, exportarPDF }
 })
 
 

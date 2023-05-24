@@ -305,13 +305,6 @@ onMounted(() => {
     /*  ActivoService.getActivos().then((data) => (store.listaActivos = data)); */
 });
 
-const toggleRadio = (field, value) => {
-    if (store.activo[field] === value) {
-        store.activo[field] = '';
-    } else {
-        store.activo[field] = value;
-    }
-};
 
 const abrirDialog = () => {
     store.activo.value = {};
