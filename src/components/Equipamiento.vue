@@ -262,9 +262,8 @@
 </template>
 
 <script setup >
-import { ref, onMounted } from 'vue';
+import { ref } from 'vue';
 import { useToast } from 'primevue/usetoast';
-/* import { ActivoService } from '@/service/ActivoService'; */
 import { useActaStore } from '@/stores/store'
 
 
@@ -277,41 +276,10 @@ const activoDialog = ref(false);
 const eliminarActivoDialog = ref(false);
 const eliminarActivosDialog = ref(false);
 
-/* const activo = ref({
-    tipo: '',
-    marca: '',
-    modelo: '',
-    serie: '',
-    numInv: '',
-    procesador: '',
-    ram: '',
-    discoDuro: '',
-    tarjetavideo: '',
-    dvd: '',
-    tecladoMouse: '',
-    /* tipoOtro: '', 
-}); */
-
-/* watch(() => store.activo.tipoOtro, (newVal) => {
-  if (store.activo.tipo === 'Otro' && newVal.trim() !== '') {
-    store.activo.tipo = newVal.trim()
-  }
-}) */
-
-/* const otroSeleccionado = () => {
-  if (store.activo.tipo === 'Otro') {
-    store.activo.tipo = store.activo.tipoOtro;
-  }
-} */
-
 const activosSeleccionados = ref();
 const activoSeleccionado = ref(null);
 const toast = useToast();
 const agregar = ref(false);
-
-onMounted(() => {
-    /*  ActivoService.getActivos().then((data) => (store.listaActivos = data)); */
-});
 
 
 const abrirDialog = () => {
@@ -321,8 +289,6 @@ const abrirDialog = () => {
     /* otroSeleccionado.value = false; */
 
 };
-
-
 
 const cerrarDialog = () => {
     activoDialog.value = false;
@@ -337,9 +303,6 @@ const guardarActivo = () => {
         toast.add({ severity: 'error', summary: 'Error', detail: 'Por favor selecciona un tipo', life: 4000 });
         return;
     }
-
-    //busca el indice en la lista listaActivos que tiene el mismo valor de id que el objeto activo seleccionado
-    //const index = store.listaActivos.findIndex((activo) => activo.id === store.activo.id);
 
     //llama la func findIndexById encontrar el índice de un elemento en la lista listaActivos que tiene un valor de id igual al id del objeto 
     //activo actual en la store. El resultado se almacena en una variable index.
@@ -432,13 +395,7 @@ const eliminarActivosSelec = () => {
 
 const enviar = () => {
     store.enviar()
-    /* console.log(store.listaActivos);  */
-    /* store.listaActivos = []; */
-    /* dt.value = ''; */
-
     toast.add({ severity: 'success', summary: 'Exitoso', detail: 'Se ha generado el Acta', life: 4000 });
-    /* store.listaActivos = [];  */
-
 };
 
 
@@ -514,10 +471,8 @@ const enviar = () => {
 }
 
 .checkbox-label {
-
     min-width: 130px;
 
-    /* Ancho mínimo para los labels */
 }
 
 /* equipamiento */

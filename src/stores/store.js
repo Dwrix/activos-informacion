@@ -151,20 +151,20 @@ export const useActaStore = defineStore('Acta', () => {
     await Promise.all(
       listaActivos.value.map(async (activo) => {
         const activoConValoreVacios = {
-          id: activo.id || '', // Si está vacío, asigna un valor vacío para que no salga undefined
-          tipo: activo.tipo || '', // Si está vacío, asigna un valor vacío
-          marca: activo.marca || '', // Si está vacío, asigna un valor vacío
-          modelo: activo.modelo || '', // Si está vacío, asigna un valor vacío
-          serie: activo.serie || '', // Si está vacío, asigna un valor vacío
-          numInv: activo.numInv || '', // Si está vacío, asigna un valor vacío
-          nombreEquipo: activo.nombreEquipo || '', // Si está vacío, asigna un valor vacío
-          procesador: activo.procesador || '', // Si está vacío, asigna un valor vacío
-          ram: activo.ram || '', // Si está vacío, asigna un valor vacío
-          discoDuro: activo.discoDuro || '', // Si está vacío, asigna un valor vacío
-          tarjetavideo: activo.tarjetavideo || '', // Si está vacío, asigna un valor vacío
-          dvd: activo.dvd || '', // Si está vacío, asigna un valor vacío
-          tecladoMouse: activo.tecladoMouse || '', // Si está vacío, asigna un valor vacío
-          tipoOtro: activo.tipoOtro || '', // Si está vacío, asigna un valor vacío
+          id: activo.id || '', // Si está vacío, asigna un valor vacío para que no imprima como undefined
+          tipo: activo.tipo || '', 
+          marca: activo.marca || '', 
+          modelo: activo.modelo || '', 
+          serie: activo.serie || '', 
+          numInv: activo.numInv || '', 
+          nombreEquipo: activo.nombreEquipo || '', 
+          procesador: activo.procesador || '', 
+          ram: activo.ram || '', 
+          discoDuro: activo.discoDuro || '', 
+          tarjetavideo: activo.tarjetavideo || '', 
+          dvd: activo.dvd || '', 
+          tecladoMouse: activo.tecladoMouse || '', 
+          tipoOtro: activo.tipoOtro || '', 
           macOS: activo.macOS ? 'Si' : 'No',
           msOffice: activo.msOffice ? 'Si' : 'No',
           msProyect: activo.msProyect ? 'Si' : 'No',
@@ -215,9 +215,6 @@ export const useActaStore = defineStore('Acta', () => {
       const version = '1.0'; // Versión del acta
 
 
-
-
-
       /* let tipoActa = ''; */
       let parrafo1 = '';
       let parrafo2 = '';
@@ -249,7 +246,8 @@ export const useActaStore = defineStore('Acta', () => {
             </td>
             <td style="text-align: right; font-size: 12px;">
               Fecha: ${fecha}<br>
-              Versión: ${version}
+              Versión: ${version}<br>
+              <span style='background-color: #dcdcdc; font-weight: bold;'>ID del Acta: ${rowData.id}</span>
             </td>
           </tr>
         </table>
@@ -483,10 +481,6 @@ export const useActaStore = defineStore('Acta', () => {
         <p>${parrafo1}</p>
         <br>
         <table style='width: 70%; border-collapse: collapse; margin-top: 10px; margin-left: 80px; margin-right: 30px;'>
-          <tr>
-            <td style='background-color: #dcdcdc; font-weight: bold;'> • ID del Acta:</td>
-            <td>${rowData.id}</td>
-          </tr>
           <tr>
             <td style='background-color: #dcdcdc; font-weight: bold;'> • Sr.(a):</td>
             <td>${rowData.nombre}</td>
