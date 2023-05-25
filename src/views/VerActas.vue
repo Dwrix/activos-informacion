@@ -20,7 +20,7 @@
 
 
           <Column selectionMode="multiple" style="width: 3rem" :exportable="false"></Column>
-          <Column field="id" header="id" :sortable="true" style="min-width:5rem " :sort-function="sortById">
+          <Column field="id" header="id" :sortable="true" style="min-width:5rem " >
           </Column>
           <!-- <Column field="nombre" header="Nombre Equipo" sortable style="min-width:5rem"></Column> -->
           <Column field="nombre" header="Nombre" sortable style="min-width:5rem"></Column>
@@ -144,7 +144,7 @@
           <p v-else>No se encontraron activos asociados.</p>
 
           <div v-if="activoSeleccionado"><br>
-            <Button label="Descargar PDF" icon="pi pi-download" class="p-button-success p-button-rounded"
+            <Button label="Ver PDF" icon="pi pi-download" class="p-button-success p-button-rounded"
               @click="descargarPDF(activoSeleccionado.id)" />
 
 
@@ -181,36 +181,20 @@ import { useActaStore } from '@/stores/store'
 
 const store = useActaStore()
 
-/* import html2canvas from 'html2canvas';
-import jsPDF from 'jspdf';
- */
-/* const storage = getStorage(); */
-/* const archivoRef = storageRef(storage, 'ruta/del/archivo'); */
 const toast = useToast();
 
 const filters = ref({
   'global': { value: null, matchMode: FilterMatchMode.CONTAINS },
 });
 
-/* onMounted(() => {
-    ListSolicitudes.getSolicitudesData().then((data) => (actas.value = data));
-}); */
-
-const sortById = (value1, value2) => value2 - value1;
-/* const selectedActa = ref(null); */
 const actas = ref([]);
 const mostrarDialogActivos = ref(false);
 const activoSeleccionado = ref({});
-
 const dialogActa = ref(null);
 
 onMounted(async () => {
   await obtenerActas();
 });
-
-
-
-
 
 async function obtenerActas() {
   const querySnapshot = await getDocs(collection(db, 'actaCollection'));
@@ -225,7 +209,6 @@ async function obtenerActas() {
   actas.value.reverse();
 }
 
-
 async function mostrarActivos(acta) {
 
   /* expandedRowKeys.value = []; */
@@ -235,13 +218,11 @@ async function mostrarActivos(acta) {
     activoSeleccionado.value = acta;
     mostrarDialogActivos.value = true;
 
-
   } else {
     toast.add({ severity: 'error', summary: 'Error', detail: 'No se encontraron Activos asociados', life: 4000 });
     return;
   }
 }
-
 
 function tieneComputadorEscritorioPortatil(activos) {
   return activos.some(activo => activo.tipo === 'Computador Escritorio' || activo.tipo === 'Computador Portatil');
@@ -272,6 +253,7 @@ async function descargarPDF(actaId) {
 
     // Abre una nueva ventana o descarga el archivo PDF
     window.open(downloadURL);
+
   } catch (error) {
     console.error('Error al descargar el PDF:', error);
     toast.add({ severity: 'error', summary: 'Error', detail: 'No se encontro el PDF correspondiente al Acta', life: 4000 });
@@ -298,9 +280,6 @@ const exportarPDF = (data) => {
   store.exportarPDF(data)
 };
 
-
-
-
 </script>
 
 <style scoped>
@@ -315,16 +294,11 @@ const exportarPDF = (data) => {
   margin-top: 30px;
 }
 
-
-
 h1,
 h2,
 h4 {
   text-align: center;
-
 }
-
-
 
 .contenedorDt {
   font-size: small;

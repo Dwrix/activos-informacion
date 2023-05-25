@@ -15,7 +15,7 @@
                     <label for="rut">Rut</label>
                 </span><br>
                 <div class="p-col-12">
-                    <Dropdown v-model="store.acta.direccionSelec" :options="direccion" filter optionLabel="nombre"
+                    <Dropdown v-model="store.acta.direccionSelec" :options="store.direccionOpciones" filter optionLabel="nombre"
                         placeholder="Dirección /Depto. /Unidad" class="w-full md:w-14rem">
                         <template #value="slotProps">
                             <div v-if="slotProps.value" class="flex align-items-center">
@@ -87,35 +87,7 @@ window.addEventListener('load', () => {
 const direccionSelec = ref(); */
 
 store.acta.tipo = "Devolución"
-const direccion = ref([
-    { nombre: 'Auditoría Interna', code: '1' },
-    { nombre: 'Abastecimiento', code: '2' },
-    { nombre: 'Planificación y control de gestión', code: '3' },
-    { nombre: 'Tecnologías de la información y la comunicación (TIC)', code: '4' },
-    { nombre: 'Finanzas', code: '5' },
-    { nombre: 'Gestión de las personas', code: '6' },
-    { nombre: 'Jurídico', code: '7' },
-    { nombre: 'Logística', code: '8' },
-    { nombre: 'Patrimonio Cultural', code: '9' },
-    { nombre: 'Repostero Presidencial y casino general', code: '10' },
-    { nombre: 'Dirección administrativa', code: '11' },
-    { nombre: 'Dirección de gestión ciudadana', code: '12' },
-    { nombre: 'Dirección de políticas públicas', code: '13' },
-    { nombre: 'Dirección de prensa y fotografía', code: '14' },
-    { nombre: 'Dirección de Programación', code: '15' },
-    { nombre: 'Dirección socio cultural', code: '16' },
-    { nombre: 'Gabinete Presidencial', code: '17' },
-    { nombre: 'Memoria presidencial', code: '18' },
-    { nombre: 'Residencia presidencial palacio cerro castillo', code: '19' },
-    { nombre: 'Subdirección administrativa', code: '20' },
-    { nombre: 'Subvención presidencial', code: '21' },
-    { nombre: 'Seguridad presidencial', code: '22' },
-    { nombre: 'Gabinete primera dama', code: '23' },
-    { nombre: 'Sistema gestión de la calidad', code: '24' },
-    { nombre: 'Dirección de estudios', code: '25' },
 
-
-]);
 
 </script>
 

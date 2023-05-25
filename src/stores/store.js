@@ -101,6 +101,34 @@ export const useActaStore = defineStore('Acta', () => {
     listaActivos.value = [];
   }
 
+  const direccionOpciones = ref([
+    { nombre: 'Auditoría Interna', code: '1' },
+    { nombre: 'Abastecimiento', code: '2' },
+    { nombre: 'Planificación y Control de Gestión', code: '3' },
+    { nombre: 'Tecnologías de la Información y la Comunicación (TIC)', code: '4' },
+    { nombre: 'Finanzas', code: '5' },
+    { nombre: 'Gestión de las Personas', code: '6' },
+    { nombre: 'Jurídico', code: '7' },
+    { nombre: 'Logística', code: '8' },
+    { nombre: 'Patrimonio Cultural', code: '9' },
+    { nombre: 'Repostero Presidencial y Casino General', code: '10' },
+    { nombre: 'Dirección Administrativa', code: '11' },
+    { nombre: 'Dirección de Gestión Ciudadana', code: '12' },
+    { nombre: 'Dirección de Políticas Públicas', code: '13' },
+    { nombre: 'Dirección de Prensa y Fotografía', code: '14' },
+    { nombre: 'Dirección de Programación', code: '15' },
+    { nombre: 'Dirección Socio Cultural', code: '16' },
+    { nombre: 'Gabinete Presidencial', code: '17' },
+    { nombre: 'Memoria Presidencial', code: '18' },
+    { nombre: 'Residencia Presidencial Palacio Cerro Castillo', code: '19' },
+    { nombre: 'Subdirección Administrativa', code: '20' },
+    { nombre: 'Subvención Presidencial', code: '21' },
+    { nombre: 'Seguridad Presidencial', code: '22' },
+    { nombre: 'Gabinete Primera Dama', code: '23' },
+    { nombre: 'Sistema Gestión de la Calidad', code: '24' },
+    { nombre: 'Dirección de Estudios', code: '25' },
+
+  ]);
 
   async function enviar() {
     // Obtener la referencia al contador
@@ -118,11 +146,8 @@ export const useActaStore = defineStore('Acta', () => {
     // Genera el valor del ID con ceros a la izquierda para que se guarde la lista en orden
     const newActaIdWithPadding = newActaId.toString().padStart(3, '0');
 
-
-
     // Crea el nuevo documento utilizando el ID incrementado
     const nuevoDocumentoRef = doc(collection(db, 'actaCollection'), newActaIdWithPadding)
-
 
     // Establece los datos del documento
     //await para garantizar que los doc se establezcan y se agegen correctamente antes de seguir
@@ -142,8 +167,6 @@ export const useActaStore = defineStore('Acta', () => {
       nombreGestion: acta.value.nombreGestion,
       observaciones: acta.value.observaciones,
     })
-
-
 
     // Crea una colección "activos" dentro del documento del acta
     const activosCollectionRef = collection(nuevoDocumentoRef, 'activos');
@@ -209,15 +232,13 @@ export const useActaStore = defineStore('Acta', () => {
 
       let contenidoAdicional = '';
 
-      const logo = './assets/logo.png'; // Ruta de la imagen del logo
-      let titulo = ''; // Título del acta
-      const fecha = rowData.fecha; // Fecha del acta
-      const version = '1.0'; // Versión del acta
-
+      const logo = './assets/logo.png'; 
+      let titulo = ''; 
+      const fecha = rowData.fecha; 
+      const version = '1.0'; 
 
       /* let tipoActa = ''; */
       let parrafo1 = '';
-      let parrafo2 = '';
 
       // Verifica el tipo de acta y establece el título correspondiente
       if (rowData.tipo === 'Entrega') {
@@ -226,7 +247,7 @@ export const useActaStore = defineStore('Acta', () => {
       } else if (rowData.tipo === 'Devolución') {
         titulo = 'Acta de Devolución';
         parrafo1 = 'Mediante el presente acto, el usuario hace devolución del equipamiento computacional otorgado por el Departamento de Tecnologías de la Información y la Comunicación (TIC) de la Presidencia de la República, los datos son los siguientes:';
-        parrafo2 = '';
+
       } else if (rowData.tipo === 'Orden de Salida') {
         titulo = 'Acta de Orden de Salida';
         parrafo1 = 'La Jefatura del Departamento de Tecnologías de la Información y la Comunicación (TIC) de la Presidencia de La República, mediante el presente acto, autoriza la salida de equipamiento computacional a:';
@@ -247,7 +268,7 @@ export const useActaStore = defineStore('Acta', () => {
             <td style="text-align: right; font-size: 12px;">
               Fecha: ${fecha}<br>
               Versión: ${version}<br>
-              <span style='background-color: #dcdcdc; font-weight: bold;'>ID del Acta: ${rowData.id}</span>
+              <span style='font-weight: bold;'>ID del Acta: ${rowData.id}</span>
             </td>
           </tr>
         </table>
@@ -278,21 +299,20 @@ export const useActaStore = defineStore('Acta', () => {
           <td>${rowData.observaciones}</td>
         </tr>
       ` : '';
+
       const fechaEntregaPrestamo = rowData.tipo === 'Prestamo' ? `
         <tr>
           <td style='background-color: #dcdcdc; font-weight: bold;'> • Fecha del Préstamo:</td>
           <td>${rowData.fechaEntregaPrestamo}</td>
         </tr>
       ` : '';
+
       const fechaDevolucionPrestamo = rowData.tipo === 'Prestamo' ? `
         <tr>
           <td style='background-color: #dcdcdc; font-weight: bold;'> • Fecha de la devolución:</td>
           <td>${rowData.fechaDevolucionPrestamo}</td>
         </tr>
       ` : '';
-
-
-
 
       const computadorTable = filtrarComputadorEscritorioPortatil(rowData.activos);
       const otrosActivosTable = filtrarOtrosActivos(rowData.activos);
@@ -346,6 +366,7 @@ export const useActaStore = defineStore('Acta', () => {
         `;
 
       }
+
       //Acta entrega solo perifericos
       if (rowData.tipo === 'Entrega' && computadorTable.length === 0) {
         // Mostrar parágrafos adicionales solo si el acta es de tipo "Entrega" y no hay activos de "Computador escritorio" o "Computador portátil"
@@ -366,6 +387,7 @@ export const useActaStore = defineStore('Acta', () => {
         
         `;
       }
+
       //acta devolucion computador
       if (rowData.tipo === 'Devolución' && computadorTable.length > 0) {
         const t1DevoPc = 'Indicaciones de protección de Información Institucional';
@@ -389,6 +411,7 @@ export const useActaStore = defineStore('Acta', () => {
         
         `;
       }
+
       //acta devolucion periferico
       if (rowData.tipo === 'Devolución' && computadorTable.length === 0) {
         const t1DevoPeriferico = 'INDICACIONES DE USO DE RECURSOS INFORMÁTICOS.';
@@ -444,9 +467,6 @@ export const useActaStore = defineStore('Acta', () => {
 
       }
 
-
-
-
       //tabla computadores
       if (computadorTable.length > 0) {
         const computadorTableHtml = `
@@ -494,8 +514,7 @@ export const useActaStore = defineStore('Acta', () => {
   
           
         `;
-        /*  */
-
+        
         const softwareTableHtml = `
           <table style="width: 70%; border-collapse: collapse; margin-top: 10px; margin-left: 80px; margin-right: 100px;">
             <caption>S.O.- OFIMÁTICA-SEGURIDAD</caption>
@@ -533,8 +552,7 @@ export const useActaStore = defineStore('Acta', () => {
           </table>
           
         `;
-        /*  */
-
+        
         if (rowData.tipo === 'Entrega') {
           contenidoAdicional += computadorTableHtml;
           contenidoAdicional += softwareTableHtml;
@@ -608,12 +626,9 @@ export const useActaStore = defineStore('Acta', () => {
           p {
             margin-left: 80px; 
             margin-right: 80px;
-            
             text-align: justify;
           }
           .contenedorPieTabla {
-
-          
             bottom: 0;
             z-index: 1;
             margin-top: 50px;
@@ -621,17 +636,13 @@ export const useActaStore = defineStore('Acta', () => {
             padding: 10px;
             /* border-top: 1px solid #000000; */
             font-size: 12px;
-          }
-          
+          } 
           .pieTabla {
             margin-top: 10px;
-          }
-          
-         
+          }  
         </style>
+
         ${encabezadoTabla}
-        
-        
         <br>
         <p>${parrafo1}</p>
         <br>
@@ -657,7 +668,7 @@ export const useActaStore = defineStore('Acta', () => {
             <td>${rowData.cargo}</td>
           </tr>
           <tr>
-            <td style='background-color: #dcdcdc; font-weight: bold;'> • Encargado:</td>
+            <td style='background-color: #dcdcdc; font-weight: bold; white-space: pre-wrap;'> • Encargado (Área de Operaciones y Soporte Depto. TIC):</td>
             <td>${rowData.encargado}</td>
           </tr>
          
@@ -672,21 +683,16 @@ export const useActaStore = defineStore('Acta', () => {
           <div class="pieTabla">
             ${pieTabla}
           </div>
-      </div>
-        
+      </div>    
       `;
-
 
       // Crea el PDF con el contenido
       await html2pdf().from(element).save(`Acta_${rowData.id}.pdf`);
-
-
 
     } catch (error) {
       console.error('Error al exportar a PDF:', error);
     }
   }
-
 
   function filtrarComputadorEscritorioPortatil(activos) {
     return activos.filter(activo => activo.tipo === 'Computador Escritorio' || activo.tipo === 'Computador Portatil');
@@ -696,7 +702,6 @@ export const useActaStore = defineStore('Acta', () => {
     return activos.filter(activo => activo.tipo !== 'Computador Escritorio' && activo.tipo !== 'Computador Portatil');
   }
 
-  return { acta, activo, listaActivos, enviar, setActivoSeleccionado, getActivoSeleccionado, exportarPDF }
+  return { acta, activo, listaActivos, enviar, setActivoSeleccionado, getActivoSeleccionado, exportarPDF, direccionOpciones }
 })
-
 

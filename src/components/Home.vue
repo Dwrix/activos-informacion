@@ -30,22 +30,25 @@ async function obtenerActas() {
   // Invierte el array PERMANENTEMENTE para que la primera acta de la lista sea la última ingresada
   actas.reverse();
 
-  // Extrae los datos para la gráfica
-  const tiposActas = actas.reduce((acumulador, acta) => {
+  // Lista de todos los tipos de acta que deseas mostrar
+  const tiposActa = ['Entrega', 'Devolución', 'Prestamo', 'Orden de Salida'];
+
+  // Crear un objeto para almacenar las cantidades de actas por tipo
+  const tiposActaCantidades = {};
+
+  // Calcular las cantidades de actas por tipo
+  actas.forEach((acta) => {
     const tipoActa = acta.tipo;
-    if (acumulador[tipoActa]) {
-      acumulador[tipoActa]++;
+    if (tiposActaCantidades[tipoActa]) {
+      tiposActaCantidades[tipoActa]++;
     } else {
-      acumulador[tipoActa] = 1;
+      tiposActaCantidades[tipoActa] = 1;
     }
-    return acumulador;
-  }, {});
+  });
 
-  // Formatea los datos para Chart.js
-  const chartLabels = Object.keys(tiposActas);
-  const chartDataValues = Object.values(tiposActas);
-
-  
+  // Crear un objeto con los datos para Chart.js
+  const chartLabels = tiposActa;
+  const chartDataValues = tiposActa.map((tipo) => tiposActaCantidades[tipo] || 0);
 
   // Establece los datos y opciones de la gráfica
   chartData.value = {
