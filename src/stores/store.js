@@ -67,9 +67,14 @@ export const useActaStore = defineStore('Acta', () => {
 
   const listaActivos = ref([])
 
+  
+//
+
   function limpiarCampos() {
+    
+    const tipoActaValue = acta.value.tipo;
     acta.value = {
-      tipo: '',
+      tipo: tipoActaValue,
       nombre: '',
       rut: '',
       direccionSelec: '',
@@ -99,6 +104,9 @@ export const useActaStore = defineStore('Acta', () => {
       tipoOtro: '',
     }
     listaActivos.value = [];
+
+    // Asignar nuevamente el valor de acta.tipo al estado reactivo
+    tipoActa.value = acta.value.tipo; 
   }
 
   const direccionOpciones = ref([
@@ -232,29 +240,46 @@ export const useActaStore = defineStore('Acta', () => {
 
       let contenidoAdicional = '';
 
-      const logo = './assets/logo.png'; 
-      let titulo = ''; 
-      const fecha = rowData.fecha; 
-      const version = '1.0'; 
+      const logo = './assets/logo.png';
+      let titulo = '';
+      const fecha = rowData.fecha;
+      const version = '1.0';
 
       /* let tipoActa = ''; */
       let parrafo1 = '';
 
-      // Verifica el tipo de acta y establece el título correspondiente
-      if (rowData.tipo === 'Entrega') {
-        titulo = 'Acta de Entrega';
-        parrafo1 = 'El Departamento de Tecnologías de la Información y la Comunicación (TIC) de la Presidencia de La República, mediante el presente acto, hace entrega de equipamiento computacional a:';
-      } else if (rowData.tipo === 'Devolución') {
-        titulo = 'Acta de Devolución';
-        parrafo1 = 'Mediante el presente acto, el usuario hace devolución del equipamiento computacional otorgado por el Departamento de Tecnologías de la Información y la Comunicación (TIC) de la Presidencia de la República, los datos son los siguientes:';
+      const computadorTable = filtrarComputadorEscritorioPortatil(rowData.activos);
+      const otrosActivosTable = filtrarOtrosActivos(rowData.activos);
 
-      } else if (rowData.tipo === 'Orden de Salida') {
-        titulo = 'Acta de Orden de Salida';
-        parrafo1 = 'La Jefatura del Departamento de Tecnologías de la Información y la Comunicación (TIC) de la Presidencia de La República, mediante el presente acto, autoriza la salida de equipamiento computacional a:';
-      } else if (rowData.tipo === 'Prestamo') {
-        titulo = 'Acta de Préstamo de Equipamiento Computacional';
-        parrafo1 = 'El Departamento de Tecnologías de la Información y la Comunicación (TIC) de la Presidencia de La República, mediante el presente acto, hace préstamo del equipamiento computacional a:';
+      const tipoData = {
+        Entrega: {
+          titulo: computadorTable.length > 0 ? 'Acta de Entrega de Equipamiento Computacional' : 'Acta de Entrega de Periféricos',
+          parrafo1: computadorTable.length > 0 ? 'El Departamento de Tecnologías de la Información y la Comunicación (TIC) de la Presidencia de la República, mediante el presente acto, hace entrega de equipamiento computacional a:' : 'El Departamento de Tecnologías de la Información y la Comunicación (TIC) de la Presidencia de la República, mediante el presente acto, hace entrega de periféricos a:',
+        },
+        Devolución: {
+          titulo: computadorTable.length > 0 ? 'Acta de Devolución de Equipamiento Computacional' : 'Acta de Devolución de Periféricos',
+          parrafo1: computadorTable.length > 0 ? 'Mediante el presente acto, el usuario hace devolución del equipamiento computacional otorgado por el Departamento de Tecnologías de la Información y la Comunicación (TIC) de la Presidencia de la República, los datos son los siguientes:' : 'Mediante el presente acto, el usuario hace devolución de los periféricos otorgados por el Departamento de Tecnologías de la Información y la Comunicación (TIC) de la Presidencia de la República, los datos son los siguientes:',
+        },
+        'Orden de Salida': {
+          titulo: 'Acta de Orden de Salida',
+          parrafo1: 'La Jefatura del Departamento de Tecnologías de la Información y la Comunicación (TIC) de la Presidencia de la República, mediante el presente acto, autoriza la salida de equipamiento computacional a:',
+        },
+        Prestamo: {
+          titulo: computadorTable.length > 0 ? 'Acta de Préstamo de Equipamiento Computacional' : 'Acta de Préstamo de Periféricos',
+          parrafo1: computadorTable.length > 0 ? 'El Departamento de Tecnologías de la Información y la Comunicación (TIC) de la Presidencia de la República, mediante el presente acto, hace préstamo del equipamiento computacional a:' : 'El Departamento de Tecnologías de la Información y la Comunicación (TIC) de la Presidencia de la República, mediante el presente acto, hace préstamo de los periféricos a:',
+        },
+      };
+      
+      // Obtén los valores correspondientes según el tipo de rowData
+      const rowDataValues = tipoData[rowData.tipo];
+      
+      // Asigna los valores a las variables correspondientes
+      if (rowDataValues) {
+        titulo = rowDataValues.titulo;
+        parrafo1 = rowDataValues.parrafo1;
       }
+      
+
 
       const encabezadoTabla = `
         <table style="width: 80%; border-collapse: collapse; margin-top: 10px; margin-left: 80px; margin-right: 30px;">
@@ -314,8 +339,8 @@ export const useActaStore = defineStore('Acta', () => {
         </tr>
       ` : '';
 
-      const computadorTable = filtrarComputadorEscritorioPortatil(rowData.activos);
-      const otrosActivosTable = filtrarOtrosActivos(rowData.activos);
+      /* const computadorTable = filtrarComputadorEscritorioPortatil(rowData.activos);
+      const otrosActivosTable = filtrarOtrosActivos(rowData.activos); */
 
       //acta entrega computador
       if (computadorTable.length > 0 && rowData.tipo === 'Entrega') {
@@ -352,16 +377,18 @@ export const useActaStore = defineStore('Acta', () => {
               <p>${p6EntregaPc}</p>
               <p>${p7EntregaPc}</p>
               <p>${p8EntregaPc}</p><br>
-              <h4 style='font-weight: bold; margin-left: 80px'>${t3EntregaPc}</h4>
-              <p>${p9EntregaPc}</p>
-              <p>${p10EntregaPc}</p>
-              <p>${p11EntregaPc}</p>
-              <p>${p12EntregaPc}</p>
-              <p>${p13EntregaPc}</p>
-              <p>${p14EntregaPc}</p>
-              <p>${p15EntregaPc}</p>
-              <p>${p16EntregaPc}</p>
-        
+              <div class="page-break">
+                ${encabezadoTabla}<br>
+                <h4 style='font-weight: bold; margin-left: 80px'>${t3EntregaPc}</h4>
+                <p>${p9EntregaPc}</p>
+                <p>${p10EntregaPc}</p>
+                <p>${p11EntregaPc}</p>
+                <p>${p12EntregaPc}</p>
+                <p>${p13EntregaPc}</p>
+                <p>${p14EntregaPc}</p>
+                <p>${p15EntregaPc}</p>
+                <p>${p16EntregaPc}</p>
+              </div>
           </div> 
         `;
 
@@ -407,6 +434,9 @@ export const useActaStore = defineStore('Acta', () => {
               <p>${p3DevoPc}</p>
               <p>${p4DevoPc}</p>
               <p>${p5DevoPc}</p>
+              <div class="page-break">
+                ${encabezadoTabla}<br>
+              </div
             </div>
         
         `;
@@ -430,6 +460,7 @@ export const useActaStore = defineStore('Acta', () => {
         `;
       }
 
+      //prestamo equipamiento computacional
       if (rowData.tipo === 'Prestamo' && computadorTable.length > 0) {
 
         const t1PrestamoPc = 'INDICACIONES SOBRE LA PROTECCIÓN DE INFORMACIÓN INSTITUCIONAL ';
@@ -455,12 +486,17 @@ export const useActaStore = defineStore('Acta', () => {
           <h4 style='font-weight: bold; margin-left: 80px'>${t2PrestamoPc}</h4> 
           <p>${p4PrestamoPc}</p>    
           <p>${p5PrestamoPc}</p>    
-          <p>${p6PrestamoPc}</p>    
+          <p>${p6PrestamoPc}</p> 
+          
           <p>${p7PrestamoPc}</p>    
-          <p>${p8PrestamoPc}</p>    
+          <p>${p8PrestamoPc}</p>   
+          <div class="page-break">
+          ${encabezadoTabla}<br>    
           <p>${p9PrestamoPc}</p>    
           <p>${p10PrestamoPc}</p>    
-          <p>${p11PrestamoPc}</p>    
+          <p>${p11PrestamoPc}</p>
+           
+          </div>   
         </div>
     
     `;
@@ -514,7 +550,7 @@ export const useActaStore = defineStore('Acta', () => {
   
           
         `;
-        
+
         const softwareTableHtml = `
           <table style="width: 70%; border-collapse: collapse; margin-top: 10px; margin-left: 80px; margin-right: 100px;">
             <caption>S.O.- OFIMÁTICA-SEGURIDAD</caption>
@@ -552,7 +588,7 @@ export const useActaStore = defineStore('Acta', () => {
           </table>
           
         `;
-        
+
         if (rowData.tipo === 'Entrega') {
           contenidoAdicional += computadorTableHtml;
           contenidoAdicional += softwareTableHtml;
@@ -640,6 +676,9 @@ export const useActaStore = defineStore('Acta', () => {
           .pieTabla {
             margin-top: 10px;
           }  
+          .page-break {
+            page-break-before: always;
+          }
         </style>
 
         ${encabezadoTabla}
@@ -687,7 +726,12 @@ export const useActaStore = defineStore('Acta', () => {
       `;
 
       // Crea el PDF con el contenido
-      await html2pdf().from(element).save(`Acta_${rowData.id}.pdf`);
+      html2pdf().set({
+        margin: [10, 10, 50, 10], // Márgenes superior, derecho, inferior e izquierdo
+        image: { type: 'jpeg', quality: 0.98 }, // Opciones para la conversión de imágenes
+        html2canvas: { dpi: 192, letterRendering: true },
+        jsPDF: { unit: 'pt', format: 'letter', orientation: 'portrait', autoPaging: true }, // Agrega autoPaging: true
+      }).from(element).save(`Acta_${rowData.id}.pdf`);
 
     } catch (error) {
       console.error('Error al exportar a PDF:', error);

@@ -64,7 +64,7 @@
           <div v-if="activoSeleccionado && activoSeleccionado.activos && activoSeleccionado.activos.length > 0">
 
             <DataTable v-if="tieneOtrosActivos(activoSeleccionado.activos)"
-              :value="filtrarOtrosActivos(activoSeleccionado.activos)" dataKey="id" :style="{ width: '500px' }">
+              :value="filtrarOtrosActivos(activoSeleccionado.activos)" dataKey="id" :style="{ width: '600px' }">
               <!-- Columnas del DataTable para otros activos -->
               <Column field="id" header="ID"></Column>
               <Column field="tipo" header="Tipo"></Column>
