@@ -152,19 +152,19 @@ export const useActaStore = defineStore('Acta', () => {
       listaActivos.value.map(async (activo) => {
         const activoConValoreVacios = {
           id: activo.id || '', // Si está vacío, asigna un valor vacío para que no imprima como undefined
-          tipo: activo.tipo || '', 
-          marca: activo.marca || '', 
-          modelo: activo.modelo || '', 
-          serie: activo.serie || '', 
-          numInv: activo.numInv || '', 
-          nombreEquipo: activo.nombreEquipo || '', 
-          procesador: activo.procesador || '', 
-          ram: activo.ram || '', 
-          discoDuro: activo.discoDuro || '', 
-          tarjetavideo: activo.tarjetavideo || '', 
-          dvd: activo.dvd || '', 
-          tecladoMouse: activo.tecladoMouse || '', 
-          tipoOtro: activo.tipoOtro || '', 
+          tipo: activo.tipo || '',
+          marca: activo.marca || '',
+          modelo: activo.modelo || '',
+          serie: activo.serie || '',
+          numInv: activo.numInv || '',
+          nombreEquipo: activo.nombreEquipo || '',
+          procesador: activo.procesador || '',
+          ram: activo.ram || '',
+          discoDuro: activo.discoDuro || '',
+          tarjetavideo: activo.tarjetavideo || '',
+          dvd: activo.dvd || '',
+          tecladoMouse: activo.tecladoMouse || '',
+          tipoOtro: activo.tipoOtro || '',
           macOS: activo.macOS ? 'Si' : 'No',
           msOffice: activo.msOffice ? 'Si' : 'No',
           msProyect: activo.msProyect ? 'Si' : 'No',
@@ -256,10 +256,10 @@ export const useActaStore = defineStore('Acta', () => {
         <table style="width: 80%; margin-left: 80px; margin-right: 30px;">
           <tr>
             <td style="text-align: center; vertical-align: middle;">
-              <p>ELABORADO POR: Área de Operaciones y Soporte, Encargado SSI. </p>
+              <span>ELABORADO POR: Área de Operaciones y Soporte, Encargado SSI. </span>
             </td>
             <td style="text-align: center; vertical-align: middle;">
-              <p>APROBADO POR: Jefatura Depto. de Tecnologías de la Información y la Comunicación (TIC). </p>
+              <span>APROBADO POR: Jefatura Depto. de Tecnologías de la Información y la Comunicación (TIC). </span>
             </td>   
           </tr>
         </table>
@@ -297,8 +297,160 @@ export const useActaStore = defineStore('Acta', () => {
       const computadorTable = filtrarComputadorEscritorioPortatil(rowData.activos);
       const otrosActivosTable = filtrarOtrosActivos(rowData.activos);
 
+      //acta entrega computador
+      if (computadorTable.length > 0 && rowData.tipo === 'Entrega') {
+
+        const t1EntregaPc = 'INDICACIONES SOBRE EL USO DE CONTRASEÑAS';
+        const p1EntregaPc = '1.&nbsp;&nbsp;	El usuario debe cambiar la contraseña provisoria del computador al momento de la entrega por el personal del Área de Operaciones y Soporte del Depto. de Tecnologías de la Información y la Comunicación (TIC).';
+        const p2EntregaPc = '2.&nbsp;&nbsp;	Del mismo modo, se recomienda al usuario elegir contraseñas que no sean fáciles de recordar; que contengan letras, mayúsculas, dígitos, y caracteres de puntuación; no estén basados en cosas obvias o de fácil deducción a partir de datos relacionados con la persona, por ejemplo: nombres, números telefónicos, cédula de identidad, fecha de nacimiento; también se debe evitar uso de contraseñas antiguas ';
+        const p3EntregaPc = '3.&nbsp;&nbsp;	El usuario debe mantener confidencialmente, no debe compartir ni divulgar las contraseñas asignadas a los sistemas informáticos, correos electrónicos y/o cuentas de dominios de la institución. ';
+        const p4EntregaPc = '4.&nbsp;&nbsp;	El usuario debe cambiar la contraseña regularmente o cuando lo recomiende el Departamento de Tecnologías de la Información y la Comunicación (TIC). ';
+        const t2EntregaPc = 'INDICACIONES SOBRE LA PROTECCIÓN DE INFORMACIÓN INSTITUCIONAL ';
+        const p5EntregaPc = '5.&nbsp;&nbsp;	El usuario debe proteger el acceso a la información al momento de dejar desatendido su computador, para ello en el teclado debe presionar las teclas Windows “win + L”, con esta acción logrará bloquear la sesión.';
+        const p6EntregaPc = '6.&nbsp;&nbsp;	El usuario debe guardar la información relacionada con su trabajo en la unidad de red asignada por el Depto. de Tecnologías de la Información y la Comunicación (TIC) (Nombre de usuario:(R)) o en las carpetas compartidas del departamento correspondiente.';
+        const p7EntregaPc = '7.&nbsp;&nbsp;	El Depto. de Tecnologías de la Información y la Comunicación (TIC) no respaldará ni responderá por pérdida de información personal del usuario almacenada en los computadores de la institución.';
+        const p8EntregaPc = '8.&nbsp;&nbsp;	Los usuarios no podrán instalar programas, aplicaciones o software sin Licencias y que no estén debidamente autorizados por Depto. de Tecnologías de la Información y la Comunicación (TIC).';
+        const t3EntregaPc = 'INDICACIONES DE USO DE RECURSOS INFORMÁTICOS.';
+        const p9EntregaPc = '9.&nbsp;&nbsp;	El usuario debe utilizar el correo electrónico institucional solamente para fines laborales y no para fines personales.';
+        const p10EntregaPc = '10.&nbsp;&nbsp;	Además, se recomienda que el sistema webmail no se utilice desde computadores no seguros, como en cyber o cybercafé debido a potenciales copia de contraseñas que permita vulnerar su información laboral.';
+        const p11EntregaPc = '11.&nbsp;&nbsp;	Se prohíbe consumo de alimentos, bebidas y tabaco en centros de procesamiento de información (DataCenter) o bodega de almacenamiento de material impreso o en las cercanías de dichos lugares.';
+        const p12EntregaPc = '12.&nbsp;&nbsp; Se prohíbe al usuario trasladar equipamiento computacional dentro o fuera de su lugar de trabajo, esta actividad la debe solicitar a través del sistema Centro de Servicio o enviar un correo electrónico a la Jefatura del Depto. de Tecnologías de la Información y la Comunicación (TIC).';
+        const p13EntregaPc = '13.&nbsp;&nbsp;	El usuario debe realizar las solicitudes de soporte técnico a través del Sistema de Centro de Servicio disponible en la Intranet Institucional.';
+        const p14EntregaPc = '14.&nbsp;&nbsp;	El usuario debe reportar incidentes de seguridad al correo reporteincidente@presidencia.cl o al fono 226904592, puede consultar el documento “Procedimiento de gestión de incidentes de seguridad de información” el que se encuentra disponible en la intranet institucional, sección Comité de Seguridad de la Información. ';
+        const p15EntregaPc = '15.&nbsp;&nbsp;	El usuario se compromete a leer y respetar la Política General de Seguridad de la Información y la documentación complementaria que se encuentra disponible en la intranet institucional, sección Comité de Seguridad de la Información.';
+        const p16EntregaPc = '16.&nbsp;&nbsp;	El usuario se compromete a seguir oportunamente las indicaciones del “Instructivo Acceso y Devolución de Activos de Información” al momento del cese o cambio de sus funciones, según corresponda el caso, el documento está disponible en la intranet institucional sección Comité de Seguridad de la Información.';
+
+        contenidoAdicional += `
+            <div>
+              <h4 style='font-weight: bold; margin-left: 80px'>${t1EntregaPc}</h4>
+              <p>${p1EntregaPc}</p>
+              <p>${p2EntregaPc}</p>
+              <p>${p3EntregaPc}</p>
+              <p>${p4EntregaPc}</p><br>
+              <h4 style='font-weight: bold; margin-left: 80px'>${t2EntregaPc}</h4>
+              <p>${p5EntregaPc}</p>
+              <p>${p6EntregaPc}</p>
+              <p>${p7EntregaPc}</p>
+              <p>${p8EntregaPc}</p><br>
+              <h4 style='font-weight: bold; margin-left: 80px'>${t3EntregaPc}</h4>
+              <p>${p9EntregaPc}</p>
+              <p>${p10EntregaPc}</p>
+              <p>${p11EntregaPc}</p>
+              <p>${p12EntregaPc}</p>
+              <p>${p13EntregaPc}</p>
+              <p>${p14EntregaPc}</p>
+              <p>${p15EntregaPc}</p>
+              <p>${p16EntregaPc}</p>
+        
+          </div> 
+        `;
+
+      }
+      //Acta entrega solo perifericos
+      if (rowData.tipo === 'Entrega' && computadorTable.length === 0) {
+        // Mostrar parágrafos adicionales solo si el acta es de tipo "Entrega" y no hay activos de "Computador escritorio" o "Computador portátil"
+        const t1periferico = 'INDICACIONES DE USO DE RECURSOS INFORMÁTICOS.';
+        const p1periferico = '1.&nbsp;&nbsp;  El usuario se compromete a seguir oportunamente las indicaciones del “Instructivo Acceso y Devolución de Activos de Información” al momento del cese o cambio de sus funciones, según corresponda el caso, el documento está disponible en la intranet institucional sección Comité de Seguridad de la Información.';
+        const p2periferico = '2.&nbsp;&nbsp;  Se prohíbe al usuario trasladar equipamiento computacional dentro o fuera de su lugar de trabajo, ésta actividad la debe solicitar a través del sistema Centro de Servicio o enviar un correo electrónico a la Jefatura del Depto. de Tecnologías de la Información y la Comunicación (TIC).';
+        const p3periferico = '3.&nbsp;&nbsp;  El usuario debe reportar incidentes de seguridad al correo reporteincidente@presidencia.cl o al fono 226904592, puede consultar el documento “Procedimiento de gestión de incidentes de seguridad de información” el que se encuentra disponible en la intranet institucional, sección Comité de Seguridad de la Información. ';
+        const p4periferico = '4.&nbsp;&nbsp;  El usuario debe realizar las solicitudes de soporte técnico a través del Sistema de Centro de Servicio disponible en la Intranet Institucional. ';
+
+        contenidoAdicional += `
+            <div>
+              <h4 style='font-weight: bold; margin-left: 80px'>${t1periferico}</h4>
+              <p>${p1periferico}</p>
+              <p>${p2periferico}</p>
+              <p>${p3periferico}</p>
+              <p>${p4periferico}</p>
+            </div>
+        
+        `;
+      }
+      //acta devolucion computador
+      if (rowData.tipo === 'Devolución' && computadorTable.length > 0) {
+        const t1DevoPc = 'Indicaciones de protección de Información Institucional';
+        const p1DevoPc = '1.&nbsp;&nbsp;	El usuario debe guardar la información relacionada con su trabajo en la unidad de red asignada por el Depto. de Tecnologías de la Información y la Comunicación (TIC) (Nombre de usuario:(R)) o en las carpetas compartidas del departamento correspondiente.';
+        const p2DevoPc = '2.&nbsp;&nbsp;	El Depto. de Tecnologías de la Información y la Comunicación (TIC) no respaldará ni responderá por pérdida de información personal del usuario almacenada en los computadores de la institución.';
+        const t2DevoPc = 'Indicaciones de uso de Recursos Informáticos.';
+        const p3DevoPc = '3.&nbsp;&nbsp;	El usuario se compromete a seguir oportunamente las indicaciones del “Instructivo Acceso y Devolución de Activos de Información” al momento del cese o cambio de sus funciones, según corresponda el caso, el documento está disponible en la intranet institucional sección Comité de Seguridad de la Información.';
+        const p4DevoPc = '4.&nbsp;&nbsp;	Se prohíbe al usuario trasladar equipamiento computacional dentro o fuera de su lugar de trabajo, ésta actividad la debe solicitar a través del sistema Centro de Servicio o enviar un correo electrónico a la Jefatura del Depto. de Tecnologías de la Información y la Comunicación (TIC).';
+        const p5DevoPc = '5.&nbsp;&nbsp;	El usuario debe reportar incidentes de seguridad al correo reporteincidente@presidencia.cl o al fono 226904592, puede consultar el documento “Procedimiento de gestión de incidentes de seguridad de información” el que se encuentra disponible en la intranet institucional, sección Comité de Seguridad de la Información.';
+
+        contenidoAdicional += `
+            <div>
+              <h4 style='font-weight: bold; margin-left: 80px'>${t1DevoPc}</h4>
+              <p>${p1DevoPc}</p>
+              <p>${p2DevoPc}</p><br>
+              <h4 style='font-weight: bold; margin-left: 80px'>${t2DevoPc}</h4>
+              <p>${p3DevoPc}</p>
+              <p>${p4DevoPc}</p>
+              <p>${p5DevoPc}</p>
+            </div>
+        
+        `;
+      }
+      //acta devolucion periferico
+      if (rowData.tipo === 'Devolución' && computadorTable.length === 0) {
+        const t1DevoPeriferico = 'INDICACIONES DE USO DE RECURSOS INFORMÁTICOS.';
+        const p1DevoPeriferico = '1.&nbsp;&nbsp;	El usuario se compromete a seguir oportunamente las indicaciones del “Instructivo Acceso y Devolución de Activos de Información” al momento del cese o cambio de sus funciones, según corresponda el caso, el documento está disponible en la intranet institucional sección Comité de Seguridad de la Información.';
+        const p2DevoPeriferico = '2.&nbsp;&nbsp;	Se prohíbe al usuario trasladar equipamiento computacional dentro o fuera de su lugar de trabajo, ésta actividad la debe solicitar a través del sistema Centro de Servicio o enviar un correo electrónico a la Jefatura del Depto. de Tecnologías de la Información y la Comunicación (TIC).';
+        const p3DevoPeriferico = '3.&nbsp;&nbsp;	El usuario debe reportar incidentes de seguridad al correo reporteincidente@presidencia.cl o al fono 226904592, puede consultar el documento “Procedimiento de gestión de incidentes de seguridad de información” el que se encuentra disponible en la intranet institucional, sección Comité de Seguridad de la Información.';
+
+        contenidoAdicional += `
+            <div>
+              <h4 style='font-weight: bold; margin-left: 80px'>${t1DevoPeriferico}</h4>
+              <p>${p1DevoPeriferico}</p>
+              <p>${p2DevoPeriferico}</p>
+              <p>${p3DevoPeriferico}</p>     
+            </div>
+        
+        `;
+      }
+
+      if (rowData.tipo === 'Prestamo' && computadorTable.length > 0) {
+
+        const t1PrestamoPc = 'INDICACIONES SOBRE LA PROTECCIÓN DE INFORMACIÓN INSTITUCIONAL ';
+        const p1PrestamoPc = '1.&nbsp;&nbsp;	El usuario debe proteger el acceso a la información al momento de dejar desatendido su computador, para ello en el teclado debe presionar las teclas Windows “win + L”, con esta acción logrará bloquear la sesión.';
+        const p2PrestamoPc = '2.&nbsp;&nbsp;	El Depto. de Tecnologías de la Información y la Comunicación (TIC) no respaldará ni responderá por pérdida de información personal del usuario almacenada en los computadores de la institución.';
+        const p3PrestamoPc = '3.&nbsp;&nbsp;	Los usuarios no podrán instalar programas, aplicaciones o software sin Licencias y que no estén debidamente autorizados por Depto. de Tecnologías de la Información y la Comunicación (TIC).';
+        const t2PrestamoPc = 'INDICACIONES DE USO DE RECURSOS INFORMÁTICOS.';
+        const p4PrestamoPc = '4.&nbsp;&nbsp;	El usuario debe utilizar el correo electrónico institucional solamente para fines laborales y no para fines personales.';
+        const p5PrestamoPc = '5.&nbsp;&nbsp; Además, se recomienda que el sistema webmail no se utilice desde computadores no seguros, como en cyber o cybercafé debido a potenciales copia de contraseñas que permita vulnerar su información laboral.';
+        const p6PrestamoPc = '6.&nbsp;&nbsp;	Se prohíbe consumo de alimentos, bebidas y tabaco en centros de procesamiento de información (DataCenter) o bodega de almacenamiento de material impreso o en las cercanías de dichos lugares.';
+        const p7PrestamoPc = '7.&nbsp;&nbsp; Se prohíbe al usuario trasladar equipamiento computacional dentro o fuera de su lugar de trabajo, ésta actividad la debe solicitar a través del sistema Centro de Servicio o enviar un correo electrónico a la Jefatura del Depto. de Tecnologías de la Información y la Comunicación (TIC).';
+        const p8PrestamoPc = '8.&nbsp;&nbsp; El usuario debe realizar las solicitudes de soporte técnico a través del Sistema de Centro de Servicio disponible en la Intranet Institucional';
+        const p9PrestamoPc = '9.&nbsp;&nbsp; El usuario debe reportar incidentes de seguridad al correo reporteincidente@presidencia.cl o al fono 226904592, puede consultar el documento “Procedimiento de gestión de incidentes de seguridad de información” el que se encuentra disponible en la intranet institucional, sección Comité de Seguridad de la Información. ';
+        const p10PrestamoPc = '10.&nbsp;&nbsp; El usuario se compromete a leer y respetar la Política General de Seguridad de la Información y la documentación complementaria que se encuentra disponible en la intranet institucional, sección Comité de Seguridad de la Información.';
+        const p11PrestamoPc = '11.&nbsp;&nbsp; El usuario se compromete a seguir oportunamente las indicaciones del “Instructivo Acceso y Devolución de Activos de Información” al momento del cese o cambio de sus funciones, según corresponda el caso, el documento está disponible en la intranet institucional sección Comité de Seguridad de la Información.';
+
+        contenidoAdicional += `
+        <div>
+          <h4 style='font-weight: bold; margin-left: 80px'>${t1PrestamoPc}</h4>
+          <p>${p1PrestamoPc}</p>
+          <p>${p2PrestamoPc}</p>
+          <p>${p3PrestamoPc}</p><br>
+          <h4 style='font-weight: bold; margin-left: 80px'>${t2PrestamoPc}</h4> 
+          <p>${p4PrestamoPc}</p>    
+          <p>${p5PrestamoPc}</p>    
+          <p>${p6PrestamoPc}</p>    
+          <p>${p7PrestamoPc}</p>    
+          <p>${p8PrestamoPc}</p>    
+          <p>${p9PrestamoPc}</p>    
+          <p>${p10PrestamoPc}</p>    
+          <p>${p11PrestamoPc}</p>    
+        </div>
+    
+    `;
+
+      }
+
+
+
+
+      //tabla computadores
       if (computadorTable.length > 0) {
         const computadorTableHtml = `
+        
         <table style="width: 80%; border-collapse: collapse; margin-top: 10px; margin-left: 80px; margin-right: 30px;">
             <caption>EQUIPAMIENTO COMPUTACIONAL</caption>
             <thead>
@@ -454,7 +606,10 @@ export const useActaStore = defineStore('Acta', () => {
             width: 20px;
           }
           p {
-            margin-left: 80px; margin-right: 30px;"
+            margin-left: 80px; 
+            margin-right: 80px;
+            
+            text-align: justify;
           }
           .contenedorPieTabla {
 
