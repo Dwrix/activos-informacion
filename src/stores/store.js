@@ -106,7 +106,7 @@ export const useActaStore = defineStore('Acta', () => {
     listaActivos.value = [];
 
     // Asignar nuevamente el valor de acta.tipo al estado reactivo
-    tipoActa.value = acta.value.tipo; 
+    /* tipoActa.value = acta.value.tipo;  */
   }
 
   const direccionOpciones = ref([
@@ -507,13 +507,13 @@ export const useActaStore = defineStore('Acta', () => {
       if (computadorTable.length > 0) {
         const computadorTableHtml = `
         
-        <table style="width: 80%; border-collapse: collapse; margin-top: 10px; margin-left: 80px; margin-right: 30px;">
+        <table class='computadorTable' >
             <caption>EQUIPAMIENTO COMPUTACIONAL</caption>
             <thead>
               <tr>
-                <th>ID</th>
+                <th >ID</th>
                 <th>Nombre</th>
-                <th style="width: 50px">Tipo</th>
+                <th>Tipo</th>
                 <th>Marca</th>
                 <th>Modelo</th>
                 <th>Serie</th>
@@ -521,7 +521,7 @@ export const useActaStore = defineStore('Acta', () => {
                 <th>Procesador</th>
                 <th>RAM</th>
                 <th>Disco Duro</th>
-                <th>Lector/Grab DVD</th>
+                <th>L/G DVD</th>
                 <th>Teclado y Mouse</th>
               </tr>
             </thead>
@@ -679,6 +679,19 @@ export const useActaStore = defineStore('Acta', () => {
           .page-break {
             page-break-before: always;
           }
+          .computadorTable {
+            width: 60%;
+            border-collapse: collapse;
+            margin-top: 10px;
+            margin-left: 80px;
+            margin-right: 80px;
+          }
+        
+          .computadorTable th {
+            
+            word-wrap: break-word; /* Envolver el contenido dentro del ancho especificado */
+          }
+          
         </style>
 
         ${encabezadoTabla}
@@ -687,28 +700,28 @@ export const useActaStore = defineStore('Acta', () => {
         <br>
         <table style='width: 70%; border-collapse: collapse; margin-top: 10px; margin-left: 80px; margin-right: 30px;'>
           <tr>
-            <td style='background-color: #dcdcdc; font-weight: bold;'> • Sr.(a):</td>
-            <td>${rowData.nombre}</td>
+            <td width="30%" style='background-color: #dcdcdc; font-weight: bold;'> • Sr.(a):</td>
+            <td width="70%">${rowData.nombre}</td>
           </tr>
           <tr>
-            <td style='background-color: #dcdcdc; font-weight: bold;' > • Rut:</td>
-            <td>${rowData.rut}</td>
+            <td width="40%" style='background-color: #dcdcdc; font-weight: bold;' > • Rut:</td>
+            <td width="60%">${rowData.rut}</td>
           </tr>
           <tr>
-            <td style='background-color: #dcdcdc; font-weight: bold;'> • Firma:</td>
-            <td></td>
+            <td width="40%" style='background-color: #dcdcdc; font-weight: bold;'> • Firma:</td>
+            <td width="60%"></td>
           </tr>
           <tr>
-            <td style='background-color: #dcdcdc; font-weight: bold;'> • Dirección /Depto. /Unidad:</td>
-            <td>${rowData.direccionSelec.nombre}</td>
+            <td width="40%" style='background-color: #dcdcdc; font-weight: bold;'> • Dirección /Depto. /Unidad:</td>
+            <td width="60%">${rowData.direccionSelec.nombre}</td>
           </tr>
           <tr>
-            <td style='background-color: #dcdcdc; font-weight: bold;'> • Cargo:</td>
-            <td>${rowData.cargo}</td>
+            <td width="40%" style='background-color: #dcdcdc; font-weight: bold;'> • Cargo:</td>
+            <td width="60%">${rowData.cargo}</td>
           </tr>
           <tr>
-            <td style='background-color: #dcdcdc; font-weight: bold; white-space: pre-wrap;'> • Encargado (Área de Operaciones y Soporte Depto. TIC):</td>
-            <td>${rowData.encargado}</td>
+            <td width="40%" style='background-color: #dcdcdc; font-weight: bold; white-space: pre-wrap;'> • Encargado (Área de Operaciones y Soporte Depto. TIC):</td>
+            <td width="60%">${rowData.encargado}</td>
           </tr>
          
           ${fechaEntregaPrestamo}
