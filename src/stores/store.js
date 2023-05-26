@@ -279,8 +279,6 @@ export const useActaStore = defineStore('Acta', () => {
         parrafo1 = rowDataValues.parrafo1;
       }
 
-
-
       const encabezadoTabla = `
         <table style="width: 80%; border-collapse: collapse; margin-top: 10px; margin-left: 80px; margin-right: 30px;">
           <tr>
@@ -298,6 +296,7 @@ export const useActaStore = defineStore('Acta', () => {
           </tr>
         </table>
       `;
+
       const pieTabla = `
         <table style="width: 80%; margin-left: 80px; margin-right: 30px;">
           <tr>
@@ -338,9 +337,6 @@ export const useActaStore = defineStore('Acta', () => {
           <td>${rowData.fechaDevolucionPrestamo}</td>
         </tr>
       ` : '';
-
-      /* const computadorTable = filtrarComputadorEscritorioPortatil(rowData.activos);
-      const otrosActivosTable = filtrarOtrosActivos(rowData.activos); */
 
       //acta entrega computador
       if (computadorTable.length > 0 && rowData.tipo === 'Entrega') {
@@ -478,77 +474,71 @@ export const useActaStore = defineStore('Acta', () => {
         const p11PrestamoPc = '11.&nbsp;&nbsp; El usuario se compromete a seguir oportunamente las indicaciones del “Instructivo Acceso y Devolución de Activos de Información” al momento del cese o cambio de sus funciones, según corresponda el caso, el documento está disponible en la intranet institucional sección Comité de Seguridad de la Información.';
 
         contenidoAdicional += `
-        <div>
-          <h4 style='font-weight: bold; margin-left: 80px'>${t1PrestamoPc}</h4>
-          <p>${p1PrestamoPc}</p>
-          <p>${p2PrestamoPc}</p>
-          <p>${p3PrestamoPc}</p><br>
-          <h4 style='font-weight: bold; margin-left: 80px'>${t2PrestamoPc}</h4> 
-          <p>${p4PrestamoPc}</p>    
-          <p>${p5PrestamoPc}</p>    
-          <p>${p6PrestamoPc}</p> 
-          
-          <p>${p7PrestamoPc}</p>    
-          <p>${p8PrestamoPc}</p>   
-          <div class="page-break">
-          ${encabezadoTabla}<br>    
-          <p>${p9PrestamoPc}</p>    
-          <p>${p10PrestamoPc}</p>    
-          <p>${p11PrestamoPc}</p>
-           
-          </div>   
-        </div>
-    
-    `;
-
+          <div>
+            <h4 style='font-weight: bold; margin-left: 80px'>${t1PrestamoPc}</h4>
+            <p>${p1PrestamoPc}</p>
+            <p>${p2PrestamoPc}</p>
+            <p>${p3PrestamoPc}</p><br>
+            <h4 style='font-weight: bold; margin-left: 80px'>${t2PrestamoPc}</h4> 
+            <p>${p4PrestamoPc}</p>    
+            <p>${p5PrestamoPc}</p>    
+            <p>${p6PrestamoPc}</p> 
+            
+            <p>${p7PrestamoPc}</p>    
+            <p>${p8PrestamoPc}</p>   
+            <div class="page-break">
+            ${encabezadoTabla}<br>    
+            <p>${p9PrestamoPc}</p>    
+            <p>${p10PrestamoPc}</p>    
+            <p>${p11PrestamoPc}</p>       
+            </div>   
+          </div>
+        `;
       }
 
       //tabla computadores
       if (computadorTable.length > 0) {
         const computadorTableHtml = `
-        
-        <table class='computadorTable' >
-            <caption>EQUIPAMIENTO COMPUTACIONAL</caption>
-            <thead>
-              <tr>
-                <th >ID</th>
-                <th>Nombre</th>
-                <th>Tipo</th>
-                <th>Marca</th>
-                <th>Modelo</th>
-                <th>Serie</th>
-                <th>Nro Inventario</th>
-                <th>Procesador</th>
-                <th>RAM</th>
-                <th>Disco Duro</th>
-                <th>L/G DVD</th>
-                <th>Teclado y Mouse</th>
-              </tr>
-            </thead>
-            <tbody>
-              ${computadorTable
-            .map(activo => `
-                  <tr>
-                    <td>${activo.id}</td>
-                    <td>${activo.nombreEquipo}</td>
-                    <td>${activo.tipo}</td>
-                    <td>${activo.marca}</td>
-                    <td>${activo.modelo}</td>
-                    <td>${activo.serie}</td>
-                    <td>${activo.numInv}</td>
-                    <td>${activo.procesador}</td>
-                    <td>${activo.ram}</td>
-                    <td>${activo.discoDuro}</td>
-                    <td>${activo.dvd}</td>
-                    <td>${activo.tecladoMouse}</td>
-                  </tr>
-  
-                `)
-            .join('')}
-            </tbody>
-          </table>
-  
-          
+          <table class='computadorTable' >
+              <caption>EQUIPAMIENTO COMPUTACIONAL</caption>
+              <thead>
+                <tr>
+                  <th >ID</th>
+                  <th>Nombre</th>
+                  <th>Tipo</th>
+                  <th>Marca</th>
+                  <th>Modelo</th>
+                  <th>Serie</th>
+                  <th>Nro Inventario</th>
+                  <th>Procesador</th>
+                  <th>RAM</th>
+                  <th>Disco Duro</th>
+                  <th>L/G DVD</th>
+                  <th>Teclado y Mouse</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${computadorTable
+              .map(activo => `
+                    <tr>
+                      <td>${activo.id}</td>
+                      <td>${activo.nombreEquipo}</td>
+                      <td>${activo.tipo}</td>
+                      <td>${activo.marca}</td>
+                      <td>${activo.modelo}</td>
+                      <td>${activo.serie}</td>
+                      <td>${activo.numInv}</td>
+                      <td>${activo.procesador}</td>
+                      <td>${activo.ram}</td>
+                      <td>${activo.discoDuro}</td>
+                      <td>${activo.dvd}</td>
+                      <td>${activo.tecladoMouse}</td>
+                    </tr>
+    
+                  `)
+              .join('')}
+              </tbody>
+            </table> 
         `;
 
         const softwareTableHtml = `
@@ -578,15 +568,12 @@ export const useActaStore = defineStore('Acta', () => {
                     <td>${activo.acrobatReader}</td>
                     <td>${activo.sqlServer}</td>
                     <td>${activo.photoshop}</td>
-                    <td>${activo.av}</td>
-                    
+                    <td>${activo.av}</td>          
                   </tr>
-  
                 `)
             .join('')}
             </tbody>
           </table>
-          
         `;
 
         if (rowData.tipo === 'Entrega') {
@@ -688,10 +675,8 @@ export const useActaStore = defineStore('Acta', () => {
           }
         
           .computadorTable th {
-            
             word-wrap: break-word; /* Envolver el contenido dentro del ancho especificado */
           }
-          
         </style>
 
         ${encabezadoTabla}
@@ -735,7 +720,7 @@ export const useActaStore = defineStore('Acta', () => {
           <div class="pieTabla">
             ${pieTabla}
           </div>
-      </div>    
+        </div>    
       `;
 
       // Crea el PDF con el contenido

@@ -15,7 +15,7 @@ import db from '@/firestore';
 const chartData = ref(null);
 const chartOptions = ref(null);
 
-// Función para obtener las actas desde Firestore
+//  obtener las actas desde Firestore
 async function obtenerActas() {
   const querySnapshot = await getDocs(collection(db, 'actaCollection'));
   const actas = await Promise.all(
@@ -96,8 +96,6 @@ onMounted(() => {
   obtenerActas();
 });
 </script>
-
-
 
 <style scoped>
 .contenedor {

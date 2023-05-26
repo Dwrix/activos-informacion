@@ -197,7 +197,6 @@ async function obtenerActas() {
 }
 
 async function mostrarActivos(acta) {
-
   /* expandedRowKeys.value = []; */
   // Verifica si hay activos asociados en el objeto acta
   if (acta.activos && acta.activos.length > 0) {
