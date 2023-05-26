@@ -70,7 +70,7 @@
 
 
 <script setup>
-import { ref } from 'vue';
+
 import Equipamiento from '@/components/Equipamiento.vue';
 import { useActaStore } from '@/stores/store'
 

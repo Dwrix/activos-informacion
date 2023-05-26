@@ -27,13 +27,9 @@ async function obtenerActas() {
     })
   );
 
-  // Invierte el array PERMANENTEMENTE para que la primera acta de la lista sea la última ingresada
-  actas.reverse();
-
-  // Lista de todos los tipos de acta que deseas mostrar
   const tiposActa = ['Entrega', 'Devolución', 'Prestamo', 'Orden de Salida'];
 
-  // Crear un objeto para almacenar las cantidades de actas por tipo
+  //  objeto para almacenar las cantidades de actas por tipo
   const tiposActaCantidades = {};
 
   // Calcular las cantidades de actas por tipo
@@ -64,7 +60,7 @@ async function obtenerActas() {
     ],
   };
 
-  // Opciones de la gráfica (puedes personalizarlas según tus necesidades)
+  // Opciones de la gráfica 
   chartOptions.value = {
     responsive: true,
     /* maintainAspectRatio: false,  */
@@ -89,7 +85,7 @@ async function obtenerActas() {
       display: true,
       text: `Total de Actas: ${actas.length}`,
       font: {
-        size: 16, // Tamaño de la fuente deseado
+        size: 16, 
       },
     },
   },

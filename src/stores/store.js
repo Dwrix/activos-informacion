@@ -67,11 +67,11 @@ export const useActaStore = defineStore('Acta', () => {
 
   const listaActivos = ref([])
 
-  
-//
+
+  //
 
   function limpiarCampos() {
-    
+
     const tipoActaValue = acta.value.tipo;
     acta.value = {
       tipo: tipoActaValue,
@@ -269,16 +269,16 @@ export const useActaStore = defineStore('Acta', () => {
           parrafo1: computadorTable.length > 0 ? 'El Departamento de Tecnologías de la Información y la Comunicación (TIC) de la Presidencia de la República, mediante el presente acto, hace préstamo del equipamiento computacional a:' : 'El Departamento de Tecnologías de la Información y la Comunicación (TIC) de la Presidencia de la República, mediante el presente acto, hace préstamo de los periféricos a:',
         },
       };
-      
+
       // Obtén los valores correspondientes según el tipo de rowData
       const rowDataValues = tipoData[rowData.tipo];
-      
+
       // Asigna los valores a las variables correspondientes
       if (rowDataValues) {
         titulo = rowDataValues.titulo;
         parrafo1 = rowDataValues.parrafo1;
       }
-      
+
 
 
       const encabezadoTabla = `

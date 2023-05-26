@@ -64,27 +64,9 @@
 
 <script setup>
 import Equipamiento from '@/components/Equipamiento.vue';
-import { ref } from 'vue';
 import { useActaStore } from '@/stores/store'
 
 const store = useActaStore()
-
-/* const nombre = ref(null);
-const rut = ref(null);
-const cargo = ref(null); */
-
-/* const date = ref(new Date());
-window.addEventListener('load', () => {
-  date.value = new Date();
-}); */
-/* setInterval(() => {
-  date.value = new Date(); 
-}, 3600000 );
-// Actualizar la fecha cada 1000 milisegundos 1 segundo  */
-/* const encargado = ref(null);
-
-
-const direccionSelec = ref(); */
 
 store.acta.tipo = "Devolución"
 

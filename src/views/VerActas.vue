@@ -17,8 +17,6 @@
             </div>
           </template>
 
-
-
           <Column selectionMode="multiple" style="width: 3rem" :exportable="false"></Column>
           <Column field="id" header="id" :sortable="true" style="min-width:5rem " >
           </Column>
@@ -51,10 +49,6 @@
               </div>
             </template>
           </Column>
-
-
-
-
 
         </DataTable>
 
@@ -90,8 +84,6 @@
               <Column field="discoDuro" header="Disco Duro"></Column>
               <Column field="dvd" header="Lector/Grab DVD"></Column>
               <Column field="tecladoMouse" header="Teclado Y Mouse"></Column>
-
-
 
             </DataTable>
             <br>
@@ -139,19 +131,14 @@
               </div>
             </div>
 
-
           </div>
           <p v-else>No se encontraron activos asociados.</p>
 
           <div v-if="activoSeleccionado"><br>
             <Button label="Ver PDF" icon="pi pi-download" class="p-button-success p-button-rounded"
               @click="descargarPDF(activoSeleccionado.id)" />
-
-
           </div>
-          <div>
-
-          </div>
+          
           <template #footer>
             <Button label="Cerrar" icon="pi pi-times" text @click="cerrarDialog" />
 
@@ -289,7 +276,6 @@ const exportarPDF = (data) => {
   height: auto;
   padding: 20px;
   border-radius: 20px;
-  /* background: rgb(223, 223, 223); */
   margin-left: 150px;
   margin-top: 30px;
 }
@@ -302,8 +288,6 @@ h4 {
 
 .contenedorDt {
   font-size: small;
-  /* width: auto;
-    height: auto; */
   border-radius: 20px;
   background: rgb(236, 236, 236);
   padding: 20px;

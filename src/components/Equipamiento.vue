@@ -118,7 +118,7 @@
                     </div><br>
 
                     <div class="ContOfiSeguridad"
-                    v-if="store.acta.tipo === 'Entrega' && (store.activo.tipo === 'Computador Escritorio' || store.activo.tipo === 'Computador Portatil')">
+                        v-if="store.acta.tipo === 'Entrega' && (store.activo.tipo === 'Computador Escritorio' || store.activo.tipo === 'Computador Portatil')">
                         <div class="ofiSeguridad">
                             <label> S.O.- OFIMÁTICA-SEGURIDAD </label><br>
 
@@ -164,7 +164,6 @@
                 </div>
                 <div class="ContenedorPcs"
                     v-if="store.activo.tipo === 'Computador Escritorio' || store.activo.tipo === 'Computador Portatil'">
-
 
                     <div class="field">
                         <label for="nombreEquipo">Nombre Equipo</label>
@@ -216,12 +215,7 @@
                             <label for="tecladoMouseNo"> No </label>
 
                         </div>
-
-
-
-
                     </div>
-
                 </div>
             </div>
 
@@ -275,7 +269,6 @@ const dt = ref();
 const activoDialog = ref(false);
 const eliminarActivoDialog = ref(false);
 const eliminarActivosDialog = ref(false);
-
 const activosSeleccionados = ref();
 const activoSeleccionado = ref(null);
 const toast = useToast();
@@ -367,15 +360,6 @@ const findIndexById = (id) => {
     return index;
 };
 
-/* const createId = () => {
-    let id = '';
-    var chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    for (var i = 0; i < 5; i++) {
-        id += chars.charAt(Math.floor(Math.random() * chars.length));
-    }
-    return id;
-} */
-
 let idCounter = 0;
 const createId = () => {
     idCounter++;
@@ -402,7 +386,7 @@ const enviar = () => {
 </script>
 
 <style scoped>
-/* equipamiento */
+
 .contenedorEquipamiento {
     width: 1000px;
     height: auto;
@@ -466,8 +450,6 @@ const enviar = () => {
     display: flex;
     align-items: center;
     max-width: 200px;
-
-    /* Espacio entre columnas */
 }
 
 .checkbox-label {
@@ -475,7 +457,6 @@ const enviar = () => {
 
 }
 
-/* equipamiento */
 </style>
 
 
